@@ -13,12 +13,14 @@ Java HotSpot(TM) 64-Bit Server VM (build 17.0.6+9-LTS-190, mixed mode, sharing)
 2. [Intellij IDEA 2023.2.1](https://www.jetbrains.com/ko-kr/idea/download) 설치
 
 ## week0 사전 과제
-1. Intellij 실행 후 터미널에서 깃 클론
+1. 깃 클론 후 인텔리제이에서 실행
 ```commandline
 git clone https://github.com/wafflestudio/seminar-2023-springboot-assignment
 ```
-2. master 브랜치에서 서버 실행 후 브라우저를 켜서 http://localhost:8080에 접속
-2. 치트 시트 활용하여 코틀린 테스트 풀기([코틀린 테스트](https://github.com/wafflestudio/seminar-2023-springboot-assignment/blob/master/src/test/kotlin/kotlin/KotlinTest.kt))
+2. master 브랜치에서 서버 실행(Run 'SeminarApplication')<img width="1509" alt="스크린샷 2023-08-31 오후 1 37 40" src="https://github.com/wafflestudio/seminar-2023-springboot-assignment/assets/76547957/5805c4cb-b08c-4356-bc95-cb1e502e510a">
+3. 브라우저를 킨 후 http://localhost:8080 접속<img width="1785" alt="스크린샷 2023-08-31 오후 1 39 44" src="https://github.com/wafflestudio/seminar-2023-springboot-assignment/assets/76547957/648d7b52-d360-470b-872e-b252424ccf0d">
+4. 치트 시트 활용하여 KotlinTest.kt 풀기 <img width="1150" alt="스크린샷 2023-08-31 오후 1 45 09" src="https://github.com/wafflestudio/seminar-2023-springboot-assignment/assets/76547957/6d792f98-08f6-4bb9-8751-66e19108b277">
+
 
 ## week0 과제
 
