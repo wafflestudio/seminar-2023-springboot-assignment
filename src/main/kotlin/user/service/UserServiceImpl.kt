@@ -1,19 +1,43 @@
 package com.wafflestudio.seminar.spring2023.user.service
 
+import com.wafflestudio.seminar.spring2023.user.repository.UserEntity
+import com.wafflestudio.seminar.spring2023.user.repository.UserRepository
 import org.springframework.stereotype.Service
 
 @Service
-class UserServiceImpl : UserService {
+class UserServiceImpl (private val userRepository: UserRepository) : UserService {
+
+    var currentUser: User = User("ab", "")
 
     override fun signUp(username: String, password: String, image: String): User {
-        TODO("Not yet implemented")
+        if (username.length < 4) {
+            throw SignUpBadUsernameException()
+        }
+        if (password.length < 4) {
+            throw SignUpBadPasswordException()
+        }
+        if (userRepository.findByUsername(username) != null) {
+            throw SignUpUsernameConflictException()
+        }
+        userRepository.save(UserEntity(0L, username, password, image))
+        currentUser = User(username, image)
+        return currentUser
     }
 
     override fun signIn(username: String, password: String): User {
-        TODO("Not yet implemented")
+        val userEntity = userRepository.findByUsername(username)
+                ?:throw SignInUserNotFoundException()
+        if (userEntity.password != password) {
+            throw SignInInvalidPasswordException()
+        }
+        currentUser = User(userEntity.username, userEntity.image)
+        return currentUser
     }
 
     override fun authenticate(accessToken: String): User {
-        TODO("Not yet implemented")
+        if (currentUser.getAccessToken() != accessToken) {
+            throw AuthenticateException()
+        }
+        return currentUser
     }
 }

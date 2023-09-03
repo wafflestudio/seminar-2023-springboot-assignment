@@ -1,6 +1,7 @@
 package com.wafflestudio.seminar.spring2023.user.controller
 
-import com.wafflestudio.seminar.spring2023.user.service.UserService
+import com.wafflestudio.seminar.spring2023.user.service.*
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -17,21 +18,46 @@ class UserController(
     fun signup(
         @RequestBody request: SignUpRequest,
     ): ResponseEntity<Unit> {
-        TODO()
+        return try {
+            userService.signUp(request.username, request.password, request.image)
+            ResponseEntity(HttpStatus.OK)
+        } catch (e: SignUpBadUsernameException) {
+            ResponseEntity(HttpStatus.BAD_REQUEST)
+        } catch (e: SignUpBadPasswordException) {
+            ResponseEntity(HttpStatus.BAD_REQUEST)
+        } catch (e: SignUpUsernameConflictException) {
+            ResponseEntity(HttpStatus.CONFLICT)
+        }
     }
 
     @PostMapping("/api/v1/signin")
     fun signIn(
         @RequestBody request: SignInRequest,
     ): ResponseEntity<SignInResponse> {
-        TODO()
+        return try {
+            val user = userService.signIn(request.username, request.password)
+            ResponseEntity(SignInResponse(user.getAccessToken()), HttpStatus.OK)
+        } catch (e: SignInUserNotFoundException) {
+            ResponseEntity(null, HttpStatus.NOT_FOUND)
+        } catch (e: SignInInvalidPasswordException) {
+            ResponseEntity(null, HttpStatus.NOT_FOUND)
+        }
     }
 
     @GetMapping("/api/v1/users/me")
     fun me(
         @RequestHeader(name = "Authorization", required = false) authorizationHeader: String?,
     ): ResponseEntity<UserMeResponse> {
-        TODO()
+        return try {
+            if (authorizationHeader == null) {
+                ResponseEntity(HttpStatus.UNAUTHORIZED)
+            } else {
+                val user = userService.authenticate(authorizationHeader.split(" ")[1])
+                ResponseEntity(UserMeResponse(user.username, user.image), HttpStatus.OK)
+            }
+        } catch (e: AuthenticateException) {
+            ResponseEntity(null, HttpStatus.UNAUTHORIZED)
+        }
     }
 }
 
