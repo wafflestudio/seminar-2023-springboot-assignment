@@ -60,12 +60,12 @@ fun `유저 이름과 비밀번호는 4글자 이상이어야 한다`() {
 }
 ```
 
-UserService 인터페이스를 상속 받은 **UserServiceMockImpl**을 구현하여 UserServiceTest가 성공하도록 해야합니다.
+UserService 인터페이스를 상속 받은 **UserServiceImpl**을 구현하여 UserServiceTest가 성공하도록 해야합니다.
 
-*-/src/main/kotlin/user/service/UserServiceMockImpl.kt*
+*-/src/main/kotlin/user/service/UserServiceImpl.kt*
 
 ```kotlin
-class UserServiceMockImpl(
+class UserServiceImpl(
     private val userRepository: UserRepository,
 ) : UserService {
     override fun signUp(username: String, password: String, image: String): User {
