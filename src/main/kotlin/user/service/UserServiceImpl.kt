@@ -9,6 +9,7 @@ class UserServiceImpl(
 ) : UserService {
 
     override fun signUp(username: String, password: String, image: String): User {
+        println("hello")
         TODO("Not yet implemented")
     }
 
