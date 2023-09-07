@@ -55,7 +55,19 @@ class UserController(
     fun me(
         @RequestHeader(name = "Authorization", required = false) authorizationHeader: String?,
     ): ResponseEntity<UserMeResponse> {
-        TODO()
+        if (authorizationHeader == null) return ResponseEntity.status(401).build()
+
+        return try {
+            val user = userService.authenticate(authorizationHeader.replace("Bearer ", ""))
+            ResponseEntity.status(200).body(UserMeResponse(user.username, user.image))
+        } catch (ex: Exception) {
+            when(ex) {
+                is AuthenticateException -> {
+                    ResponseEntity.status(401).build()
+                }
+                else -> throw ex
+            }
+        }
     }
 }
 
