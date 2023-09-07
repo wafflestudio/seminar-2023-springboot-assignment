@@ -36,6 +36,11 @@ class UserServiceImpl(
     }
 
     override fun authenticate(accessToken: String): User {
-        TODO("Not yet implemented")
+        val user = userRepository.findByUsername(accessToken.reversed())
+        if (user == null) {
+            throw AuthenticateException()
+        } else {
+            return User(user.username, user.image)
+        }
     }
 }
