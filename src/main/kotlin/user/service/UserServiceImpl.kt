@@ -25,7 +25,14 @@ class UserServiceImpl(
     }
 
     override fun signIn(username: String, password: String): User {
-        TODO("Not yet implemented")
+        val user = userRepository.findByUsername(username)
+        if (user == null) {
+            throw SignInUserNotFoundException()
+        } else if (user.password != password) {
+            throw SignInInvalidPasswordException()
+        } else {
+            return User(user.username, user.image)
+        }
     }
 
     override fun authenticate(accessToken: String): User {
