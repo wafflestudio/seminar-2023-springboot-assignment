@@ -1,12 +1,7 @@
 package com.wafflestudio.seminar.spring2023.user.controller
 
-import com.wafflestudio.seminar.spring2023.user.repository.UserEntity
-import com.wafflestudio.seminar.spring2023.user.service.SignUpBadPasswordException
-import com.wafflestudio.seminar.spring2023.user.service.SignUpBadUsernameException
-import com.wafflestudio.seminar.spring2023.user.service.SignUpUsernameConflictException
-import com.wafflestudio.seminar.spring2023.user.service.UserService
+import com.wafflestudio.seminar.spring2023.user.service.*
 import org.springframework.http.ResponseEntity
-import org.springframework.web.ErrorResponseException
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -43,7 +38,17 @@ class UserController(
     fun signIn(
         @RequestBody request: SignInRequest,
     ): ResponseEntity<SignInResponse> {
-        TODO()
+        return try {
+            val user = userService.signIn(request.username, request.password)
+            ResponseEntity.status(200).body(SignInResponse(user.username.reversed()))
+        } catch (ex: Exception) {
+            when(ex) {
+                is SignInUserNotFoundException, is SignInInvalidPasswordException -> {
+                    ResponseEntity.status(404).build()
+                }
+                else -> throw ex
+            }
+        }
     }
 
     @GetMapping("/api/v1/users/me")
