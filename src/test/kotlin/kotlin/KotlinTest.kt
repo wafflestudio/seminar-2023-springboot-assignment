@@ -20,7 +20,10 @@ class KotlinTest {
     @Test
     fun `모바일 타입의 SeminarBrief 목록을, 시작날짜를 기준으로 오름차순 정렬`() {
         // FIXME: seminaDetails에 filter, sortedBy, map을 사용하여 구현 (KotlinCheetSheet.kt 참고)
-        val answer: List<SeminarBrief> = listOf()
+        val answer: List<SeminarBrief> = seminarDetails
+            .filter { it.type == Type.MOBILE }
+            .sortedBy { it.startAt }
+            .map { SeminarBrief(it.name, it.startAt) }
 
         assertThat(answer).isEqualTo(answers2)
     }
@@ -28,9 +31,9 @@ class KotlinTest {
     @Test
     fun `타입별 세미나 갯수 카운트`() {
         // FIXME:  seminaDetails에 forEach, when을 사용하여 구현 (KotlinCheetSheet.kt 참고)
-        var mobileCnt = 0
-        var webCnt = 0
-        var serverCnt = 0
+        val mobileCnt = seminarDetails.count { it.type == Type.MOBILE }
+        val webCnt = seminarDetails.count { it.type == Type.WEB }
+        val serverCnt = seminarDetails.count { it.type == Type.SERVER }
 
         assertThat(mobileCnt).isEqualTo(2)
         assertThat(webCnt).isEqualTo(1)
