@@ -5,9 +5,9 @@ import com.wafflestudio.seminar.spring2023.user.repository.UserRepository
 import org.springframework.stereotype.Service
 
 @Service
-class UserServiceImpl (private val userRepository: UserRepository) : UserService {
-
-    var currentUser: User = User("ab", "")
+class UserServiceImpl(
+    private val userRepository: UserRepository,
+) : UserService {
 
     override fun signUp(username: String, password: String, image: String): User {
         if (username.length < 4) {
@@ -20,8 +20,7 @@ class UserServiceImpl (private val userRepository: UserRepository) : UserService
             throw SignUpUsernameConflictException()
         }
         userRepository.save(UserEntity(0L, username, password, image))
-        currentUser = User(username, image)
-        return currentUser
+        return User(username, image)
     }
 
     override fun signIn(username: String, password: String): User {
@@ -30,8 +29,7 @@ class UserServiceImpl (private val userRepository: UserRepository) : UserService
         if (userEntity.password != password) {
             throw SignInInvalidPasswordException()
         }
-        currentUser = User(userEntity.username, userEntity.image)
-        return currentUser
+        return User(userEntity.username, userEntity.image)
     }
 
     override fun authenticate(accessToken: String): User {
