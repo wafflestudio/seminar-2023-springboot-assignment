@@ -1,8 +1,6 @@
 package com.wafflestudio.seminar.spring2023.user.controller
 
-import com.wafflestudio.seminar.spring2023.user.service.User
-import com.wafflestudio.seminar.spring2023.user.service.UserException
-import com.wafflestudio.seminar.spring2023.user.service.UserService
+import com.wafflestudio.seminar.spring2023.user.service.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,24 +18,30 @@ class UserControllerV2(
     @PostMapping("/api/v2/signup")
     fun signup(
         @RequestBody request: SignUpRequest,
-    ) {
-        TODO()
+    ): Unit {
+        userService.signUp(request.username, request.password, request.image)
     }
 
     @PostMapping("/api/v2/signin")
     fun signIn(
         @RequestBody request: SignInRequest,
-    ): SignInResponse {
-        TODO()
-    }
+    ) = SignInResponse(
+        accessToken = userService.signIn(request.username, request.password).getAccessToken(),
+    )
 
     @GetMapping("/api/v2/users/me")
-    fun me(user: User): UserMeResponse {
-        TODO()
-    }
+    fun me(user: User) = UserMeResponse(
+        username = user.username,
+        image = user.image,
+    )
 
     @ExceptionHandler
-    fun handleException(e: UserException): ResponseEntity<Unit> {
-        TODO()
+    fun handleException(e: UserException): ResponseEntity<Unit> = when(e) {
+        is SignUpBadUsernameException -> ResponseEntity.badRequest().build()
+        is SignUpBadPasswordException -> ResponseEntity.badRequest().build()
+        is SignUpUsernameConflictException -> ResponseEntity.status(409).build()
+        is SignInInvalidPasswordException -> ResponseEntity.status(404).build()
+        is SignInUserNotFoundException -> ResponseEntity.status(404).build()
+        is AuthenticateException -> ResponseEntity.status(401).build()
     }
 }
