@@ -35,9 +35,9 @@ class UserServiceImpl (private val userRepository: UserRepository) : UserService
     }
 
     override fun authenticate(accessToken: String): User {
-        if (currentUser.getAccessToken() != accessToken) {
-            throw AuthenticateException()
-        }
-        return currentUser
+        val decodedUsername = accessToken.reversed()
+        val currentUser: UserEntity = userRepository.findByUsername(decodedUsername)
+                ?: throw AuthenticateException()
+        return User(currentUser.username, currentUser.image)
     }
 }
