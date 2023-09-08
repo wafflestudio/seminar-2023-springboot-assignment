@@ -10,13 +10,12 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
-// TODO: 추가과제
 class UserArgumentResolver(
     private val userService: UserService,
 ) : HandlerMethodArgumentResolver {
 
     override fun supportsParameter(parameter: MethodParameter): Boolean {
-        TODO()
+        return parameter.parameterType == User::class.java
     }
 
     override fun resolveArgument(
@@ -25,7 +24,8 @@ class UserArgumentResolver(
         webRequest: NativeWebRequest,
         binderFactory: WebDataBinderFactory?,
     ): User {
-        TODO()
+        val accessToken = webRequest.getHeader("Authorization")?.split(" ")?.get(1)?:""
+        return userService.authenticate(accessToken)
     }
 }
 
