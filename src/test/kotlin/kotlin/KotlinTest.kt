@@ -31,9 +31,17 @@ class KotlinTest {
     @Test
     fun `타입별 세미나 갯수 카운트`() {
         // FIXME:  seminaDetails에 forEach, when을 사용하여 구현 (KotlinCheetSheet.kt 참고)
-        val mobileCnt = seminarDetails.count { it.type == Type.MOBILE }
-        val webCnt = seminarDetails.count { it.type == Type.WEB }
-        val serverCnt = seminarDetails.count { it.type == Type.SERVER }
+        var mobileCnt = 0
+        var webCnt = 0
+        var serverCnt = 0
+
+        seminarDetails.forEach {
+            when (it.type) {
+                Type.MOBILE -> mobileCnt++
+                Type.WEB -> webCnt++
+                Type.SERVER -> serverCnt++
+            }
+        }
 
         assertThat(mobileCnt).isEqualTo(2)
         assertThat(webCnt).isEqualTo(1)
