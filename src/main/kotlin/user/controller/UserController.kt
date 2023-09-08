@@ -1,7 +1,6 @@
 package com.wafflestudio.seminar.spring2023.user.controller
 
 import com.wafflestudio.seminar.spring2023.user.service.*
-import com.wafflestudio.seminar.spring2023.user.service.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
