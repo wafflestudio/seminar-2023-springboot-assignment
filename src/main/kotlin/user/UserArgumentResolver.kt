@@ -12,28 +12,35 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 // TODO: 추가과제
 class UserArgumentResolver(
-    private val userService: UserService,
+  private val userService: UserService,
 ) : HandlerMethodArgumentResolver {
 
-    override fun supportsParameter(parameter: MethodParameter): Boolean {
-        TODO()
-    }
+  override fun supportsParameter(parameter: MethodParameter): Boolean {
+    return parameter.parameterType == User::class.java
+  }
 
-    override fun resolveArgument(
-        parameter: MethodParameter,
-        mavContainer: ModelAndViewContainer?,
-        webRequest: NativeWebRequest,
-        binderFactory: WebDataBinderFactory?,
-    ): User {
-        TODO()
-    }
+  override fun resolveArgument(
+    parameter: MethodParameter,
+    mavContainer: ModelAndViewContainer?,
+    webRequest: NativeWebRequest,
+    binderFactory: WebDataBinderFactory?,
+  ): User {
+    val authorizationHeader = webRequest.getHeader("Authorization")
+    val isValidToken =
+      (authorizationHeader != null)
+          && (authorizationHeader != "Bearer ")
+          && authorizationHeader.startsWith("Bearer ")
+    val bearerToken =
+      if (isValidToken) authorizationHeader!!.split(" ")[1] else ""
+    return userService.authenticate(bearerToken)
+  }
 }
 
 @Configuration
 class WebConfig(
-    private val userService: UserService,
+  private val userService: UserService,
 ) : WebMvcConfigurer {
-    override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
-        resolvers.add(UserArgumentResolver(userService))
-    }
+  override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
+    resolvers.add(UserArgumentResolver(userService))
+  }
 }
