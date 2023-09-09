@@ -20,7 +20,7 @@ class KotlinTest {
   @Test
   fun `모바일 타입의 SeminarBrief 목록을, 시작날짜를 기준으로 오름차순 정렬`() {
     val answer: List<SeminarBrief> = seminarDetails
-      .filter { it.type == Type.MOBILE }
+      .filter { it.type === Type.MOBILE }
       .map { SeminarBrief(name = it.name, startAt = it.startAt) }
       .sortedBy { it.startAt }
 
