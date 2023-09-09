@@ -49,12 +49,12 @@ class UserController(
     ) authorizationHeader: String?,
   ): ResponseEntity<UserMeResponse> {
     val isValidToken =
-      (authorizationHeader != null) and
-          (authorizationHeader != "Bearer ") and
-          authorizationHeader!!.startsWith("Bearer ")
+      (authorizationHeader != null)
+          && (authorizationHeader != "Bearer ")
+          && authorizationHeader.startsWith("Bearer ")
 
     val bearerToken =
-      if (isValidToken) authorizationHeader.split(" ")[1] else ""
+      if (isValidToken) authorizationHeader!!.split(" ")[1] else ""
 
     return try {
       val (username, image) = userService.authenticate(bearerToken)
