@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 class UserIntegrationTest2 @Autowired constructor(
     private val mvc: MockMvc,
     private val mapper: ObjectMapper,
-)  {
+) {
 
     @Test
     fun `회원가입시에 유저 이름 혹은 비밀번호가 정해진 규칙에 맞지 않는 경우 400 응답을 내려준다`() {
@@ -192,6 +192,8 @@ class UserIntegrationTest2 @Autowired constructor(
         )
             .andExpect(MockMvcResultMatchers.status().`is`(200))
             .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("test-${javaClass.name}-4"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.image").value("https://wafflestudio.com/images/icon_intro.svg"))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath("$.image").value("https://wafflestudio.com/images/icon_intro.svg")
+            )
     }
 }
