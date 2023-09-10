@@ -1,6 +1,7 @@
 package com.wafflestudio.seminar.spring2023.user.controller
 
 import com.wafflestudio.seminar.spring2023.user.service.UserService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -12,12 +13,15 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(
     private val userService: UserService,
 ) {
-
     @PostMapping("/api/v1/signup")
     fun signup(
         @RequestBody request: SignUpRequest,
     ): ResponseEntity<Unit> {
         TODO()
+
+        val newUser = userService.signUp(request.username, request.password, request.image)
+        return ResponseEntity.status(HttpStatus.CREATED).build()
+
     }
 
     @PostMapping("/api/v1/signin")
@@ -25,6 +29,11 @@ class UserController(
         @RequestBody request: SignInRequest,
     ): ResponseEntity<SignInResponse> {
         TODO()
+        val user = userService.signIn(request.username, request.password)
+
+        val accessToken = user.getAccessToken()
+
+        return ResponseEntity.ok(SignInResponse(accessToken))
     }
 
     @GetMapping("/api/v1/users/me")
@@ -32,6 +41,11 @@ class UserController(
         @RequestHeader(name = "Authorization", required = false) authorizationHeader: String?,
     ): ResponseEntity<UserMeResponse> {
         TODO()
+        val user = authorizationHeader?.let { userService.authenticate(it) }
+        if (user != null) {
+            return ResponseEntity.ok(UserMeResponse(user.username, user.image))
+        }
+
     }
 }
 
