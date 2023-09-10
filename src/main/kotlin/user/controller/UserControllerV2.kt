@@ -34,8 +34,7 @@ class UserControllerV2(
     @GetMapping("/api/v2/users/me")
     fun me(user: User): UserMeResponse {
         //TODO()
-        var tmpUser = userService.authenticate(user.getAccessToken())
-        return UserMeResponse(tmpUser.username,tmpUser.image)
+        return UserMeResponse(user.username,user.image)
     }
 
     @ExceptionHandler
