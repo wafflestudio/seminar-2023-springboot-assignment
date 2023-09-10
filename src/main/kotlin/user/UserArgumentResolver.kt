@@ -1,5 +1,6 @@
 package com.wafflestudio.seminar.spring2023.user
 
+import com.wafflestudio.seminar.spring2023.user.service.AuthenticateException
 import com.wafflestudio.seminar.spring2023.user.service.User
 import com.wafflestudio.seminar.spring2023.user.service.UserService
 import org.springframework.context.annotation.Configuration
@@ -16,7 +17,8 @@ class UserArgumentResolver(
 ) : HandlerMethodArgumentResolver {
 
     override fun supportsParameter(parameter: MethodParameter): Boolean {
-        TODO()
+        //TODO()
+        return parameter.parameterType.equals(User::class.java)
     }
 
     override fun resolveArgument(
@@ -25,7 +27,10 @@ class UserArgumentResolver(
         webRequest: NativeWebRequest,
         binderFactory: WebDataBinderFactory?,
     ): User {
-        TODO()
+        //TODO()
+        val token = webRequest.getHeader("Authorization")?.removePrefix("Bearer ") ?: throw AuthenticateException()
+
+        return userService.authenticate(token)
     }
 }
 
