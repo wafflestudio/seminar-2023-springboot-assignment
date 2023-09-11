@@ -1,38 +1,65 @@
 package com.wafflestudio.seminar.spring2023.user.controller
 
-import com.wafflestudio.seminar.spring2023.user.service.UserService
+import com.wafflestudio.seminar.spring2023.user.service.*
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class UserController(
     private val userService: UserService,
 ) {
-
     @PostMapping("/api/v1/signup")
-    fun signup(
+    fun signUp(
         @RequestBody request: SignUpRequest,
     ): ResponseEntity<Unit> {
-        TODO()
+        val user = userService.signUp(
+            request.username,
+            request.password,
+            request.image,
+            )
+        return ResponseEntity.ok().build()
     }
 
     @PostMapping("/api/v1/signin")
     fun signIn(
         @RequestBody request: SignInRequest,
     ): ResponseEntity<SignInResponse> {
-        TODO()
+        val user = userService.signIn(
+            request.username,
+            request.password
+        )
+        return ResponseEntity.ok(
+            SignInResponse(
+                accessToken = user.getAccessToken()
+            )
+        )
     }
 
     @GetMapping("/api/v1/users/me")
     fun me(
         @RequestHeader(name = "Authorization", required = false) authorizationHeader: String?,
     ): ResponseEntity<UserMeResponse> {
-        TODO()
+        val tokenValue = authorizationHeader?.removePrefix("Bearer ") ?: return ResponseEntity.status(401).build()
+        val user = userService.authenticate(tokenValue)
+        return ResponseEntity.ok(
+            UserMeResponse(
+                username = user.username,
+                image = user.image
+            )
+        )
     }
+    @ExceptionHandler(SignUpBadUsernameException::class, SignUpBadPasswordException::class)
+    fun handleSignUpBadRequest(): ResponseEntity<Unit> = ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
+
+    @ExceptionHandler(SignUpUsernameConflictException::class)
+    fun handleSignUpConflict(): ResponseEntity<Unit> = ResponseEntity.status(HttpStatus.CONFLICT).build()
+
+    @ExceptionHandler(SignInUserNotFoundException::class, SignInInvalidPasswordException::class)
+    fun handleSignInNotFound(): ResponseEntity<Unit> = ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+
+    @ExceptionHandler(AuthenticateException::class)
+    fun handleAuthenticationFailed(): ResponseEntity<Unit> = ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
 }
 
 data class UserMeResponse(
