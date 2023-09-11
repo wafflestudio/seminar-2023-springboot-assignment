@@ -1,8 +1,8 @@
 package com.wafflestudio.seminar.spring2023.user.controller
 
-import com.wafflestudio.seminar.spring2023.user.service.User
-import com.wafflestudio.seminar.spring2023.user.service.UserException
-import com.wafflestudio.seminar.spring2023.user.service.UserService
+import com.wafflestudio.seminar.spring2023.user.AuthUser
+import com.wafflestudio.seminar.spring2023.user.service.*
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,23 +21,30 @@ class UserControllerV2(
     fun signup(
         @RequestBody request: SignUpRequest,
     ) {
-        TODO()
+        userService.signUp(request.username, request.password, request.image)
     }
 
     @PostMapping("/api/v2/signin")
     fun signIn(
         @RequestBody request: SignInRequest,
     ): SignInResponse {
-        TODO()
+        return SignInResponse(userService.signIn(request.username, request.password).getAccessToken())
     }
 
     @GetMapping("/api/v2/users/me")
-    fun me(user: User): UserMeResponse {
-        TODO()
+    fun me(@AuthUser user: User): UserMeResponse {
+        return UserMeResponse(username = user.username, image = user.image)
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(value = [UserException::class])
     fun handleException(e: UserException): ResponseEntity<Unit> {
-        TODO()
+        return when (e) {
+            is SignUpBadUsernameException -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
+            is SignUpBadPasswordException -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
+            is SignUpUsernameConflictException -> ResponseEntity.status(HttpStatus.CONFLICT).body(null)
+            is SignInUserNotFoundException -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
+            is SignInInvalidPasswordException -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
+            is AuthenticateException -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null)
+        }
     }
 }
