@@ -1,12 +1,13 @@
 package com.wafflestudio.seminar.spring2023.user.repository
 
+import com.wafflestudio.seminar.spring2023.user.service.User
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 
 @Entity(name= "users")
-class  UserEntity(
+class UserEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
@@ -14,3 +15,7 @@ class  UserEntity(
     val password: String,
     val image: String,
 )
+
+fun UserEntity.toUser(): User {
+    return User(username = this.username, image = this.image)
+}
