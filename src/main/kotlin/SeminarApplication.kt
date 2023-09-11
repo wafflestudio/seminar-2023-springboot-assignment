@@ -9,3 +9,5 @@ class SeminarApplication
 fun main() {
     runApplication<SeminarApplication>()
 }
+
+
