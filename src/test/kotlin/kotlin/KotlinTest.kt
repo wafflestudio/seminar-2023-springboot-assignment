@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 // KotlinCheetSheet.kt 참고
-class KotlinTest {
+class KotlinTest { 
 
     @Test
     fun `9월 3일 이후에 시작하는 SeminarDetail 목록을, id 기준으로 내림차순 정렬`() {
