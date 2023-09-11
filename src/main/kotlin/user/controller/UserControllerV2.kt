@@ -1,6 +1,7 @@
 package com.wafflestudio.seminar.spring2023.user.controller
 
 import com.wafflestudio.seminar.spring2023.user.service.*
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
@@ -38,14 +39,21 @@ class UserControllerV2(
         )
     }
 
-    @ExceptionHandler
-    fun handleException(e: UserException): ResponseEntity<Unit> {
-        return when (e) {
-            is SignUpBadUsernameException, is SignUpBadPasswordException -> ResponseEntity.badRequest().build()
-            is SignUpUsernameConflictException -> ResponseEntity.status(409).build() // Conflict
-            is SignInUserNotFoundException, is SignInInvalidPasswordException -> ResponseEntity.status(404).build() // Not Found
-            is AuthenticateException -> ResponseEntity.status(401).build() // Unauthorized
-            else -> ResponseEntity.status(500).build() // Internal Server Error for unexpected exceptions
-        }
-    }
+    @ExceptionHandler(SignUpBadUsernameException::class)
+    fun handleSignUpBadUsername(): ResponseEntity<Unit> = ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
+
+    @ExceptionHandler(SignUpBadPasswordException::class)
+    fun handleSignUpBadPassword(): ResponseEntity<Unit> = ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
+
+    @ExceptionHandler(SignUpUsernameConflictException::class)
+    fun handleSignUpConflict(): ResponseEntity<Unit> = ResponseEntity.status(HttpStatus.CONFLICT).build()
+
+    @ExceptionHandler(SignInUserNotFoundException::class)
+    fun handleSignInUserNotFound(): ResponseEntity<Unit> = ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+
+    @ExceptionHandler(SignInInvalidPasswordException::class)
+    fun handleSignInInvalidPassword(): ResponseEntity<Unit> = ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+
+    @ExceptionHandler(AuthenticateException::class)
+    fun handleAuthenticationFailed(): ResponseEntity<Unit> = ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
 }
