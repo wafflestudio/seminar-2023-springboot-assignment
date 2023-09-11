@@ -28,13 +28,13 @@ class UserServiceImpl(
             if (user.password != password) {
                 throw SignInInvalidPasswordException()
             }
-            return User(user.username, user.image)
+            return user.toUser()
         } ?: throw SignInUserNotFoundException()
     }
 
     override fun authenticate(accessToken: String): User {
         userRepository.findByUsername(accessToken.reversed())?.let { user ->
-            return User(user.username, user.image)
+            return user.toUser()
         } ?: throw AuthenticateException()
     }
 }
