@@ -1,6 +1,7 @@
 package com.wafflestudio.seminar.spring2023.user.controller
 
 import com.wafflestudio.seminar.spring2023.user.service.AuthenticateException
+import com.wafflestudio.seminar.spring2023.user.service.Authenticated
 import com.wafflestudio.seminar.spring2023.user.service.SignInInvalidPasswordException
 import com.wafflestudio.seminar.spring2023.user.service.SignInUserNotFoundException
 import com.wafflestudio.seminar.spring2023.user.service.SignUpBadPasswordException
@@ -45,7 +46,9 @@ class UserController(
     }
 
     @GetMapping("/api/v1/users/me")
-    fun me(user: User): UserMeResponse {
+    fun me(
+        @Authenticated user: User,
+    ): UserMeResponse {
         return UserMeResponse(
             username = user.username,
             image = user.image
