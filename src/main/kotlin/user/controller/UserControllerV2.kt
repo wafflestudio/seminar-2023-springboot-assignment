@@ -21,7 +21,7 @@ class UserControllerV2(
     fun signup(
         @RequestBody request: SignUpRequest,
     ) {
-        TODO()
+        userService.signUp(request.username, request.password, request.image)
     }
 
     @PostMapping("/api/v2/signin")

@@ -7,6 +7,7 @@ import com.wafflestudio.seminar.spring2023.user.service.SignUpBadPasswordExcepti
 import com.wafflestudio.seminar.spring2023.user.service.SignUpBadUsernameException
 import com.wafflestudio.seminar.spring2023.user.service.SignUpUsernameConflictException
 import com.wafflestudio.seminar.spring2023.user.service.UserService
+import com.wafflestudio.seminar.spring2023.user.service.UserException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
