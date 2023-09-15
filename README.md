@@ -30,7 +30,7 @@ git clone https://github.com/wafflestudio/seminar-2023-springboot-assignment
 
 *-/src/test/kotlin/user/UserApi.http*
 
-```agsl
+```kotlin
 POST http://localhost:8080/api/v1/signup
 Content-Type: application/json
 
@@ -49,7 +49,7 @@ Content-Type: application/json
 
 *-/src/test/kotlin/user/UserServiceTest.kt*
 
-```agsl
+```kotlin
 @Test
 fun `유저 이름과 비밀번호는 4글자 이상이어야 한다`() {
     assertThrows<SignUpBadUsernameException> {
@@ -60,12 +60,12 @@ fun `유저 이름과 비밀번호는 4글자 이상이어야 한다`() {
 }
 ```
 
-UserService 인터페이스를 상속 받은 **UserServiceMockImpl**을 구현하여 UserServiceTest가 성공하도록 해야합니다.
+UserService 인터페이스를 상속 받은 **UserServiceImpl**을 구현하여 UserServiceTest가 성공하도록 해야합니다.
 
-*-/src/main/kotlin/user/service/UserServiceMockImpl.kt*
+*-/src/main/kotlin/user/service/UserServiceImpl.kt*
 
-```agsl
-class UserServiceMockImpl(
+```kotlin
+class UserServiceImpl(
     private val userRepository: UserRepository,
 ) : UserService {
     override fun signUp(username: String, password: String, image: String): User {
@@ -83,7 +83,7 @@ class UserServiceMockImpl(
 
 *-/src/test/kotlin/user/UserIntegrationTest.kt*
 
-```agsl
+```kotlin
 @Test
 fun `회원가입시에 유저 이름 혹은 비밀번호가 정해진 규칙에 맞지 않는 경우 400 응답을 내려준다`() {
     mvc.perform(
@@ -99,7 +99,7 @@ fun `회원가입시에 유저 이름 혹은 비밀번호가 정해진 규칙에
 
 *-/src/main/kotlin/user/controller/UserController.kt*
 
-```agsl
+```kotlin
 @RestController
 class UserController(
     private val userService: UserService,
@@ -114,3 +114,35 @@ class UserController(
     ...
 }
 ```
+
+### 4. 추가 과제
+ExceptionHandler와 HandlerMethodArgumentResolver를 사용하여 UserController를 조금 더 간결하게 만들 수 있습니다. 
+UserController2의 함수 인자와 리턴 타입이 달라진 것을 주목하여 추가 과제를 수행해주세요.
+
+```kotlin
+@RestController
+class UserController(
+    private val userService: UserService,
+) {
+    @GetMapping("/api/v1/users/me")
+    fun me(
+        @RequestHeader(name = "Authorization", required = false) authorizationHeader: String?,
+    ): ResponseEntity<UserMeResponse> {
+        TODO()
+    }
+}
+```
+
+```kotlin
+@RestController
+class UserControllerV2(
+    private val userService: UserService,
+) {
+    @GetMapping("/api/v2/users/me")
+    fun me(user: User): UserMeResponse {
+        TODO()
+    }
+}
+```
+
+*-/src/test/kotlin/user/UserIntegrationTest2.kt*가 통과하도록 구현하면 됩니다.

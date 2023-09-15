@@ -1,9 +1,12 @@
 package com.wafflestudio.seminar.spring2023.user.service
 
+import com.wafflestudio.seminar.spring2023.user.repository.UserRepository
 import org.springframework.stereotype.Service
 
 @Service
-class UserServiceImpl : UserService {
+class UserServiceImpl(
+    private val userRepository: UserRepository,
+) : UserService {
 
     override fun signUp(username: String, password: String, image: String): User {
         TODO("Not yet implemented")
