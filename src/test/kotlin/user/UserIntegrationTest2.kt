@@ -7,23 +7,22 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
+// TODO: 추가 과제
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class UserIntegrationTest @Autowired constructor(
+class UserIntegrationTest2 @Autowired constructor(
     private val mvc: MockMvc,
     private val mapper: ObjectMapper,
-) {
+)  {
 
     @Test
     fun `회원가입시에 유저 이름 혹은 비밀번호가 정해진 규칙에 맞지 않는 경우 400 응답을 내려준다`() {
         // bad username
         mvc.perform(
-            post("/api/v1/signup")
+            MockMvcRequestBuilders.post("/api/v2/signup")
                 .content(
                     mapper.writeValueAsString(
                         mapOf(
@@ -35,11 +34,11 @@ class UserIntegrationTest @Autowired constructor(
                 )
                 .contentType(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().`is`(400))
+            .andExpect(MockMvcResultMatchers.status().`is`(400))
 
         // bad password
         mvc.perform(
-            post("/api/v1/signup")
+            MockMvcRequestBuilders.post("/api/v2/signup")
                 .content(
                     mapper.writeValueAsString(
                         mapOf(
@@ -51,10 +50,10 @@ class UserIntegrationTest @Autowired constructor(
                 )
                 .contentType(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().`is`(400))
+            .andExpect(MockMvcResultMatchers.status().`is`(400))
 
         mvc.perform(
-            post("/api/v1/signup")
+            MockMvcRequestBuilders.post("/api/v2/signup")
                 .content(
                     mapper.writeValueAsString(
                         mapOf(
@@ -66,13 +65,13 @@ class UserIntegrationTest @Autowired constructor(
                 )
                 .contentType(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().`is`(200))
+            .andExpect(MockMvcResultMatchers.status().`is`(200))
     }
 
     @Test
     fun `회원가입시에 이미 해당 유저 이름이 존재하면 409 응답을 내려준다`() {
         mvc.perform(
-            post("/api/v1/signup")
+            MockMvcRequestBuilders.post("/api/v2/signup")
                 .content(
                     mapper.writeValueAsString(
                         mapOf(
@@ -84,10 +83,10 @@ class UserIntegrationTest @Autowired constructor(
                 )
                 .contentType(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().`is`(200))
+            .andExpect(MockMvcResultMatchers.status().`is`(200))
 
         mvc.perform(
-            post("/api/v1/signup")
+            MockMvcRequestBuilders.post("/api/v2/signup")
                 .content(
                     mapper.writeValueAsString(
                         mapOf(
@@ -99,13 +98,13 @@ class UserIntegrationTest @Autowired constructor(
                 )
                 .contentType(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().`is`(409))
+            .andExpect(MockMvcResultMatchers.status().`is`(409))
     }
 
     @Test
     fun `로그인 정보가 정확하지 않으면 404 응답을 내려준다`() {
         mvc.perform(
-            post("/api/v1/signup")
+            MockMvcRequestBuilders.post("/api/v2/signup")
                 .content(
                     mapper.writeValueAsString(
                         mapOf(
@@ -117,11 +116,11 @@ class UserIntegrationTest @Autowired constructor(
                 )
                 .contentType(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().`is`(200))
+            .andExpect(MockMvcResultMatchers.status().`is`(200))
 
         // not exist username
         mvc.perform(
-            post("/api/v1/signin")
+            MockMvcRequestBuilders.post("/api/v2/signin")
                 .content(
                     mapper.writeValueAsString(
                         mapOf(
@@ -132,11 +131,11 @@ class UserIntegrationTest @Autowired constructor(
                 )
                 .contentType(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().`is`(404))
+            .andExpect(MockMvcResultMatchers.status().`is`(404))
 
         // wrong password
         mvc.perform(
-            post("/api/v1/signin")
+            MockMvcRequestBuilders.post("/api/v2/signin")
                 .content(
                     mapper.writeValueAsString(
                         mapOf(
@@ -147,10 +146,10 @@ class UserIntegrationTest @Autowired constructor(
                 )
                 .contentType(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().`is`(404))
+            .andExpect(MockMvcResultMatchers.status().`is`(404))
 
         mvc.perform(
-            post("/api/v1/signin")
+            MockMvcRequestBuilders.post("/api/v2/signin")
                 .content(
                     mapper.writeValueAsString(
                         mapOf(
@@ -161,13 +160,13 @@ class UserIntegrationTest @Autowired constructor(
                 )
                 .contentType(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().`is`(200))
+            .andExpect(MockMvcResultMatchers.status().`is`(200))
     }
 
     @Test
     fun `잘못된 인증 토큰으로 인증시 401 응답을 내려준다`() {
         mvc.perform(
-            post("/api/v1/signup")
+            MockMvcRequestBuilders.post("/api/v2/signup")
                 .content(
                     mapper.writeValueAsString(
                         mapOf(
@@ -179,20 +178,20 @@ class UserIntegrationTest @Autowired constructor(
                 )
                 .contentType(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().`is`(200))
+            .andExpect(MockMvcResultMatchers.status().`is`(200))
 
         mvc.perform(
-            get("/api/v1/users/me")
+            MockMvcRequestBuilders.get("/api/v2/users/me")
                 .header("Authorization", "Bearer bad")
         )
-            .andExpect(status().`is`(401))
+            .andExpect(MockMvcResultMatchers.status().`is`(401))
 
         mvc.perform(
-            get("/api/v1/users/me")
+            MockMvcRequestBuilders.get("/api/v2/users/me")
                 .header("Authorization", "Bearer ${"test-${javaClass.name}-4".reversed()}")
         )
-            .andExpect(status().`is`(200))
-            .andExpect(jsonPath("$.username").value("test-${javaClass.name}-4"))
-            .andExpect(jsonPath("$.image").value("https://wafflestudio.com/images/icon_intro.svg"))
+            .andExpect(MockMvcResultMatchers.status().`is`(200))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("test-${javaClass.name}-4"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.image").value("https://wafflestudio.com/images/icon_intro.svg"))
     }
 }

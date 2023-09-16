@@ -12,7 +12,6 @@ class UserServiceImpl : UserService {
     lateinit var userRepository: UserRepository
 
     override fun signUp(username: String, password: String, image: String): User {
-        TODO("Not yet implemented")
 
         if (username.length < 4){
             throw SignUpBadUsernameException()
@@ -27,7 +26,7 @@ class UserServiceImpl : UserService {
             throw SignUpUsernameConflictException()
         }
 
-        val userEntity = UserEntity(username = username, password = password, image = image)
+        val userEntity = UserEntity(userRepository.count(), username = username, password = password, image = image)
         val savedUser = userRepository.save(userEntity)
 
 
@@ -38,7 +37,6 @@ class UserServiceImpl : UserService {
     }
 
     override fun signIn(username: String, password: String): User {
-        TODO("Not yet implemented")
 
         val userEntity = userRepository.findByUsername(username)
 
@@ -55,7 +53,6 @@ class UserServiceImpl : UserService {
     }
 
     override fun authenticate(accessToken: String): User {
-        TODO("Not yet implemented")
 
         val userEntity = userRepository.findByUsername(accessToken.reversed()) // accessToken을 역으로 변환하여 사용자 검색
 
@@ -66,5 +63,6 @@ class UserServiceImpl : UserService {
         val user = User(userEntity.username, userEntity.image)
 
         return user
+
     }
 }

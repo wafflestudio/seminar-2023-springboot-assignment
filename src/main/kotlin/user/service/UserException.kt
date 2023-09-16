@@ -1,13 +1,15 @@
 package com.wafflestudio.seminar.spring2023.user.service
 
-class SignUpUsernameConflictException : RuntimeException()
+sealed class UserException : RuntimeException()
 
-class SignUpBadUsernameException : RuntimeException()
+class SignUpUsernameConflictException : UserException()
 
-class SignUpBadPasswordException : RuntimeException()
+class SignUpBadUsernameException : UserException()
 
-class SignInUserNotFoundException : RuntimeException()
+class SignUpBadPasswordException : UserException()
 
-class SignInInvalidPasswordException : RuntimeException()
+class SignInUserNotFoundException : UserException()
 
-class AuthenticateException : RuntimeException()
+class SignInInvalidPasswordException : UserException()
+
+class AuthenticateException : UserException()
