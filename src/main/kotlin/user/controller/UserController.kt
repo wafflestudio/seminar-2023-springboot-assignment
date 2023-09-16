@@ -1,6 +1,6 @@
 package com.wafflestudio.seminar.spring2023.user.controller
 
-import com.wafflestudio.seminar.spring2023.user.service.UserService
+import com.wafflestudio.seminar.spring2023.user.service.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -17,21 +17,54 @@ class UserController(
     fun signup(
         @RequestBody request: SignUpRequest,
     ): ResponseEntity<Unit> {
-        TODO()
+        return try {
+            userService.signUp(
+                username = request.username,
+                password = request.password,
+                image = request.image
+            )
+            ResponseEntity.status(200).build()
+        } catch (e: UserException) {
+            when(e) {
+                is SignUpBadUsernameException,
+                is SignUpBadPasswordException
+                    -> ResponseEntity.status(400).build()
+                is SignUpUsernameConflictException
+                    -> ResponseEntity.status(409).build()
+                else -> ResponseEntity.status(500).build()
+            }
+        }
     }
 
     @PostMapping("/api/v1/signin")
     fun signIn(
         @RequestBody request: SignInRequest,
     ): ResponseEntity<SignInResponse> {
-        TODO()
+        return try {
+            ResponseEntity.ok(SignInResponse(
+                userService.signIn(
+                    username = request.username,
+                    password = request.password
+                ).getAccessToken()
+            ))
+        } catch(e: UserException) {
+            ResponseEntity.status(404).build()
+        }
     }
 
     @GetMapping("/api/v1/users/me")
     fun me(
         @RequestHeader(name = "Authorization", required = false) authorizationHeader: String?,
     ): ResponseEntity<UserMeResponse> {
-        TODO()
+        return try {
+            val user = userService.authenticate(authorizationHeader!!.split(' ')[1])
+            ResponseEntity.ok(UserMeResponse(
+                username = user.username,
+                image = user.image
+            ))
+        } catch(e: Exception) {
+            ResponseEntity.status(401).build()
+        }
     }
 }
 
