@@ -57,7 +57,7 @@ class UserController(
         @RequestHeader(name = "Authorization", required = false) authorizationHeader: String?,
     ): ResponseEntity<UserMeResponse> {
         return try {
-            val user = userService.authenticate(authorizationHeader!!.split(' ')[1])
+            val user = userService.authenticate(authorizationHeader!!.removePrefix("Bearer "))
             ResponseEntity.ok(UserMeResponse(
                 username = user.username,
                 image = user.image
