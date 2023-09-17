@@ -16,7 +16,8 @@ class UserArgumentResolver(
 ) : HandlerMethodArgumentResolver {
 
     override fun supportsParameter(parameter: MethodParameter): Boolean {
-        TODO()
+        //TODO()
+        return parameter.parameterType == User::class.java
     }
 
     override fun resolveArgument(
@@ -25,7 +26,9 @@ class UserArgumentResolver(
         webRequest: NativeWebRequest,
         binderFactory: WebDataBinderFactory?,
     ): User {
-        TODO()
+        //TODO()
+        val authorization = webRequest.getHeader("Authorization") as String
+        return userService.authenticate(authorization.substring(7))
     }
 }
 
