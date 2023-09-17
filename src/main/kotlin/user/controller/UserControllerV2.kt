@@ -1,8 +1,7 @@
 package com.wafflestudio.seminar.spring2023.user.controller
 
-import com.wafflestudio.seminar.spring2023.user.service.User
-import com.wafflestudio.seminar.spring2023.user.service.UserException
-import com.wafflestudio.seminar.spring2023.user.service.UserService
+import com.wafflestudio.seminar.spring2023.user.service.*
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,23 +20,49 @@ class UserControllerV2(
     fun signup(
         @RequestBody request: SignUpRequest,
     ) {
-        TODO()
+        userService.signUp(
+                username = request.username,
+                password = request.password,
+                image = request.image
+        )
     }
 
     @PostMapping("/api/v2/signin")
     fun signIn(
         @RequestBody request: SignInRequest,
     ): SignInResponse {
-        TODO()
+        val user = userService.signIn(
+                username = request.username,
+                password = request.password
+        )
+        return SignInResponse(accessToken = user.getAccessToken())
     }
 
     @GetMapping("/api/v2/users/me")
     fun me(user: User): UserMeResponse {
-        TODO()
+        return UserMeResponse(
+                username = user.username,
+                image = user.image
+        )
     }
 
-    @ExceptionHandler
-    fun handleException(e: UserException): ResponseEntity<Unit> {
-        TODO()
+    @ExceptionHandler(SignUpUsernameConflictException::class)
+    fun handleSignUpUsernameConflict(): ResponseEntity<Unit> {
+        return ResponseEntity.status(HttpStatus.CONFLICT).build()
+    }
+
+    @ExceptionHandler(SignUpBadUsernameException::class, SignUpBadPasswordException::class)
+    fun handleSignUpBadRequest(): ResponseEntity<Unit> {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
+    }
+
+    @ExceptionHandler(SignInUserNotFoundException::class, SignInInvalidPasswordException::class)
+    fun handleSignInNotFound(): ResponseEntity<Unit> {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+    }
+
+    @ExceptionHandler(AuthenticateException::class)
+    fun handleAuthenticateUnauthorized(): ResponseEntity<Unit> {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
     }
 }
