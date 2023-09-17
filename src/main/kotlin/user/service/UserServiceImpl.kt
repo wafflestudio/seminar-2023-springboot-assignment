@@ -41,11 +41,11 @@ class UserServiceImpl(
     override fun authenticate(accessToken: String): User {
         //조건에 따른 예외처리
         //유저 식별을 위한 인증 토큰이 정확한 지 확인
-        //데이터베이스에 있는 유저 데이터를 다 꺼내서 입력된 인증 토큰과 데이터들의 인증 토큰중 맞는게 하나라도 있는지 확인
-        //대조 과정에서 user.getAccessToken()함수를 써야 인증 토큰을 꺼낼 수 있으므로, userRepository의 데이터 리스트를 user들의 리스트로 바꿔줄 필요가 있음(.map()사용)
-        return userRepository.findAll() //다 꺼내기
-                .map{User(it.username,it.image)} //user 형의 리스트로 다 바꿔줌
-                .find{ it.getAccessToken() == accessToken} //인증토큰 확인
-                ?: throw AuthenticateException()
+        //accesstoken을 뒤집어서 검색한다는 아이디어에 맞춘 해법
+        val rversedUsername = accessToken.reversed()
+        val thisUser : UserEntity = userRepository.findByUsername(rversedUsername) ?: throw AuthenticateException()
+
+        //반환값 처리
+        return User(thisUser.username,thisUser.image)
     }
 }
