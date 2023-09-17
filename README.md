@@ -7,18 +7,20 @@
 1. [MySQL 쿼리 기초 숙지](https://cocoon1787.tistory.com/762)
 
 2. ER 다이어그램 숙지
-![er.jpg](..%2F..%2FDownloads%2Fer.jpg)
+![er](https://github.com/wafflestudio/seminar-2023-springboot-assignment/assets/76547957/974e090c-166c-407a-b82f-ba95e12e1030)
 
 3. H2 데이터베이스 콘솔 접속 (http://localhost:8080/h2-console)
 - Driver.class: org.h2.Driver
 - JDBC URL: jdbc:h2:mem:testdb
 - User Name: sa
 - Password: 1234
-![스크린샷 2023-09-17 오후 10.29.02.png](..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fjp%2F1fb2qd5n4x3ffjlzn6pcw2t40000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_CPyqNx%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202023-09-17%20%EC%98%A4%ED%9B%84%2010.29.02.png)
+<img width="539" alt="스크린샷 2023-09-17 오후 11 13 55" src="https://github.com/wafflestudio/seminar-2023-springboot-assignment/assets/76547957/02cfe627-1147-4c77-aeba-9c9ef4b3ac54">
+
 
 4. 첫 쿼리 실행
 - `show tables;`
-![스크린샷 2023-09-17 오후 10.30.24.png](..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fjp%2F1fb2qd5n4x3ffjlzn6pcw2t40000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_ybjas1%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202023-09-17%20%EC%98%A4%ED%9B%84%2010.30.24.png)
+<img width="363" alt="스크린샷 2023-09-17 오후 11 14 43" src="https://github.com/wafflestudio/seminar-2023-springboot-assignment/assets/76547957/d5933f6f-7731-46fa-917b-a488d6ca8a6d">
+
 
 5. 데이터 쿼리 연습
 - (ex) 그룹 아이디가 1인 플레이리스트의 제목들 `select title from playlists where group_id = 1;`
