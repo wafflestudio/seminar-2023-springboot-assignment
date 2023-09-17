@@ -32,6 +32,9 @@
 
 ## week1 과제
 
+![a](https://github.com/wafflestudio/seminar-2023-springboot-assignment/assets/76547957/f3985c4a-3d75-4fec-88a6-9e438cee8071)
+
+
 ### 1. 구현해야하는 API
 
 총 6개의 API를 구현해야 합니다. 아래에서 확인할 수 있습니다.
