@@ -58,7 +58,7 @@ class UserController(
         if (authorizationHeader == null) return ResponseEntity.status(401).build()
 
         return try {
-            val user = userService.authenticate(authorizationHeader.replace("Bearer ", ""))
+            val user = userService.authenticate(authorizationHeader.removePrefix("Bearer "))
             ResponseEntity.status(200).body(UserMeResponse(user.username, user.image))
         } catch (ex: Exception) {
             when(ex) {
