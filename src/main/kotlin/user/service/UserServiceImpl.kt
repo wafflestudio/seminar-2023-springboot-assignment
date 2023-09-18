@@ -13,29 +13,45 @@ class UserServiceImpl(
         if (username.length < 4) {
             throw SignUpBadUsernameException()
         }
+
         if (password.length < 4) {
             throw SignUpBadPasswordException()
         }
+
         if (userRepository.findByUsername(username) != null) {
             throw SignUpUsernameConflictException()
         }
-        userRepository.save(UserEntity(0L, username, password, image))
-        return User(username, image)
+
+        val entity = userRepository.save(
+            UserEntity(
+                username = username,
+                password = password,
+                image = image
+            )
+        )
+
+        return User(entity)
     }
 
     override fun signIn(username: String, password: String): User {
-        val userEntity = userRepository.findByUsername(username)
-                ?:throw SignInUserNotFoundException()
-        if (userEntity.password != password) {
+        val entity = userRepository.findByUsername(username) ?: throw SignInUserNotFoundException()
+
+        if (entity.password != password) {
             throw SignInInvalidPasswordException()
         }
-        return User(userEntity.username, userEntity.image)
+
+        return User(entity)
     }
 
     override fun authenticate(accessToken: String): User {
-        val decodedUsername = accessToken.reversed()
-        val currentUser: UserEntity = userRepository.findByUsername(decodedUsername)
-                ?: throw AuthenticateException()
-        return User(currentUser.username, currentUser.image)
+        val entity = userRepository.findByUsername(accessToken.reversed()) ?: throw AuthenticateException()
+
+        return User(entity)
     }
 }
+
+fun User(entity: UserEntity) = User(
+    id = entity.id,
+    username = entity.username,
+    image = entity.image,
+)
