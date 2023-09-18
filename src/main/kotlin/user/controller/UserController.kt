@@ -62,7 +62,7 @@ class UserController(
         @RequestHeader(name = "Authorization", required = false) authorizationHeader: String?,
     ): ResponseEntity<UserMeResponse> {
         //일단 인증토큰이 있는지부터 점검(Elvis 연산자 사용)
-        val token = authorizationHeader ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+        val token = authorizationHeader?.removePrefix("Bearer ") ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build() //왜인지는 잘 모르겠으나 authorizationHeader의 앞에 붙어서 들어오는 Bearer를 떼야하는거 같다
 
         //try-catch 구문으로 그 인증토큰이 올바른지 예외 처리
         return try{ //올바른 경우에는 userService 인터페이스에서 해당 토큰을 가진 유저를 불러와서, 응답으로 그 유저의 정보를 담은 UserMeResponse를 내려주어야 함
