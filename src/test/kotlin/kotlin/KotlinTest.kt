@@ -10,7 +10,7 @@ class KotlinTest {
 
     @Test
     fun `9월 3일 이후에 시작하는 SeminarDetail 목록을, id 기준으로 내림차순 정렬`() {
-        val answer: List<SeminarDetail> = seminarDetails
+        val answer: List<SeminarDetail> = seminarDetails  //list 타입
             .filter { it.startAt > LocalDate.parse("2023-09-03") }
             .sortedByDescending { it.id }
 
@@ -20,7 +20,10 @@ class KotlinTest {
     @Test
     fun `모바일 타입의 SeminarBrief 목록을, 시작날짜를 기준으로 오름차순 정렬`() {
         // FIXME: seminaDetails에 filter, sortedBy, map을 사용하여 구현 (KotlinCheetSheet.kt 참고)
-        val answer: List<SeminarBrief> = listOf()
+        val answer: List<SeminarBrief> = seminarDetails
+            .filter{ it.type == Type.MOBILE}
+            .sortedBy { it.startAt }
+            .map { SeminarBrief(it.name,it.startAt) }
 
         assertThat(answer).isEqualTo(answers2)
     }
@@ -31,7 +34,14 @@ class KotlinTest {
         var mobileCnt = 0
         var webCnt = 0
         var serverCnt = 0
-
+        seminarDetails
+            .forEach { seminarDetail ->
+                when (seminarDetail.type) {
+                    Type.MOBILE -> mobileCnt++
+                    Type.WEB -> webCnt++
+                    Type.SERVER -> serverCnt++
+                }
+            }
         assertThat(mobileCnt).isEqualTo(2)
         assertThat(webCnt).isEqualTo(1)
         assertThat(serverCnt).isEqualTo(2)

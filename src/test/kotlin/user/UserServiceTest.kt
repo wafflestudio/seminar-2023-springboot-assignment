@@ -1,12 +1,6 @@
 package com.wafflestudio.seminar.spring2023.user
 
-import com.wafflestudio.seminar.spring2023.user.service.AuthenticateException
-import com.wafflestudio.seminar.spring2023.user.service.SignInInvalidPasswordException
-import com.wafflestudio.seminar.spring2023.user.service.SignInUserNotFoundException
-import com.wafflestudio.seminar.spring2023.user.service.SignUpBadPasswordException
-import com.wafflestudio.seminar.spring2023.user.service.SignUpBadUsernameException
-import com.wafflestudio.seminar.spring2023.user.service.SignUpUsernameConflictException
-import com.wafflestudio.seminar.spring2023.user.service.UserService
+import com.wafflestudio.seminar.spring2023.user.service.*
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -16,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
 class UserServiceTest @Autowired constructor(
-    private val userService: UserService,
+    private val userService: UserService
 ) {
 
     @Test
