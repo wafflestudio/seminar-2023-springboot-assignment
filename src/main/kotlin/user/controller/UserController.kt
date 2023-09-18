@@ -52,7 +52,9 @@ class UserController(
             if (authorizationHeader == null) {
                 ResponseEntity(HttpStatus.UNAUTHORIZED)
             } else {
-                val user = userService.authenticate(authorizationHeader.split(" ")[1])
+                val token = authorizationHeader.split(" ").getOrNull(1)
+                        ?: return ResponseEntity(HttpStatus.UNAUTHORIZED)
+                val user = userService.authenticate(token)
                 ResponseEntity(UserMeResponse(user.username, user.image), HttpStatus.OK)
             }
         } catch (e: AuthenticateException) {
