@@ -26,23 +26,25 @@ class UserServiceImpl(
 
     override fun signIn(username: String, password: String): User {
         //TODO("Not yet implemented")
-        val userList = userRepository.findAll().filter { it.username == username }
-        if (userList.isEmpty()) {
-            throw SignInUserNotFoundException()
-        }
-        if (userList[0].password != password) {
+        val entity = userRepository.findByUsername(username) ?: throw SignInUserNotFoundException()
+
+        if (entity.password != password) {
             throw SignInInvalidPasswordException()
         }
 
-        return User(userList[0].username, userList[0].image)
+        return User(entity)
     }
 
     override fun authenticate(accessToken: String): User {
         //TODO("Not yet implemented")
-        val userList = userRepository.findAll().filter { User(it.username, it.password).getAccessToken() == accessToken }
-        if (userList.isEmpty()) {
-            throw AuthenticateException()
-        }
-        return User(userList[0].username, userList[0].image)
+        val entity = userRepository.findByUsername(accessToken.reversed()) ?: throw AuthenticateException()
+
+        return User(entity)
     }
 }
+
+fun User(entity: UserEntity) = User(
+    id = entity.id,
+    username = entity.username,
+    image = entity.image,
+)

@@ -3,11 +3,21 @@ package com.wafflestudio.seminar.spring2023.user.controller
 import com.wafflestudio.seminar.spring2023.user.service.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import com.wafflestudio.seminar.spring2023.user.service.AuthenticateException
+import com.wafflestudio.seminar.spring2023.user.service.Authenticated
+import com.wafflestudio.seminar.spring2023.user.service.SignInInvalidPasswordException
+import com.wafflestudio.seminar.spring2023.user.service.SignInUserNotFoundException
+import com.wafflestudio.seminar.spring2023.user.service.SignUpBadPasswordException
+import com.wafflestudio.seminar.spring2023.user.service.SignUpBadUsernameException
+import com.wafflestudio.seminar.spring2023.user.service.SignUpUsernameConflictException
+import com.wafflestudio.seminar.spring2023.user.service.User
+import com.wafflestudio.seminar.spring2023.user.service.UserException
+import com.wafflestudio.seminar.spring2023.user.service.UserService
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -18,48 +28,47 @@ class UserController(
     @PostMapping("/api/v1/signup")
     fun signup(
         @RequestBody request: SignUpRequest,
-    ): ResponseEntity<Unit> {
+    ) {
         //TODO()
-        return try {
-            userService.signUp(request.username, request.password, request.image)
-            ResponseEntity.ok(Unit)
-        } catch (e: SignUpBadPasswordException) {
-            ResponseEntity.status(400).build()
-        } catch (e: SignUpBadUsernameException) {
-            ResponseEntity.status(400).build()
-        } catch (e: SignUpUsernameConflictException) {
-            ResponseEntity.status(409).build()
-        }
+        userService.signUp(
+            username = request.username,
+            password = request.password,
+            image = request.image
+        )
     }
 
     @PostMapping("/api/v1/signin")
     fun signIn(
         @RequestBody request: SignInRequest,
-    ): ResponseEntity<SignInResponse> {
-        //TODO()
-        return try {
-            ResponseEntity.ok(SignInResponse(userService.signIn(request.username, request.password).getAccessToken()))
-        } catch (e: SignInUserNotFoundException) {
-            ResponseEntity.status(404).build()
-        } catch (e: SignInInvalidPasswordException) {
-            ResponseEntity.status(404).build()
-        }
+    ): SignInResponse {
+        val user = userService.signIn(
+            username = request.username,
+            password = request.password
+        )
+
+        return SignInResponse(user.getAccessToken())
     }
 
     @GetMapping("/api/v1/users/me")
     fun me(
-        @RequestHeader(name = "Authorization", required = false) authorizationHeader: String?,
-    ): ResponseEntity<UserMeResponse> {
-        //TODO()
-        try {
-            if (authorizationHeader == null) {
-                return ResponseEntity.status(401).build()
-            }
-            val user = userService.authenticate(authorizationHeader.substring(7))
-            return ResponseEntity.ok(UserMeResponse(user.username, user.image))
-        } catch (e: AuthenticateException) {
-            return ResponseEntity.status(401).build()
+        @Authenticated user: User,
+    ): UserMeResponse {
+        return UserMeResponse(
+            username = user.username,
+            image = user.image
+        )
+    }
+
+    @ExceptionHandler
+    fun handleException(e: UserException): ResponseEntity<Unit> {
+        val status = when (e) {
+            is SignUpBadUsernameException, is SignUpBadPasswordException -> 400
+            is SignUpUsernameConflictException -> 409
+            is SignInUserNotFoundException, is SignInInvalidPasswordException -> 404
+            is AuthenticateException -> 401
         }
+
+        return ResponseEntity.status(status).build()
     }
 }
 
