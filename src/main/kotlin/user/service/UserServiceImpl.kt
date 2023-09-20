@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class UserServiceImpl : UserService {
+class UserServiceImpl(
+    private val userRepository: UserRepository,
+) : UserService {
 
-    @Autowired
-    lateinit var userRepository: UserRepository
 
     override fun signUp(username: String, password: String, image: String): User {
 
@@ -30,7 +30,7 @@ class UserServiceImpl : UserService {
         val savedUser = userRepository.save(userEntity)
 
 
-        val user = User(savedUser.username, savedUser.image)
+        val user = User(savedUser.id,savedUser.username, savedUser.image)
 
         return user
 
@@ -38,31 +38,30 @@ class UserServiceImpl : UserService {
 
     override fun signIn(username: String, password: String): User {
 
-        val userEntity = userRepository.findByUsername(username)
+        val entity = userRepository.findByUsername(username) ?: throw SignInUserNotFoundException()
 
-        if (userEntity == null){
-            throw SignInUserNotFoundException()
-        }
-        if(userEntity.password != password) {
+        if (entity.password != password) {
             throw SignInInvalidPasswordException()
         }
 
-        val user = User(userEntity.username, userEntity.image)
-
-        return user
+        return User(entity)
     }
 
     override fun authenticate(accessToken: String): User {
 
-        val userEntity = userRepository.findByUsername(accessToken.reversed()) // accessToken을 역으로 변환하여 사용자 검색
+        val entity = userRepository.findByUsername(accessToken.reversed()) ?: throw AuthenticateException()
 
-        if (userEntity == null) {
-            throw AuthenticateException()
-        }
-
-        val user = User(userEntity.username, userEntity.image)
-
-        return user
+        return User(entity)
 
     }
+
+
+
+
 }
+
+fun User(entity: UserEntity) = User(
+    id = entity.id,
+    username = entity.username,
+    image = entity.image,
+)
