@@ -1,6 +1,7 @@
 package com.wafflestudio.seminar.spring2023.user.service
 
 data class User(
+    val id: Long,
     val username: String,
     val image: String,
 ) {
@@ -8,3 +9,7 @@ data class User(
         return username.reversed()
     }
 }
+
+@Target(AnnotationTarget.VALUE_PARAMETER)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class Authenticated

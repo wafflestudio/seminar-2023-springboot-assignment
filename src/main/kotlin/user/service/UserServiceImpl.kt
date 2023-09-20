@@ -2,7 +2,6 @@ package com.wafflestudio.seminar.spring2023.user.service
 
 import com.wafflestudio.seminar.spring2023.user.repository.UserEntity
 import com.wafflestudio.seminar.spring2023.user.repository.UserRepository
-import org.springframework.jmx.access.InvalidInvocationException
 import org.springframework.stereotype.Service
 
 @Service
@@ -11,10 +10,6 @@ class UserServiceImpl(
 ) : UserService {
 
     override fun signUp(username: String, password: String, image: String): User {
-        if (userRepository.existsByUsername(username)) {
-            throw SignUpUsernameConflictException()
-        }
-
         if (username.length < 4) {
             throw SignUpBadUsernameException()
         }
@@ -23,23 +18,40 @@ class UserServiceImpl(
             throw SignUpBadPasswordException()
         }
 
-        val user = UserEntity(username=username, password=password, image=image)
-        val saveUserEntity = userRepository.save(user)
-        return User(username=saveUserEntity.username, image=saveUserEntity.image)
+        if (userRepository.findByUsername(username) != null) {
+            throw SignUpUsernameConflictException()
+        }
+
+        val entity = userRepository.save(
+            UserEntity(
+                username = username,
+                password = password,
+                image = image
+            )
+        )
+
+        return User(entity)
     }
 
     override fun signIn(username: String, password: String): User {
-        val user = userRepository.findByUsername(username) ?: throw SignInUserNotFoundException()
+        val entity = userRepository.findByUsername(username) ?: throw SignInUserNotFoundException()
 
-        if (password != user.password) {
+        if (entity.password != password) {
             throw SignInInvalidPasswordException()
         }
 
-        return User(username=user.username, image=user.image)
+        return User(entity)
     }
 
     override fun authenticate(accessToken: String): User {
-        val user = userRepository.findByUsername(accessToken.reversed()) ?: throw AuthenticateException()
-        return User(username=user.username, image=user.image)
+        val entity = userRepository.findByUsername(accessToken.reversed()) ?: throw AuthenticateException()
+
+        return User(entity)
     }
 }
+
+fun User(entity: UserEntity) = User(
+    id = entity.id,
+    username = entity.username,
+    image = entity.image,
+)
