@@ -69,8 +69,10 @@ class PlaylistServiceTest @Autowired constructor(
         val (playlist, queryCount) = queryCounter.count { playlistService.get(1L) }
 
         assertThat(playlist).isNotNull
+        println(playlist)
 
         playlist!!.run {
+
             assertThat(id).isEqualTo(1L)
             assertThat(title).isEqualTo("Today's Top Hits")
             assertThat(songs.map { it.id })
