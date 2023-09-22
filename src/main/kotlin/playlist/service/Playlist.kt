@@ -17,5 +17,5 @@ fun Playlist(playlistEntity: PlaylistEntity) = Playlist(
     title = playlistEntity.title,
     subtitle = playlistEntity.subtitle,
     image = playlistEntity.image,
-    songs = playlistEntity.songList.map { songEntity -> Song(songEntity) }
+    songs = playlistEntity.songList.map { songEntity -> Song(songEntity) }.sortedBy { it.id }
 )

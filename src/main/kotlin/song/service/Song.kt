@@ -14,9 +14,9 @@ data class Song(
 fun Song(songEntity: SongEntity) = Song (
     id = songEntity.id,
     title = songEntity.title,
-    artists = songEntity.songArtistRelationshipList.map {
-        relationshipEntity -> Artist(relationshipEntity.artist)
-    },
+    artists = songEntity.songArtistRelationshipList
+        .map { relationshipEntity -> Artist(relationshipEntity.artist) }
+        .sortedBy { it.id },
     album = songEntity.album.title,
     image = songEntity.album.image,
     duration = songEntity.duration

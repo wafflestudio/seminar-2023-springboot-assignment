@@ -18,5 +18,8 @@ class PlaylistEntity (
     val playlistGroup: PlaylistGroupEntity,
 
     @ManyToMany(mappedBy = "playlistList", fetch = FetchType.LAZY)
-    val songList: List<SongEntity>
+    val songList: Set<SongEntity>,
+
+    @OneToMany(mappedBy = "playlist", fetch = FetchType.LAZY)
+    val playlistLikes: Set<PlaylistLikesEntity>
 )

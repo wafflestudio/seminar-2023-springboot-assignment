@@ -12,5 +12,5 @@ class ArtistEntity(
     val albums: List<AlbumEntity>,
 
     @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY)
-    val songArtistRelationshipList: List<SongArtistRelationshipEntity>
+    val songArtistRelationshipList: Set<SongArtistRelationshipEntity>
 )
