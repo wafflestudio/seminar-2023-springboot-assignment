@@ -4,4 +4,5 @@ data class PlaylistGroup(
     val id: Long,
     val title: String,
     val playlists: List<PlaylistBrief>,
+
 )
