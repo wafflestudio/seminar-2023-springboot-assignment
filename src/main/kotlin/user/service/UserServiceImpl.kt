@@ -26,7 +26,8 @@ class UserServiceImpl(
             UserEntity(
                 username = username,
                 password = password,
-                image = image
+                image = image,
+                playlist_likes = emptyList(),
             )
         )
 

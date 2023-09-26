@@ -12,6 +12,7 @@ class PlaylistGroupEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
     val title: String,
-    @OneToMany(mappedBy = "playlistGroup")
-    val groups: List<PlaylistEntity>,
+    val open: Boolean,
+    @OneToMany(mappedBy = "group")
+    val playlists: List<PlaylistEntity>,
 )

@@ -12,9 +12,9 @@ class UserEntity(
         @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
-        val username: String,
-        val password: String,
-        val image: String,
-        @OneToMany(mappedBy = "user")
+    val username: String,
+    val password: String,
+    val image: String,
+    @OneToMany(mappedBy = "user")
     val playlist_likes: List<PlaylistLikeEntity>,
 )
