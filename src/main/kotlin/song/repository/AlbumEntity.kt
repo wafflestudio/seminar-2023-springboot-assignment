@@ -16,7 +16,7 @@ class AlbumEntity(
     val id: Long = 0L,
     val title: String,
     val image: String,
-    @ManyToOne // default FetchType.EAGER
+    @ManyToOne
     @JoinColumn(name = "artist_id")
     val artist: ArtistEntity,
     @OneToMany(mappedBy = "album")
