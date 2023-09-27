@@ -14,4 +14,6 @@ class ArtistEntity(
     val name: String,
     @OneToMany(mappedBy = "artist")
     val albums: List<AlbumEntity>,
+    @OneToMany(mappedBy = "artistOfSong")
+    val song_artists: List<SongArtistEntity>,
 )
