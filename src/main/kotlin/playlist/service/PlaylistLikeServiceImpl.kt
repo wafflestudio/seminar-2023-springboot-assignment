@@ -30,6 +30,8 @@ class PlaylistLikeServiceImpl(
     }
 
     override fun delete(playlistId: Long, userId: Long) {
+        playlistRepository.findById(playlistId).orElseThrow { PlaylistNotFoundException() }
+
         if (!exists(playlistId, userId)) {
             throw PlaylistNeverLikedException()
         }
