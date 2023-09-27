@@ -5,7 +5,6 @@ import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistRepositor
 import com.wafflestudio.seminar.spring2023.song.repository.SongRepository
 import com.wafflestudio.seminar.spring2023.song.service.Artist
 import com.wafflestudio.seminar.spring2023.song.service.Song
-import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Service
 
 //@Primary
@@ -18,8 +17,8 @@ class PlaylistServiceImpl(
 
     override fun getGroups(): List<PlaylistGroup> {
         val groups = playlistGroupRepository.findAllWithJoinFetch()
-                .filter { it.open }
-                .filter { it.playlists.isNotEmpty() }
+            .filter { it.open }
+            .filter { it.playlists.isNotEmpty() }
 
         return groups.map { groupEntity ->
             PlaylistGroup(
@@ -36,9 +35,10 @@ class PlaylistServiceImpl(
             )
         }
     }
+
     override fun get(id: Long): Playlist {
         val playlistEntity = playlistRepository.findPlaylistWithSongsById(id)
-                .orElseThrow { throw PlaylistNotFoundException() }
+            .orElseThrow { throw PlaylistNotFoundException() }
 
         val songIds = playlistEntity.playlist_songs.map { it.song.id }
 
@@ -65,11 +65,11 @@ class PlaylistServiceImpl(
 
         // 최종적으로 Playlist DTO를 반환한다.
         return Playlist(
-                id = playlistEntity.id,
-                title = playlistEntity.title,
-                subtitle = playlistEntity.subtitle,
-                image = playlistEntity.image,
-                songs = songs,
+            id = playlistEntity.id,
+            title = playlistEntity.title,
+            subtitle = playlistEntity.subtitle,
+            image = playlistEntity.image,
+            songs = songs,
         )
 
     }

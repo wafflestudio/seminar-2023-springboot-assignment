@@ -33,6 +33,7 @@ class PlaylistController(
     ): PlaylistResponse {
         val playlist = playlistService.get(id)
         val isLiked = user?.let { playlistLikeService.exists(id, it.id) } ?: false
+
         return PlaylistResponse(playlist, isLiked)
     }
 
@@ -58,6 +59,7 @@ class PlaylistController(
             is PlaylistNotFoundException -> 404
             is PlaylistAlreadyLikedException, is PlaylistNeverLikedException -> 409
         }
+        
         return ResponseEntity.status(status).build()
     }
 }
