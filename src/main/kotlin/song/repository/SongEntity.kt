@@ -7,10 +7,15 @@ class SongEntity(
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     val id: Long = 0L,
-    val title: String,
-    val duration: Int,
+    val title: String = "",
+    val duration: Int = 0,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id")
-    val album: AlbumEntity
+    val album: AlbumEntity = AlbumEntity(),
+
+    @OneToMany(mappedBy = "song")
+    val songArtists:List<SongArtistEntity> = ArrayList()
+
+
 )

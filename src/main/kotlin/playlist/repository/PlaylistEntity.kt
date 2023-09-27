@@ -7,12 +7,15 @@ class PlaylistEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
-    val title: String,
-    val subtitle: String,
-    val image: String,
+    val title: String = "",
+    val subtitle: String = "",
+    val image: String = "",
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
-    val playlistGroup: PlaylistGroupEntity
+    val playlistGroup: PlaylistGroupEntity = PlaylistGroupEntity(),
+
+    @OneToMany(mappedBy = "playlist")
+    val playlistSongs:List<PlaylistSongEntity> = ArrayList()
 
 )

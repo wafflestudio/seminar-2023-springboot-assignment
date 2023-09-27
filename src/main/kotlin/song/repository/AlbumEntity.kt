@@ -13,9 +13,9 @@ class AlbumEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
-    val title: String,
-    val image: String,
-    @ManyToOne // default FetchType.EAGER
+    val title: String = "",
+    val image: String = "",
+    @ManyToOne(fetch = FetchType.LAZY) // default FetchType.EAGER
     @JoinColumn(name = "artist_id")
-    val artist: ArtistEntity,
+    val artist: ArtistEntity = ArtistEntity(),
 )

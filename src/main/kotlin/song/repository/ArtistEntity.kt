@@ -11,7 +11,10 @@ class ArtistEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
-    val name: String,
+    val name: String = "",
     @OneToMany(mappedBy = "artist")
-    val albums: List<AlbumEntity>,
+    val albums: List<AlbumEntity> = ArrayList(),
+
+    @OneToMany(mappedBy = "artist")
+    val songArtists: List<SongArtistEntity> = ArrayList()
 )
