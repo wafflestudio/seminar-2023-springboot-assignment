@@ -23,7 +23,7 @@ class PlaylistLikeServiceImpl(
         }
 
         val playlist = playlistRepository.findById(playlistId).orElseThrow { PlaylistNotFoundException() }
-        val user = userRepository.findById(userId).orElseThrow { PlaylistNotFoundException() }
+        val user = userRepository.findById(userId).get()
 
         val playlistLike = PlaylistLikeEntity(playlist = playlist, user = user)
         playlistLikeRepository.save(playlistLike)
