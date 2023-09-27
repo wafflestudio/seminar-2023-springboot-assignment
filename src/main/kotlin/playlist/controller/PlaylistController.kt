@@ -41,7 +41,7 @@ class PlaylistController(
         @PathVariable id: Long,
         @Authenticated user: User,
     ) {
-        TODO()
+        playlistLikeService.create(id, user.id)
     }
 
     @DeleteMapping("/api/v1/playlists/{id}/likes")
@@ -49,7 +49,7 @@ class PlaylistController(
         @PathVariable id: Long,
         @Authenticated user: User,
     ) {
-        TODO()
+        playlistLikeService.delete(id, user.id)
     }
 
     @ExceptionHandler
