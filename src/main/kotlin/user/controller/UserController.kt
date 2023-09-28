@@ -1,6 +1,7 @@
 package com.wafflestudio.seminar.spring2023.user.controller
 
 import com.wafflestudio.seminar.spring2023.user.service.*
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -20,11 +21,11 @@ class UserController(
     ): ResponseEntity<Unit> {
         return try {
             userService.signUp(request.username, request.password, request.image)
-            ResponseEntity.status(200).build()
+            ResponseEntity.ok().build()
         } catch (ex: Exception) {
             when(ex) {
                 is SignUpBadUsernameException, is SignUpBadPasswordException -> {
-                    ResponseEntity.status(400).build()
+                    ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
                 }
                 is SignUpUsernameConflictException -> {
                     ResponseEntity.status(409).build()
@@ -40,7 +41,7 @@ class UserController(
     ): ResponseEntity<SignInResponse> {
         return try {
             val user = userService.signIn(request.username, request.password)
-            ResponseEntity.status(200).body(SignInResponse(user.username.reversed()))
+            ResponseEntity.ok().body(SignInResponse(user.username.reversed()))
         } catch (ex: Exception) {
             when(ex) {
                 is SignInUserNotFoundException, is SignInInvalidPasswordException -> {
@@ -59,14 +60,9 @@ class UserController(
 
         return try {
             val user = userService.authenticate(authorizationHeader.removePrefix("Bearer "))
-            ResponseEntity.status(200).body(UserMeResponse(user.username, user.image))
-        } catch (ex: Exception) {
-            when(ex) {
-                is AuthenticateException -> {
-                    ResponseEntity.status(401).build()
-                }
-                else -> throw ex
-            }
+            ResponseEntity.ok().body(UserMeResponse(user.username, user.image))
+        } catch (ex: AuthenticateException) {
+            return ResponseEntity.status(401).build()
         }
     }
 }

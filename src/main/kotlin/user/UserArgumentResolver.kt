@@ -5,6 +5,7 @@ import com.wafflestudio.seminar.spring2023.user.service.User
 import com.wafflestudio.seminar.spring2023.user.service.UserService
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.MethodParameter
+import org.springframework.http.HttpHeaders
 import org.springframework.web.bind.support.WebDataBinderFactory
 import org.springframework.web.context.request.NativeWebRequest
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
@@ -26,7 +27,7 @@ class UserArgumentResolver(
         webRequest: NativeWebRequest,
         binderFactory: WebDataBinderFactory?,
     ): User {
-        val accessToken = webRequest.getHeader("Authorization")?.removePrefix("Bearer ") ?: throw AuthenticateException()
+        val accessToken = webRequest.getHeader(HttpHeaders.AUTHORIZATION)?.removePrefix("Bearer ") ?: throw AuthenticateException()
         return userService.authenticate(accessToken)
     }
 }

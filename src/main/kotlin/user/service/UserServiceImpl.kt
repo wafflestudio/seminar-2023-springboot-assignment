@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service
 @Service
 class UserServiceImpl(
     private val userRepository: UserRepository,
-    private var id: Long = 0
 ) : UserService {
 
     override fun signUp(username: String, password: String, image: String): User {
@@ -18,7 +17,7 @@ class UserServiceImpl(
         } else if (userRepository.findByUsername(username) != null) {
             throw SignUpUsernameConflictException()
         } else {
-            val user = UserEntity(id++, username, password, image)
+            val user = UserEntity(username=username, password=password, image=image)
             userRepository.save(user)
             return User(username, image)
         }
