@@ -54,7 +54,11 @@ class PlaylistController (
 
     @ExceptionHandler
     fun handleException(e: PlaylistException): ResponseEntity<Unit> {
-        TODO()
+        val status = when (e) {
+            is PlaylistNotFoundException, is PlaylistAlreadyLikedException, is PlaylistNeverLikedException -> 404
+        }
+
+        return ResponseEntity.status(status).build()
     }
 }
 
