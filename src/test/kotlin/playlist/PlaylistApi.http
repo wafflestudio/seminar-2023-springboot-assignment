@@ -4,6 +4,9 @@ GET http://localhost:8080/api/v1/playlist-groups
 ### 미로그인 상태로 플레이리스트 조회
 GET http://localhost:8080/api/v1/playlists/1
 
+### 미로그인 상태로 플레이리스트 조회 (없는 플리)
+GET http://localhost:8080/api/v1/playlists/40404
+
 ### 로그인 상태로 플레이리스트 조회
 GET http://localhost:8080/api/v1/playlists/1
 Authorization: Bearer gnirps
