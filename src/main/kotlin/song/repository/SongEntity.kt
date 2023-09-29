@@ -21,5 +21,5 @@ class SongEntity (
         joinColumns = [JoinColumn(name = "song_id")],
         inverseJoinColumns = [JoinColumn(name = "artist_id")]
     )
-    val artists: List<ArtistEntity>
+    val artists: Set<ArtistEntity>
 )

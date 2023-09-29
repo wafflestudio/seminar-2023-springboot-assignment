@@ -27,7 +27,10 @@ class PlaylistController(
         @PathVariable id: Long,
         user: User?,
     ): PlaylistResponse {
-        return PlaylistResponse(playlistService.get(id))
+        val playlist = playlistService.get(id)
+        val liked = if (user == null) false
+                    else playlistLikeService.exists(playlistId = id, userId = user.id)
+        return PlaylistResponse(playlist, liked)
     }
 
     @PostMapping("/api/v1/playlists/{id}/likes")
