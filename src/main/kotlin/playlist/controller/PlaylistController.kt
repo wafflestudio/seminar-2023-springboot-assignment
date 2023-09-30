@@ -1,8 +1,6 @@
 package com.wafflestudio.seminar.spring2023.playlist.controller
 
-import com.wafflestudio.seminar.spring2023.playlist.service.Playlist
-import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistException
-import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistGroup
+import com.wafflestudio.seminar.spring2023.playlist.service.*
 import com.wafflestudio.seminar.spring2023.user.service.Authenticated
 import com.wafflestudio.seminar.spring2023.user.service.User
 import org.springframework.http.ResponseEntity
@@ -47,7 +45,12 @@ class PlaylistController {
 
     @ExceptionHandler
     fun handleException(e: PlaylistException): ResponseEntity<Unit> {
-        TODO()
+        val status = when (e){
+                is PlaylistNotFoundException -> 404
+                is PlaylistNeverLikedException -> 404
+                is PlaylistAlreadyLikedException -> 404
+        }
+        return ResponseEntity.status(status).build()
     }
 }
 

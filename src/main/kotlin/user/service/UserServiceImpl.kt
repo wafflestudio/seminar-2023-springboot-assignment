@@ -29,7 +29,6 @@ class UserServiceImpl(
                 image = image
             )
         )
-
         return User(entity)
     }
 

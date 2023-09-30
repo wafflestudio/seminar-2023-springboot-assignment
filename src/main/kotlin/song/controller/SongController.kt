@@ -1,5 +1,7 @@
 package com.wafflestudio.seminar.spring2023.song.controller
 
+import com.wafflestudio.seminar.spring2023.song.repository.AlbumEntity
+import com.wafflestudio.seminar.spring2023.song.repository.AlbumRepository
 import com.wafflestudio.seminar.spring2023.song.service.Album
 import com.wafflestudio.seminar.spring2023.song.service.Song
 import com.wafflestudio.seminar.spring2023.song.service.SongService
