@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Service
 import java.time.Instant
 
-// TODO: 캐시 TTL이 10초가 되도록 캐시 구현체를 구현 (추가 과제)
 @Primary
 @Service
 class PlaylistServiceCacheImpl(
