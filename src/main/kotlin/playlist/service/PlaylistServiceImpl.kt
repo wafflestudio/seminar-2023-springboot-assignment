@@ -8,7 +8,6 @@ import com.wafflestudio.seminar.spring2023.song.repository.SongRepository
 import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Service
 
-@Primary
 @Service
 class PlaylistServiceImpl(
     private val playlistGroupRepository: PlaylistGroupRepository,
