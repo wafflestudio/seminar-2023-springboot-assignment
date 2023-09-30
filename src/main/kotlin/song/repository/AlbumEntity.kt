@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
 
 @Entity(name = "albums")
 class AlbumEntity(
@@ -18,4 +19,6 @@ class AlbumEntity(
     @ManyToOne // default FetchType.EAGER
     @JoinColumn(name = "artist_id")
     val artist: ArtistEntity,
+    @OneToMany(mappedBy = "album")
+    val songs: List<SongEntity>
 )

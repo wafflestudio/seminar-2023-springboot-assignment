@@ -1,5 +1,6 @@
 package com.wafflestudio.seminar.spring2023.playlist.service
 
+import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistEntity
 import com.wafflestudio.seminar.spring2023.song.service.Song
 
 data class Playlist(
