@@ -5,7 +5,6 @@ import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistGroupRepo
 import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistRepository
 import com.wafflestudio.seminar.spring2023.song.repository.SongEntity
 import com.wafflestudio.seminar.spring2023.song.repository.SongRepository
-import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Service
 
 @Service
