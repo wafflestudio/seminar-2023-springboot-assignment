@@ -17,7 +17,7 @@ fun SongEntity.toSong(): Song {
             title = this.title,
             duration = this.duration,
             album = this.album.title,
-            image = album.image,
+            image = this.album.image,
             artists = this.songArtists.map { it.toArtist()}
     )
 }

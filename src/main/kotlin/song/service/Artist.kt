@@ -15,3 +15,10 @@ fun SongArtistEntity.toArtist(): Artist {
             name = this.artist.name
     )
 }
+
+fun ArtistEntity.toArtist(): Artist {
+    return Artist(
+            id = this.id,
+            name = this.name
+    )
+}
