@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class PlaylistController {
-
+class PlaylistController (private val playlistService: PlaylistService){
     @GetMapping("/api/v1/playlist-groups")
     fun getPlaylistGroup(): PlaylistGroupsResponse {
         TODO()

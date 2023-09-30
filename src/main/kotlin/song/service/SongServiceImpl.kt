@@ -36,4 +36,18 @@ class SongServiceImpl(private val songArtistsRepository: SongArtistsRepository, 
             Artist(
                     id = artistinfo.id,
                     name = artistinfo.name,)
+
+    override fun toSong(songEntity: SongEntity) : Song =
+            Song(
+                    id = songEntity.id,
+                    image = songEntity.album.image,
+                    duration = songEntity.duration,
+                    title = songEntity.title,
+                    album = toAlbum(songEntity.album),
+                    artists = songEntity.songArtists.map{
+                        it ->
+                        toArtist(it.artist)
+                    })
+
+
 }

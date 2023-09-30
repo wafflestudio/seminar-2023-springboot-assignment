@@ -10,20 +10,24 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class SongController {
+class SongController (
+        private val songService: SongService
+){
 
     @GetMapping("/api/v1/songs")
     fun searchSong(
         @RequestParam keyword: String,
     ): SearchSongResponse {
-        TODO()
+        val searchRes = songService.search(keyword)
+        return SearchSongResponse(searchRes)
     }
 
     @GetMapping("/api/v1/albums")
     fun searchAlbum(
         @RequestParam keyword: String,
     ): SearchAlbumResponse {
-        TODO()
+        val searchRes = songService.searchAlbum(keyword)
+        return SearchAlbumResponse(searchRes)
     }
 }
 

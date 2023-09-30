@@ -10,6 +10,6 @@ import org.springframework.test.web.servlet.MockMvc
 class SongIntegrationTest @Autowired constructor(
     private val mvc: MockMvc,
 ) {
-    fun `ㅇㅇ?`(){
+    fun `곡 검색 결과가 없는 경우`(){
     }
 }
