@@ -21,7 +21,6 @@ class PlaylistServiceImpl(
     override fun getGroups(): List<PlaylistGroup> {
         return playlistGroupRepository
                 .findByOpenWithJoinFetch(isOpen = true)
-                .filter { it.playlists.isNotEmpty() }
                 .map { it.toPlayListGroup() }
     }
 
@@ -36,8 +35,8 @@ class PlaylistServiceImpl(
                 id = playlistEntity.id,
                 title = playlistEntity.title,
                 subtitle = playlistEntity.subtitle,
-                songs = songs.sortedBy { it.id },
-                image = playlistEntity.image
+                image = playlistEntity.image,
+                songs = songs,
         )
     }
 }
