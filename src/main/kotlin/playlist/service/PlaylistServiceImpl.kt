@@ -21,6 +21,7 @@ class PlaylistServiceImpl(
     override fun getGroups(): List<PlaylistGroup> {
         return playlistGroupRepository
                 .findByOpenWithJoinFetch(isOpen = true)
+                .filter { it.playlists.isNotEmpty() }
                 .map { it.toPlayListGroup() }
     }
 

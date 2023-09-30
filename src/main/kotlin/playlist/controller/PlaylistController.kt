@@ -1,8 +1,7 @@
 package com.wafflestudio.seminar.spring2023.playlist.controller
 
 import com.wafflestudio.seminar.spring2023.playlist.service.*
-import com.wafflestudio.seminar.spring2023.user.service.Authenticated
-import com.wafflestudio.seminar.spring2023.user.service.User
+import com.wafflestudio.seminar.spring2023.user.service.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
@@ -55,13 +54,24 @@ class PlaylistController(
     }
 
     @ExceptionHandler
-    fun handleException(e: PlaylistException): ResponseEntity<Unit> {
-        return when (e) {
-            is PlaylistNotFoundException ->
-                ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-            is PlaylistAlreadyLikedException, is PlaylistNeverLikedException ->
-                ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
+    fun handlePlaylistException(e: PlaylistException): ResponseEntity<Unit> {
+        val status = when (e) {
+            is PlaylistNotFoundException -> HttpStatus.NOT_FOUND
+            is PlaylistAlreadyLikedException, is PlaylistNeverLikedException -> HttpStatus.CONFLICT
         }
+        return ResponseEntity.status(status).build()
+    }
+
+    @ExceptionHandler
+    fun handleUserException(e: UserException): ResponseEntity<Unit> {
+        val status = when (e) {
+            is SignUpBadUsernameException, is SignUpBadPasswordException, is SignInInvalidPasswordException
+            -> HttpStatus.BAD_REQUEST
+            is AuthenticateException -> HttpStatus.UNAUTHORIZED
+            is SignInUserNotFoundException -> HttpStatus.NOT_FOUND
+            is SignUpUsernameConflictException -> HttpStatus.CONFLICT
+        }
+        return ResponseEntity.status(status).build()
     }
 }
 
