@@ -7,6 +7,7 @@ class PlaylistLikeServiceImpl : PlaylistLikeService {
 
     override fun exists(playlistId: Long, userId: Long): Boolean {
         TODO()
+
     }
 
     override fun create(playlistId: Long, userId: Long) {

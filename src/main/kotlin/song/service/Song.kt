@@ -5,6 +5,6 @@ data class Song(
     val title: String,
     val artists: List<Artist>,
     val album: String,
-    val image: String,
+    val image: String?,
     val duration: String,
 )

@@ -1,10 +1,6 @@
 package com.wafflestudio.seminar.spring2023.song.repository
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
+import jakarta.persistence.*
 
 @Entity(name = "artists")
 class ArtistEntity(
@@ -12,6 +8,6 @@ class ArtistEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
     val name: String,
-    @OneToMany(mappedBy = "artist")
+    @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY)
     val albums: List<AlbumEntity>,
 )
