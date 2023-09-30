@@ -18,7 +18,6 @@ class SongServiceTest @Autowired constructor(
     @Test
     fun `제목에 키워드를 포함한 곡 검색, 제목 길이가 짧은 순으로 정렬`() {
         val songs = songService.search("Don't")
-
         assertThat(songs.map { it.id }).isEqualTo(listOf(829L, 295, 494, 482, 523, 359, 1538, 487))
     }
 
