@@ -21,14 +21,15 @@ class PlaylistMapper {
             return PlaylistGroup(
                 id = entity.id,
                 title = entity.title,
-                playlists = entity.playlists.map { playlist ->
-                    PlaylistBrief(
-                        id = playlist.id,
-                        title = playlist.title,
-                        subtitle = playlist.subtitle,
-                        image = playlist.image
-                    )
-                }
+                playlists = entity.playlists.map { playlist -> toPlayListBriefDTO(playlist) }
+            )
+        }
+        private fun toPlayListBriefDTO(entity: PlaylistEntity): PlaylistBrief {
+            return PlaylistBrief(
+                id = entity.id,
+                title = entity.title,
+                subtitle = entity.subtitle,
+                image = entity.image
             )
         }
     }
