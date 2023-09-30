@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 class PlaylistController (
     private val playlistService: PlaylistService,
     private val playlistLikeService: PlaylistLikeService
-)
-{
-
+) {
     @GetMapping("/api/v1/playlist-groups")
     fun getPlaylistGroup(): PlaylistGroupsResponse {
         val playlistGroup = playlistService.getGroups()

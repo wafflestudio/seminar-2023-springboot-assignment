@@ -10,8 +10,6 @@ class SongServiceImpl(
     private val albumRepository: AlbumRepository
 ) : SongService {
 
-    // 대소문자 정확하게 검색?? -> 대소문자 구분 없이 검색하도록 변경
-
     override fun search(keyword: String): List<Song> {
         val songEntities = songRepository.findByTitleContainingWithJoinFetch(keyword)
         return songEntities.map { entity -> SongMapper.toSongDTO(entity) }

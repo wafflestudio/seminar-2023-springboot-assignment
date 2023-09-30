@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class SongController ( private val songService: SongService ) {
-
     @GetMapping("/api/v1/songs")
     fun searchSong(
         @RequestParam keyword: String,

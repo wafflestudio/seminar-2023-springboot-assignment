@@ -15,7 +15,6 @@ class PlaylistServiceImpl(
     private val playlistRepository: PlaylistRepository,
     private val songRepository: SongRepository
 ) : PlaylistService {
-
     override fun getGroups(): List<PlaylistGroup> {
         val playlistGroupEntities = playlistGroupRepository.findByOpenTrue().filter { it.playlists.isNotEmpty() }
 

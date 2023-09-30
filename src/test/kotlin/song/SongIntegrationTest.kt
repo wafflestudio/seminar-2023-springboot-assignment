@@ -9,7 +9,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.awt.PageAttributes
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -23,7 +22,6 @@ class SongIntegrationTest @Autowired constructor(
             get("/api/v1/songs")
                 .param("keyword", "vampire")
         )
-            // expect body = {"songs":[{"id":3,"title":"vampire","artists":[{"id":1,"name":"Olivia Rodrigo"}],"album":"GUTS","image":"https://i.scdn.co/image/ab67616d00001e02e85259a1cae29a8d91f2093d","duration":"219"}]}
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.songs.length()").value(1))
             .andExpect(jsonPath("$.songs[0].title").value("vampire"))
@@ -37,7 +35,6 @@ class SongIntegrationTest @Autowired constructor(
             get("/api/v1/songs")
                 .param("keyword", "vampire123")
         )
-            // expect body = {"songs":[]}
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.songs.length()").value(0))
     }
@@ -48,8 +45,6 @@ class SongIntegrationTest @Autowired constructor(
             get("/api/v1/albums")
                 .param("keyword", "GUTS")
         )
-
-            // expect Body = {"albums":[{"id":1,"title":"GUTS","image":"https://i.scdn.co/image/ab67616d00001e02e85259a1cae29a8d91f2093d","artist":{"id":1,"name":"Olivia Rodrigo"}}]}
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.albums.length()").value(1))
             .andExpect(jsonPath("$.albums[0].title").value("GUTS"))
