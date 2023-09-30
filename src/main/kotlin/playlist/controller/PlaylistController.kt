@@ -1,10 +1,8 @@
 package com.wafflestudio.seminar.spring2023.playlist.controller
 
-import com.wafflestudio.seminar.spring2023.playlist.service.Playlist
-import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistException
-import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistGroup
-import com.wafflestudio.seminar.spring2023.user.service.Authenticated
-import com.wafflestudio.seminar.spring2023.user.service.User
+import com.wafflestudio.seminar.spring2023.playlist.service.*
+import com.wafflestudio.seminar.spring2023.user.service.*
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -14,11 +12,16 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class PlaylistController {
-
+class PlaylistController(
+    private val playlistService: PlaylistService,
+    private val playlistLikeService: PlaylistLikeService,
+) {
     @GetMapping("/api/v1/playlist-groups")
     fun getPlaylistGroup(): PlaylistGroupsResponse {
-        TODO()
+
+        val groups = playlistService.getGroups()
+        return PlaylistGroupsResponse(groups)
+
     }
 
     @GetMapping("/api/v1/playlists/{id}")
@@ -26,7 +29,9 @@ class PlaylistController {
         @PathVariable id: Long,
         user: User?,
     ): PlaylistResponse {
-        TODO()
+        val playlist = playlistService.get(id)
+        val likeExist = user?.let { playlistLikeService.exists(id, it.id) } ?: false
+        return PlaylistResponse(playlist, likeExist)
     }
 
     @PostMapping("/api/v1/playlists/{id}/likes")
@@ -34,7 +39,7 @@ class PlaylistController {
         @PathVariable id: Long,
         @Authenticated user: User,
     ) {
-        TODO()
+        playlistLikeService.create(id, user.id)
     }
 
     @DeleteMapping("/api/v1/playlists/{id}/likes")
@@ -42,13 +47,17 @@ class PlaylistController {
         @PathVariable id: Long,
         @Authenticated user: User,
     ) {
-        TODO()
+        playlistLikeService.delete(id, user.id)
     }
 
     @ExceptionHandler
     fun handleException(e: PlaylistException): ResponseEntity<Unit> {
-        TODO()
+        return when (e) {
+            is PlaylistNotFoundException -> ResponseEntity(HttpStatus.NOT_FOUND)
+            is PlaylistAlreadyLikedException, is PlaylistNeverLikedException -> ResponseEntity(HttpStatus.CONFLICT)
+        }
     }
+
 }
 
 data class PlaylistGroupsResponse(val groups: List<PlaylistGroup>)

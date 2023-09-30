@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.Query
 interface SongRepository : JpaRepository<SongEntity, Long> {
     @EntityGraph(attributePaths = ["album", "artists"])
     fun findByTitleContaining(keyword: String): List<SongEntity>
+
+    fun findAllByIdIn(ids: List<Long>): List<SongEntity>
 }

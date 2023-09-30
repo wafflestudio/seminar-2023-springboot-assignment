@@ -23,15 +23,23 @@ class SongController(
     @GetMapping("/api/v1/songs")
     fun searchSong(
         @RequestParam keyword: String,
-    ): SearchSongResponse {
-        return SearchSongResponse(songService.search(keyword))
+    ): ResponseEntity<SearchSongResponse> {
+        val songs = songService.search(keyword)
+        if (songs.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SearchSongResponse(emptyList()))
+        }
+        return ResponseEntity.ok(SearchSongResponse(songs))
     }
 
     @GetMapping("/api/v1/albums")
     fun searchAlbum(
         @RequestParam keyword: String,
-    ): SearchAlbumResponse {
-        return SearchAlbumResponse(songService.searchAlbum(keyword))
+    ): ResponseEntity<SearchAlbumResponse> {
+        val albums = songService.searchAlbum(keyword)
+        if (albums.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SearchAlbumResponse(emptyList()))
+        }
+        return ResponseEntity.ok(SearchAlbumResponse(albums))
     }
 }
 
