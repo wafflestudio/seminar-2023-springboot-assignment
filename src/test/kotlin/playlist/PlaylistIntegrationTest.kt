@@ -76,13 +76,13 @@ class PlaylistIntegrationTest @Autowired constructor(
     @Test
     fun `존재하지 않는 playlist 조회 시 404 응답을 내려준다`() {
         mvc.perform(
-            get("/api/v1/playlists/100")
+            get("/api/v1/playlists/298475")
         )
             .andExpect(status().`is`(404))
     }
 
     @Test
-    fun `playlist에 좋아요 요청을 보냈을 때, 이미 좋아요가 되어있다면 400 응답을 내려준다`() {
+    fun `playlist에 좋아요 요청을 보냈을 때, 이미 좋아요가 되어있다면 409 응답을 내려준다`() {
         val token = signUpAndSignIn()
         mvc.perform(
             post("/api/v1/playlists/1/likes")
@@ -94,11 +94,11 @@ class PlaylistIntegrationTest @Autowired constructor(
             post("/api/v1/playlists/1/likes")
                 .header("Authorization", "Bearer $token")
         )
-            .andExpect(status().`is`(400))
+            .andExpect(status().`is`(409))
     }
 
     @Test
-    fun `playlist에 좋아요 삭제 요청을 보냈을 때, 이미 좋아요가 존재하지 않는다면 400 응답을 내려준다`(){
+    fun `playlist에 좋아요 삭제 요청을 보냈을 때, 이미 좋아요가 존재하지 않는다면 409 응답을 내려준다`(){
         val token = signUpAndSignIn()
         mvc.perform(
             post("/api/v1/playlists/1/likes")
@@ -116,6 +116,6 @@ class PlaylistIntegrationTest @Autowired constructor(
             delete("/api/v1/playlists/1/likes")
                 .header("Authorization", "Bearer $token")
         )
-            .andExpect(status().`is`(400))
+            .andExpect(status().`is`(409))
     }
 }

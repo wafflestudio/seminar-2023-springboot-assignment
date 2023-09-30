@@ -59,9 +59,9 @@ class PlaylistController (
     fun handleException(e: PlaylistException): ResponseEntity<Unit> {
         val status = when (e) {
             is PlaylistNotFoundException -> HttpStatus.NOT_FOUND
-            is PlaylistAlreadyLikedException -> HttpStatus.BAD_REQUEST
-            is PlaylistNeverLikedException -> HttpStatus.BAD_REQUEST
-            is UserNotFoundException -> HttpStatus.BAD_REQUEST
+            is PlaylistAlreadyLikedException -> HttpStatus.CONFLICT
+            is PlaylistNeverLikedException -> HttpStatus.CONFLICT
+            is UserNotFoundException -> HttpStatus.NOT_FOUND
         }
         return ResponseEntity.status(status).build()
     }
