@@ -10,6 +10,6 @@ interface SongArtistsRepository : JpaRepository<SongArtistsEntity, Long> {
     @Query("SELECT a FROM songs_artists a JOIN FETCH a.song LEFT JOIN FETCH a.artist WHERE a.song.id = :song_id")
     fun findBySongId(song_id : Long) : List<SongArtistsEntity>
 
-    @Query("SELECT a FROM songs_artists a JOIN FETCH a.song LEFT JOIN FETCH a.artist WHERE a.song.title like %:keyword%")
+    @Query("SELECT a FROM songs_artists a LEFT JOIN FETCH a.song LEFT JOIN FETCH a.artist WHERE a.song.title like %:keyword%")
     fun findBySongTitleContaining(keyword: String) : Map<SongEntity,List<ArtistEntity>>
 }

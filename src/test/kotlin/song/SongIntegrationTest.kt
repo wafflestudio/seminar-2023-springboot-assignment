@@ -10,4 +10,6 @@ import org.springframework.test.web.servlet.MockMvc
 class SongIntegrationTest @Autowired constructor(
     private val mvc: MockMvc,
 ) {
+    fun `ㅇㅇ?`(){
+    }
 }
