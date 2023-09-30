@@ -19,44 +19,48 @@ class PlaylistIntegrationTest @Autowired constructor(
     private val mapper: ObjectMapper,
 
 ) {
+    companion object {
+        var token: String? = null
+    }
     private fun signUpAndSignIn(): String {
-        mvc.perform(
-            post("/api/v1/signup")
-                .content(
-                    mapper.writeValueAsString(
-                        mapOf(
-                            "username" to "test-${javaClass.name}-1",
-                            "password" to "spring",
-                            "image" to "https://wafflestudio.com/images/icon_intro.svg"
+        if (token == null) {
+            mvc.perform(
+                post("/api/v1/signup")
+                    .content(
+                        mapper.writeValueAsString(
+                            mapOf(
+                                "username" to "test-${javaClass.name}-1",
+                                "password" to "spring",
+                                "image" to "https://wafflestudio.com/images/icon_intro.svg"
+                            )
                         )
                     )
-                )
-                .contentType(MediaType.APPLICATION_JSON)
-        )
-
-        val signInResponse = mvc.perform(
-            post("/api/v1/signin")
-                .content(
-                    mapper.writeValueAsString(
-                        mapOf(
-                            "username" to "test-${javaClass.name}-1",
-                            "password" to "spring",
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+            val signInResponse = mvc.perform(
+                post("/api/v1/signin")
+                    .content(
+                        mapper.writeValueAsString(
+                            mapOf(
+                                "username" to "test-${javaClass.name}-1",
+                                "password" to "spring",
+                            )
                         )
                     )
-                )
-                .contentType(MediaType.APPLICATION_JSON)
-        )
-            .andExpect(status().`is`(200))
-            .andReturn()
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+                .andExpect(status().`is`(200))
+                .andReturn()
 
-        val content = signInResponse.response.contentAsString
-        val signInResult = mapper.readValue(content, SignInResponse::class.java)
-
-        return signInResult.accessToken
+            val content = signInResponse.response.contentAsString
+            val signInResult = mapper.readValue(content, SignInResponse::class.java)
+            token = signInResult.accessToken
+        }
+        return token!!
     }
 
     @Test
-    fun `GET Playlist Groups`() {
+    fun `플레이리스트 그룹을 호출한다`() {
         mvc.perform(
             get("/api/v1/playlist-groups")
             .contentType(MediaType.APPLICATION_JSON))
@@ -101,19 +105,19 @@ class PlaylistIntegrationTest @Autowired constructor(
     fun `playlist에 좋아요 삭제 요청을 보냈을 때, 이미 좋아요가 존재하지 않는다면 409 응답을 내려준다`(){
         val token = signUpAndSignIn()
         mvc.perform(
-            post("/api/v1/playlists/1/likes")
+            post("/api/v1/playlists/2/likes")
                 .header("Authorization", "Bearer $token")
         )
             .andExpect(status().`is`(201))
 
         mvc.perform(
-            delete("/api/v1/playlists/1/likes")
+            delete("/api/v1/playlists/2/likes")
                 .header("Authorization", "Bearer $token")
         )
             .andExpect(status().`is`(200))
 
         mvc.perform(
-            delete("/api/v1/playlists/1/likes")
+            delete("/api/v1/playlists/2/likes")
                 .header("Authorization", "Bearer $token")
         )
             .andExpect(status().`is`(409))
