@@ -2,11 +2,9 @@ package com.wafflestudio.seminar.spring2023.playlist.service
 
 import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistGroupRepository
 import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistRepository
-import com.wafflestudio.seminar.spring2023.song.repository.ArtistEntity
-import com.wafflestudio.seminar.spring2023.song.repository.ArtistRepository
 import com.wafflestudio.seminar.spring2023.song.service.Artist
 import com.wafflestudio.seminar.spring2023.song.service.Song
-import com.wafflestudio.seminar.spring2023.song.service.SongRepository
+import com.wafflestudio.seminar.spring2023.song.repository.SongRepository
 import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Service
 
