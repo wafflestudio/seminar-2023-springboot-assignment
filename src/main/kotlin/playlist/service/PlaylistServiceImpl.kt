@@ -1,6 +1,7 @@
 package com.wafflestudio.seminar.spring2023.playlist.service
 
 import com.wafflestudio.seminar.spring2023.playlist.repository.*
+import com.wafflestudio.seminar.spring2023.song.repository.SongEntity
 import com.wafflestudio.seminar.spring2023.song.service.SongService
 import com.wafflestudio.seminar.spring2023.song.service.SongServiceImpl.*
 import org.springframework.context.annotation.Primary
@@ -11,19 +12,26 @@ import org.springframework.stereotype.Service
 class PlaylistServiceImpl(
         private val playlistGroupRepository: PlaylistGroupRepository,
         private val playlistRepository: PlaylistRepository,
+        private val playlistSongsRepository: PlaylistSongsRepository,
         private val songService: SongService
 ) : PlaylistService {
-
     override fun getGroups(): List<PlaylistGroup> {
-        return playlistGroupRepository.findByOpen().map {
-            it ->
-            toGroup(it)
-        };
+        return playlistGroupRepository.findByOpen().map { toGroup(it) };
     }
 
     override fun get(id: Long): Playlist {
-        val pEntity = playlistRepository.findByplId(id) ?: throw PlaylistNotFoundException()
-        return pEntitytoPlaylist(pEntity)
+        //val pEntity = playlistRepository.findByplId(id) ?: throw PlaylistNotFoundException()
+        val psEntity = playlistSongsRepository.findByPlaylistId(id)
+        if (psEntity.isEmpty()) throw PlaylistNotFoundException()
+        val songList = psEntity.map{it.song}
+        val playlist = psEntity.get(0).playlist
+        return Playlist(
+                id = playlist.id,
+                image = playlist.image,
+                title = playlist.title,
+                subtitle = playlist.subtitle,
+                songs = songList.map{songService.toSong(it)}.sortedBy { it.id }
+        )
     }
 
     fun toGroup(groupEntity: PlaylistGroupEntity) : PlaylistGroup =
@@ -46,18 +54,15 @@ class PlaylistServiceImpl(
                     songs = playlistSongsEntity.playlist.playlistSongs.map{
                         it ->
                         songService.toSong(it.song)
-                    }
+                    }.sortedBy { it.id }
             )
-    fun pEntitytoPlaylist(playlistEntity: PlaylistEntity) : Playlist =
+    fun pEntitytoPlaylist(playlistEntity: PlaylistEntity, songList : List<SongEntity>) : Playlist =
             Playlist(
                     id = playlistEntity.id,
                     image = playlistEntity.image,
                     title = playlistEntity.title,
                     subtitle = playlistEntity.subtitle,
-                    songs = playlistEntity.playlistSongs.map{
-                        it ->
-                        songService.toSong(it.song)
-                    }
+                    songs = songList.map { songService.toSong(it) }.sortedBy { it.id }
             )
 }
 

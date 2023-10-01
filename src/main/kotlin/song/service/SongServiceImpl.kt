@@ -7,7 +7,20 @@ import org.springframework.stereotype.Service
 class SongServiceImpl(private val songArtistsRepository: SongArtistsRepository, private val songRepository: SongRepository, private val albumRepository: AlbumRepository, private val artistRepository: ArtistRepository) : SongService {
 
     override fun search(keyword: String): List<Song> {
-        val searchRes = songRepository.findByTitleContaining(keyword = keyword)
+        //val searchRes = songRepository.findByTitleContaining(keyword = keyword)
+        val saEntity = songArtistsRepository.findBySongTitleContaining(keyword = keyword)
+        val saMap = saEntity.groupBy({it.song},{it.artist})
+        return saMap.map {
+            Song(
+                    id = it.key.id,
+                    title = it.key.title,
+                    duration = it.key.duration,
+                    album = toAlbum(it.key.album),
+                    image = it.key.album.image,
+                    artists = it.value.map { aEntity -> toArtist(aEntity) }
+            )
+        }.sortedBy { it.title.length }
+        /*
         return searchRes.map { songartistinfo ->
             Song(
                     id = songartistinfo.id,
@@ -17,7 +30,7 @@ class SongServiceImpl(private val songArtistsRepository: SongArtistsRepository, 
                     artists = songartistinfo.songArtists.map { it -> Artist(id = it.artist.id, name = it.artist.name) },
                     image = songartistinfo.album.image,
             )
-        }.sortedBy { it.title.length }
+        }.sortedBy { it.title.length }*/
     }
 
     override fun searchAlbum(keyword: String): List<Album> {
@@ -44,10 +57,8 @@ class SongServiceImpl(private val songArtistsRepository: SongArtistsRepository, 
                     duration = songEntity.duration,
                     title = songEntity.title,
                     album = toAlbum(songEntity.album),
-                    artists = songEntity.songArtists.map{
-                        it ->
-                        toArtist(it.artist)
-                    })
+                    artists = songEntity.songArtists.map{ toArtist(it.artist) }
+            )
 
 
 }

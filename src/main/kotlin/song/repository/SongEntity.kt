@@ -1,5 +1,6 @@
 package com.wafflestudio.seminar.spring2023.song.repository
 
+import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistSongsEntity
 import com.wafflestudio.seminar.spring2023.song.service.Album
 import com.wafflestudio.seminar.spring2023.song.service.Song
 import jakarta.persistence.Entity
@@ -10,6 +11,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
+import org.hibernate.type.descriptor.sql.internal.BinaryFloatDdlType
 
 @Entity(name = "songs")
 class SongEntity(
@@ -22,6 +24,9 @@ class SongEntity(
     @JoinColumn(name = "album_id")
     val album: AlbumEntity,
     @OneToMany
-    @JoinColumn(name = "song")
+    @JoinColumn(name = "song_id")
     val songArtists: List<SongArtistsEntity>,
+    @OneToMany
+    @JoinColumn(name = "song_id")
+    val playlistSongs: List<PlaylistSongsEntity>,
 )
