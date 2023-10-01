@@ -3,6 +3,7 @@ package com.wafflestudio.seminar.spring2023.playlist.controller
 import com.wafflestudio.seminar.spring2023.playlist.service.*
 import com.wafflestudio.seminar.spring2023.user.service.Authenticated
 import com.wafflestudio.seminar.spring2023.user.service.User
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -29,7 +30,9 @@ class PlaylistController (
         @PathVariable id: Long,
         user: User?,
     ): PlaylistResponse {
-        TODO()
+        val playlist = playlistService.get(id = id)
+        val isLiked = user?.let { playlistLikeService.exists(playlistId = id, userId = it.id) } ?: false
+        return PlaylistResponse(playlist, isLiked)
     }
 
     @PostMapping("/api/v1/playlists/{id}/likes")
@@ -37,7 +40,7 @@ class PlaylistController (
         @PathVariable id: Long,
         @Authenticated user: User,
     ) {
-        TODO()
+        playlistLikeService.create(playlistId = id, userId = user.id)
     }
 
     @DeleteMapping("/api/v1/playlists/{id}/likes")
@@ -45,12 +48,17 @@ class PlaylistController (
         @PathVariable id: Long,
         @Authenticated user: User,
     ) {
-        TODO()
+        playlistLikeService.delete(playlistId = id, userId = user.id)
     }
 
     @ExceptionHandler
     fun handleException(e: PlaylistException): ResponseEntity<Unit> {
-        TODO()
+        return when(e) {
+            is PlaylistNotFoundException -> ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+            is PlaylistAlreadyLikedException -> ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
+            is PlaylistNeverLikedException -> ResponseEntity.ok().build()
+            is UserNotFoundException -> ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+        }
     }
 }
 

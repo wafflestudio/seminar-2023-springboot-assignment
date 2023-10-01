@@ -19,6 +19,8 @@ class PlaylistServiceImpl (
 
     override fun getGroups(): List<PlaylistGroup> {
         val playlistGroupEntities = playlistGroupRepository.findAllWithPlaylists()
+            .filter { it.playlists.isNotEmpty() }
+            .filter { it.open }
         return playlistGroupEntities.map { grEntity ->
             PlaylistGroup(
                 id = grEntity.id,
@@ -35,27 +37,34 @@ class PlaylistServiceImpl (
     }
 
     override fun get(id: Long): Playlist {
-        val playlistEntity = playlistRepository.findByIdWithSongs(id = id) ?: throw PlaylistNotFoundException()
-        val playlistSongEntities = playlistEntity.playlistSongs
-        val songEntities = songRepository.findSongEntitiesByIdsWithArtists(playlistSongEntities.map{ plsEntity -> plsEntity.id}.toList())
-        return Playlist(id = playlistEntity.id,
-            title = playlistEntity.title,
-            subtitle = playlistEntity.subtitle,
-            image = playlistEntity.image,
-            songs = songEntities.map { sEntity->
-                Song(id = sEntity.id,
+        val playlistEntity = playlistRepository.findByIdWithSongs(id = id)
+            ?: throw PlaylistNotFoundException()
+        val songIds = playlistEntity.playlistSongs.map { it.song.id }
+        val songs = songRepository.findSongEntitiesByIdsWithArtists(songIds)
+            .map { sEntity ->
+                Song(
+                    id = sEntity.id,
                     title = sEntity.title,
-                    artists = sEntity.songArtists.map { saEntity->
+                    artists = sEntity.songArtists.map { saEntity ->
                         val aArtist = saEntity.artist
-                        Artist(id= aArtist.id,
-                            name = aArtist.name)
+                        Artist(
+                            id = aArtist.id,
+                            name = aArtist.name
+                        )
                     }.toList(),
                     // 여기서 한번더 inner join 필요할듯?
                     album = sEntity.album.title,
                     image = sEntity.album.image,
                     //왜 문자열이지??
                     duration = sEntity.duration.toString()
-                )}.toList()
+                )
+            }
+
+        return Playlist(id = playlistEntity.id,
+            title = playlistEntity.title,
+            subtitle = playlistEntity.subtitle,
+            image = playlistEntity.image,
+            songs = songs
                 )
     }
 }
