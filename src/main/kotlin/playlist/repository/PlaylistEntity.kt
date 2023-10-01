@@ -20,11 +20,11 @@ class PlaylistEntity (
     val subtitle: String,
     val image: String,
 
-    @OneToMany (fetch = FetchType.LAZY) //(mappedBy = "playlist")
+    @OneToMany  //(mappedBy = "playlist")
     @JoinColumn(name = "playlist_id")
     val playlistSongs: List<PlaylistSongsEntity>,
 
-    @OneToMany (fetch = FetchType.LAZY)
+    @OneToMany
     @JoinColumn(name = "playlist_id")
     val playlistLikes: List<PlaylistLikeEntity>,
 )

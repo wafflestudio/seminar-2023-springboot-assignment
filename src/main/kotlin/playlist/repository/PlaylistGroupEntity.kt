@@ -15,7 +15,7 @@ class PlaylistGroupEntity (
         val id: Long = 0L,
         val title: String,
         val open: Boolean,
-        @OneToMany (fetch = FetchType.LAZY)
+        @OneToMany
         @JoinColumn(name = "group_id")
         val playlist: List<PlaylistEntity>
 )

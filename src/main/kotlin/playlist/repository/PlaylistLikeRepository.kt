@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.Query
 interface PlaylistLikeRepository : JpaRepository<PlaylistLikeEntity, Long> {
     @Query("SELECT a FROM playlist_likes a LEFT JOIN FETCH a.playlist WHERE a.user = :user")
     fun findByUser(user : UserEntity) : List<PlaylistLikeEntity>
+    @Query("SELECT a FROM playlist_likes a LEFT JOIN FETCH a.playlist JOIN FETCH a.user WHERE a.user.id = :uid AND a.playlist.id = :plid")
+    fun findByUserIdAndPlaylistId(plid : Long, uid : Long) : PlaylistLikeEntity?
 }

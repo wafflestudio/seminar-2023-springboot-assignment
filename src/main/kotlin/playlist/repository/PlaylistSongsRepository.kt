@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query
 interface PlaylistSongsRepository : JpaRepository<PlaylistSongsEntity, Long> {
     @Query("SELECT a FROM playlist_songs a LEFT JOIN FETCH a.song LEFT JOIN FETCH a.playlist WHERE a.playlist = :playlistEntity")
     fun findByPlaylist(playlistEntity: PlaylistEntity) : List<PlaylistSongsEntity>
-    @Query("SELECT a FROM playlist_songs a LEFT JOIN FETCH a.song LEFT JOIN FETCH a.playlist JOIN FETCH a.song.album JOIN FETCH a.song.songArtists JOIN FETCH a.song.album.artist WHERE a.playlist.id = :plid")
+    @Query("SELECT a FROM playlist_songs a LEFT JOIN FETCH a.song JOIN FETCH a.playlist JOIN FETCH a.song.album JOIN FETCH a.song.songArtists JOIN FETCH a.song.album.artist JOIN FETCH a.song.songArtists.artist WHERE a.playlist.id = :plid")
     fun findByPlaylistId(plid: Long) : List<PlaylistSongsEntity>
 }

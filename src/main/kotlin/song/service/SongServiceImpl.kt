@@ -20,17 +20,6 @@ class SongServiceImpl(private val songArtistsRepository: SongArtistsRepository, 
                     artists = it.value.map { aEntity -> toArtist(aEntity) }
             )
         }.sortedBy { it.title.length }
-        /*
-        return searchRes.map { songartistinfo ->
-            Song(
-                    id = songartistinfo.id,
-                    title = songartistinfo.title,
-                    duration = songartistinfo.duration,
-                    album = toAlbum(songartistinfo.album),
-                    artists = songartistinfo.songArtists.map { it -> Artist(id = it.artist.id, name = it.artist.name) },
-                    image = songartistinfo.album.image,
-            )
-        }.sortedBy { it.title.length }*/
     }
 
     override fun searchAlbum(keyword: String): List<Album> {

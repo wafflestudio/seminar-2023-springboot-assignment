@@ -2,6 +2,9 @@ package com.wafflestudio.seminar.spring2023.playlist.service
 
 import com.wafflestudio.seminar.spring2023.playlist.repository.*
 import com.wafflestudio.seminar.spring2023.song.repository.SongEntity
+import com.wafflestudio.seminar.spring2023.song.service.Album
+import com.wafflestudio.seminar.spring2023.song.service.Artist
+import com.wafflestudio.seminar.spring2023.song.service.Song
 import com.wafflestudio.seminar.spring2023.song.service.SongService
 import com.wafflestudio.seminar.spring2023.song.service.SongServiceImpl.*
 import org.springframework.context.annotation.Primary
@@ -23,14 +26,32 @@ class PlaylistServiceImpl(
         //val pEntity = playlistRepository.findByplId(id) ?: throw PlaylistNotFoundException()
         val psEntity = playlistSongsRepository.findByPlaylistId(id)
         if (psEntity.isEmpty()) throw PlaylistNotFoundException()
-        val songList = psEntity.map{it.song}
-        val playlist = psEntity.get(0).playlist
+        val pEntity = psEntity.get(0).playlist
         return Playlist(
-                id = playlist.id,
-                image = playlist.image,
-                title = playlist.title,
-                subtitle = playlist.subtitle,
-                songs = songList.map{songService.toSong(it)}.sortedBy { it.id }
+                id = pEntity.id,
+                image = pEntity.image,
+                title = pEntity.title,
+                subtitle = pEntity.subtitle,
+                songs = psEntity.map{
+                    Song(
+                            id = it.song.id,
+                            image = it.song.album.image,
+                            duration = it.song.duration,
+                            title = it.song.title,
+                            album = Album(
+                                            id = it.song.album.id,
+                                            title = it.song.album.title,
+                                            image = it.song.album.image,
+                                            artist = Artist(it.song.album.artist.id, it.song.album.artist.name)
+                            ),
+                            artists = it.song.songArtists.map{
+                                Artist(
+                                        id = it.artist.id,
+                                        name = it.artist.name
+                                )
+                            }
+                    )
+                }.sortedBy { it.id }
         )
     }
 

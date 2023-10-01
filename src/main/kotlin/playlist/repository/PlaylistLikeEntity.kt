@@ -7,10 +7,10 @@ class PlaylistLikeEntity (
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long = 0L,
-        @ManyToOne (fetch = FetchType.LAZY)
+        @ManyToOne
         @JoinColumn(name = "playlist_id")
         val playlist: PlaylistEntity,
-        @ManyToOne (fetch = FetchType.LAZY)
+        @ManyToOne
         @JoinColumn(name = "user_id")
         val user: UserEntity,
 )
