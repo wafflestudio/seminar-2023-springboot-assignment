@@ -1,42 +1,55 @@
 package com.wafflestudio.seminar.spring2023.song.service
 
-import com.wafflestudio.seminar.spring2023.song.repository.SongArtistsEntity
-import com.wafflestudio.seminar.spring2023.song.repository.SongEntity
-import com.wafflestudio.seminar.spring2023.song.repository.SongRepository
+import com.wafflestudio.seminar.spring2023.song.repository.*
 import org.springframework.stereotype.Service
 
 @Service
 class SongServiceImpl(
         private val songRepository: SongRepository,
+        private val albumRepository: AlbumRepository,
 ) : SongService {
 
     override fun search(keyword: String): List<Song> {
-        val songEntityList = songRepository.findAllByTitle(keyword)
+        val songEntityList = songRepository.findAllSongsByTitleWithJoinFetch(keyword)
 
-        val songList = songEntityList.map { songEntity ->
-            Song(songEntity)
-        }
-
-        return songList
+        return songEntityList.map { songEntity ->
+            toSong(songEntity)
+        }.sortedBy { song -> song.id }
     }
 
     override fun searchAlbum(keyword: String): List<Album> {
-        TODO()
+        val albumEntityList = albumRepository.findAllAlbumsByTitleWithJoinFetch(keyword)
+
+        return albumEntityList.map { albumEntity ->
+            toAlbum(albumEntity)
+        }.sortedBy { album -> album.id }
     }
 }
 
-fun Song(entity: SongEntity) = Song(
+fun toSong(entity: SongEntity) = Song(
         id = entity.id,
         title = entity.title,
         artists = entity.song_artists.map { songArtistsEntity ->
-                                          Artist(songArtistsEntity)
+                                          toArtistFromSong(songArtistsEntity)
         },
         album = entity.album.title,
         image = entity.album.image,
         duration = entity.duration.toString(),
 )
 
-fun Artist(entity: SongArtistsEntity) = Artist(
+fun toArtistFromSong(entity: SongArtistsEntity) = Artist(
         id = entity.artist.id,
         name = entity.artist.name,
+)
+
+fun toAlbum(entity: AlbumEntity) = Album(
+        id = entity.id,
+        title = entity.title,
+        image = entity.image,
+        artist = toArtistFromArtistEntity(entity.artist)
+)
+
+fun toArtistFromArtistEntity(entity: ArtistEntity) = Artist(
+        id = entity.id,
+        name = entity.name,
 )
