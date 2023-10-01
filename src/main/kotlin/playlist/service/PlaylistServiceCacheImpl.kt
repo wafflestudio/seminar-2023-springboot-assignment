@@ -1,5 +1,6 @@
 package com.wafflestudio.seminar.spring2023.playlist.service
 
+import com.wafflestudio.seminar.spring2023.util.CacheManager
 import org.springframework.stereotype.Service
 import java.lang.RuntimeException
 import java.util.concurrent.ConcurrentHashMap
@@ -10,72 +11,28 @@ class PlaylistServiceCacheImpl(
     private val impl: PlaylistServiceImpl,
 ) : PlaylistService {
 
-    val ttl = 10_000L
-    val groupKey = 0L
-    var groupCacheMap = ConcurrentHashMap<Long, GroupCache>()
-    var playlistCacheMap = ConcurrentHashMap<Long, PlaylistCache>()
+    private final val TTL = 10L
+    private final val groupKey = 0L
+    private val gcm = CacheManager<Long, List<PlaylistGroup>>(TTL)
+    private val pcm = CacheManager<Long, Playlist>(TTL)
 
     override fun getGroups(): List<PlaylistGroup> {
-        val now = System.currentTimeMillis()
-
-        if (groupCacheMap.containsKey(groupKey)) {
-            val expireTime = groupCacheMap[groupKey]?.expireTime?:throw RuntimeException()
-            val cachedGroups = groupCacheMap[groupKey]?.groups?:throw RuntimeException()
-
-            return if (expireTime < now) {
-                val groups = impl.getGroups()
-                val groupCache = GroupCache(
-                    expireTime = now + ttl,
-                    groups = groups
-                )
-                groupCacheMap[groupKey] = groupCache
-                groups
-            } else {
-                cachedGroups
-            }
-
-        } else {
+        return if (gcm.isCacheMiss(groupKey)) {
             val groups = impl.getGroups()
-            val groupCache = GroupCache(
-                expireTime = now + ttl,
-                groups = groups
-            )
-            groupCacheMap[groupKey] = groupCache
-            return groups
+            gcm.put(groupKey, groups)
+            groups
+        } else {
+            gcm.get(groupKey)
         }
     }
 
     override fun get(id: Long): Playlist {
-        val now = System.currentTimeMillis()
-
-        if (playlistCacheMap.containsKey(id)) {
-            val expireTime = playlistCacheMap[id]?.expireTime?:throw RuntimeException()
-            val cachedPlaylist = playlistCacheMap[id]?.playlist?:throw RuntimeException()
-            // 만료 되었다면
-            return if (expireTime < now) {
-                val playlist = impl.get(id)
-                val playlistCache = PlaylistCache(
-                    expireTime = now + ttl,
-                    playlist = impl.get(id)
-                )
-                playlistCacheMap[id] = playlistCache
-                playlist
-            } else {
-                cachedPlaylist
-            }
-
-        } else {
+        return if (pcm.isCacheMiss(id)) {
             val playlist = impl.get(id)
-            val playlistCache = PlaylistCache(
-                expireTime = now + ttl,
-                playlist = playlist
-            )
-            playlistCacheMap[id] = playlistCache
-            return playlist
+            pcm.put(id, playlist)
+            playlist
+        } else {
+            pcm.get(id)
         }
     }
 }
-
-data class GroupCache(val expireTime:Long, val groups:List<PlaylistGroup>)
-
-data class PlaylistCache(val expireTime:Long, val playlist:Playlist)
