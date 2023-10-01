@@ -21,9 +21,9 @@ class SongIntegrationTest @Autowired constructor(
                 get("/api/v1/songs?keyword=${keyword}")
         )
                 .andExpect(status().isOk)
-                .andExpect(jsonPath("$.songs[0].id").value(33L))
-                .andExpect(jsonPath("$.songs[0].duration").value(184))
-                .andExpect(jsonPath("$.songs[0].artists[0].name").value("정국"))
+                .andExpect(jsonPath("$.songs[1].id").value(33L))
+                .andExpect(jsonPath("$.songs[1].duration").value(184))
+                .andExpect(jsonPath("$.songs[1].artists[0].name").value("정국"))
     }
     @Test
     fun `Seven이 포함된 앨범 검색`() {
@@ -31,7 +31,7 @@ class SongIntegrationTest @Autowired constructor(
                 get("/api/v1/albums?keyword=${keyword}")
         )
                 .andExpect(status().isOk)
-                .andExpect(jsonPath("$.albums[0].id").value(5L))
-                .andExpect(jsonPath("$.albums[0].artist.name").value("정국"))
+                .andExpect(jsonPath("$.albums[1].id").value(5L))
+                .andExpect(jsonPath("$.albums[1].artist.name").value("정국"))
     }
 }

@@ -14,7 +14,7 @@ class SongServiceImpl(
 
         return songEntityList.map { songEntity ->
             toSong(songEntity)
-        }.sortedBy { song -> song.id }
+        }
     }
 
     override fun searchAlbum(keyword: String): List<Album> {
@@ -22,7 +22,7 @@ class SongServiceImpl(
 
         return albumEntityList.map { albumEntity ->
             toAlbum(albumEntity)
-        }.sortedBy { album -> album.id }
+        }
     }
 }
 
