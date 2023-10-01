@@ -7,3 +7,5 @@ class PlaylistNotFoundException : PlaylistException()
 class PlaylistAlreadyLikedException : PlaylistException()
 
 class PlaylistNeverLikedException : PlaylistException()
+
+class UserNotFoundException() : PlaylistException()

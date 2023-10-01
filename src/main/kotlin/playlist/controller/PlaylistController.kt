@@ -1,10 +1,9 @@
 package com.wafflestudio.seminar.spring2023.playlist.controller
 
-import com.wafflestudio.seminar.spring2023.playlist.service.Playlist
-import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistException
-import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistGroup
+import com.wafflestudio.seminar.spring2023.playlist.service.*
 import com.wafflestudio.seminar.spring2023.user.service.Authenticated
 import com.wafflestudio.seminar.spring2023.user.service.User
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -14,11 +13,16 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class PlaylistController {
+class PlaylistController (
+    // Using Dependency Injection
+    private val playlistService: PlaylistService,
+    private val playlistLikeService: PlaylistLikeService
+){
 
     @GetMapping("/api/v1/playlist-groups")
     fun getPlaylistGroup(): PlaylistGroupsResponse {
-        TODO()
+        val groups = playlistService.getGroups()
+        return PlaylistGroupsResponse(groups)
     }
 
     @GetMapping("/api/v1/playlists/{id}")
@@ -26,15 +30,19 @@ class PlaylistController {
         @PathVariable id: Long,
         user: User?,
     ): PlaylistResponse {
-        TODO()
+        val playlist = playlistService.get(id = id)
+        val isLiked = user?.let { playlistLikeService.exists(playlistId = id, userId = it.id) } ?: false
+        return PlaylistResponse(playlist, isLiked)
     }
+
+    
 
     @PostMapping("/api/v1/playlists/{id}/likes")
     fun likePlaylist(
         @PathVariable id: Long,
         @Authenticated user: User,
     ) {
-        TODO()
+        playlistLikeService.create(playlistId = id, userId = user.id)
     }
 
     @DeleteMapping("/api/v1/playlists/{id}/likes")
@@ -42,12 +50,17 @@ class PlaylistController {
         @PathVariable id: Long,
         @Authenticated user: User,
     ) {
-        TODO()
+        playlistLikeService.delete(playlistId = id, userId = user.id)
     }
 
     @ExceptionHandler
     fun handleException(e: PlaylistException): ResponseEntity<Unit> {
-        TODO()
+        return when(e) {
+            is PlaylistNotFoundException -> ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+            is PlaylistAlreadyLikedException -> ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
+            is PlaylistNeverLikedException -> ResponseEntity.ok().build()
+            is UserNotFoundException -> ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+        }
     }
 }
 

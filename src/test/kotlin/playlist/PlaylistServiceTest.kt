@@ -30,6 +30,7 @@ class PlaylistServiceTest @Autowired constructor(
             )
     }
 
+
     @Test
     fun `오픈 상태의 플레이리스트 그룹을 조회, 연관된 플레이리스트가 없는 경우 결과에서 제외, 쿼리 횟수는 1개로 제한`() {
         val (playlistGroups, queryCount) = queryCounter.count { playlistService.getGroups() }
