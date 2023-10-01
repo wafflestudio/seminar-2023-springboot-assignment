@@ -1,6 +1,5 @@
 package com.wafflestudio.seminar.spring2023.song.repository
 
-import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistsEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 

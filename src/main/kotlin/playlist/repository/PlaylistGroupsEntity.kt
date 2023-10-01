@@ -14,5 +14,5 @@ class PlaylistGroupsEntity(
         val title: String,
         val open: Boolean,
         @OneToMany(mappedBy = "playlist_group")
-        val playlists: List<PlaylistsEntity>
+        val playlists: List<PlaylistsEntity> = mutableListOf()
 )
