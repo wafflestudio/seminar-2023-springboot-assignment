@@ -12,4 +12,7 @@ class AlbumEntity(
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "artist_id")
     val artist: ArtistEntity,
+
+    @OneToMany(mappedBy = "album")
+    val songs : List<SongEntity>
 )

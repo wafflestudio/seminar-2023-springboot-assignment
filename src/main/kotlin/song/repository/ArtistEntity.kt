@@ -10,4 +10,6 @@ class ArtistEntity(
     val name: String,
     @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY)
     val albums: List<AlbumEntity>,
+    @OneToMany(mappedBy = "artist")
+    val song_artists : List<SongArtistEntity>
 )

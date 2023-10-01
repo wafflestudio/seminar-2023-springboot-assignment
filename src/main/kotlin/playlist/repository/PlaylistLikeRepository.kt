@@ -8,6 +8,5 @@ interface PlaylistLikeRepository : JpaRepository<PlaylistLikeEntity, Long> {
 
     fun save(playlistLike: PlaylistLikeEntity)
     fun deleteByPlaylistIdAndUserId(playlistId: Long, userId: Long)
-
     fun existsByPlaylistIdAndUserId(playlistId: Long, userId: Long): Boolean
 }

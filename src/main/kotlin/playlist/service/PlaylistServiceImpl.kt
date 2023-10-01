@@ -38,19 +38,20 @@ class PlaylistServiceImpl(
     }
 
     override fun get(id: Long): Playlist {
-
-        val playlistEntity = playlistRepository.findById(id).orElseThrow { throw PlaylistNotFoundException() }
+        val playlistEntity = playlistRepository.findPlaylistWithSongsById(id).orElseThrow { throw PlaylistNotFoundException() }
+//        val playlistEntity = playlistRepository.findById(id).orElseThrow { throw PlaylistNotFoundException() }
         val songIds = playlistEntity.playlist_songs.map { it.song.id }
-        val songEntityList = songRepository.findAllByIdIn(songIds)
+//        val songEntityList = songRepository.findAllByIdIn(songIds)
+        val songEntityList = songRepository.findSongsWithArtistsAndAlbumByIds(songIds)
 
         val songs = songEntityList.map { songEntity ->
             Song(
                 id = songEntity.id,
                 title = songEntity.title,
-                artists = songEntity.artists.map { artistEntity ->
+                artists =  songEntity.song_artists.map{songArtistEntity ->
                     Artist(
-                        id = artistEntity.id,
-                        name = artistEntity.name
+                        id = songArtistEntity.artist.id,
+                        name = songArtistEntity.artist.name
                     )
                 },
                 album = songEntity.album.title,

@@ -10,6 +10,9 @@ import org.springframework.data.repository.query.Param
 interface AlbumRepository : JpaRepository<AlbumEntity, Long> {
 //    @Query("SELECT a FROM albums a WHERE a.title LIKE %:keyword%")
 //    fun findByTitleContaining(@Param("keyword") keyword: String): List<AlbumEntity>
-    @EntityGraph(attributePaths = arrayOf("artist"))
+//    @EntityGraph(attributePaths = arrayOf("artist"))
+
+    @Query("SELECT a FROM albums a JOIN FETCH a.artist WHERE a.title LIKE %:keyword%")
     fun findByTitleContaining(keyword: String): List<AlbumEntity>
+
 }

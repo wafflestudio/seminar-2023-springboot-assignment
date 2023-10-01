@@ -23,7 +23,7 @@ class PlaylistLikeServiceImpl(
     override fun create(playlistId: Long, userId: Long) {
         if (!exists(playlistId, userId)) {
             val user = userRepository.findById(userId).orElseThrow { EntityNotFoundException("User not found") }
-            val playlist = playlistRepository.findById(playlistId) .orElseThrow { PlaylistNotFoundException() }
+            val playlist = playlistRepository.findPlaylistWithSongsById(playlistId) .orElseThrow { PlaylistNotFoundException() }
 
             val playlistLike = PlaylistLikeEntity(playlist = playlist, user = user)
             playlistLikeRepository.save(playlistLike)
@@ -39,7 +39,6 @@ class PlaylistLikeServiceImpl(
         }
 
         playlistLikeRepository.deleteByPlaylistIdAndUserId(playlistId, userId)
-
 
     }
 }

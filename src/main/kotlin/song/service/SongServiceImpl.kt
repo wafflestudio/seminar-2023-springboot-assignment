@@ -13,12 +13,24 @@ class SongServiceImpl @Autowired constructor(
 
     override fun search(keyword: String): List<Song> {
 
-        val songs = mutableListOf<Song>()
-
         val songsMatchingSongName = songRepository.findByTitleContaining(keyword)
-        songs.addAll(songsMatchingSongName.toSongList())
 
-        return songs.sortedBy { it.title.length }
+        return songsMatchingSongName.map {songEntity ->
+            Song(
+                id = songEntity.id,
+                title = songEntity.title,
+                artists = songEntity.song_artists.map { songArtistEntity ->
+                    Artist(
+                        id = songArtistEntity.artist.id,
+                        name = songArtistEntity.artist.name,
+                    )
+                },
+                album = songEntity.album.title,
+                image = songEntity.album.image,
+                duration = songEntity.duration
+            )
+
+        }.sortedBy { it.title.length }
 
     }
 
@@ -41,22 +53,3 @@ class SongServiceImpl @Autowired constructor(
     }
 }
 
-private fun List<SongEntity>.toSongList(): List<Song> {
-    return this.map { songEntity ->
-        Song(
-            id = songEntity.id,
-            title = songEntity.title,
-            artists = songEntity.artists.map { artistEntity ->
-                Artist(
-                    id = artistEntity.id,
-                    name = artistEntity.name
-                )
-            },
-            album = songEntity.album.title,
-            image = songEntity.image,
-            duration = songEntity.duration
-        )
-    }
-
-
-}
