@@ -13,7 +13,7 @@ class SongEntity(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id")
     val album: AlbumEntity,
-    @OneToMany(mappedBy = "song2")
+    @OneToMany(mappedBy = "song")
     val artists: List<SongArtistsEntity>,
     @OneToMany(mappedBy = "song")
     val playlists: List<PlaylistSongsEntity>

@@ -2,7 +2,6 @@ package com.wafflestudio.seminar.spring2023.playlist.service
 
 import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistGroupRepository
 import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistRepository
-import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistSongsEntity
 import com.wafflestudio.seminar.spring2023.song.repository.SongRepository
 import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Service
@@ -22,10 +21,8 @@ class PlaylistServiceImpl(
 
     override fun get(id: Long): Playlist {
         val playlist = playlistRepository.findByIdWithJoinFetch(id) ?: throw PlaylistNotFoundException()
-        val songs = songRepository.findBySongsWithJoinFetch(playlist.songs.map { it.song.id }) // 향후 약간 수정 필요 테스트는 통과했음.
-        playlist.songs.clear()
-        playlist.songs.addAll(songs.map { PlaylistSongsEntity(it.id, playlist, it) })
-        return Playlist(playlist)
+        val songs = songRepository.findBySongsWithJoinFetch(playlist.songs.map { it.song.id })
+        return Playlist(playlist, songs)
     }
 
 }

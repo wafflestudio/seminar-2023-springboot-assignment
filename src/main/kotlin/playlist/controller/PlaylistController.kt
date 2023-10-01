@@ -50,12 +50,13 @@ class PlaylistController(
     @ExceptionHandler
     fun handleException(e: PlaylistException): ResponseEntity<Unit> {
         val status = when (e) {
-            is PlaylistNotFoundException -> 404 
-            is PlaylistAlreadyLikedException, is PlaylistNeverLikedException -> 403
-        } 
+            is PlaylistNotFoundException -> 404
+            is PlaylistAlreadyLikedException, is PlaylistNeverLikedException -> 409
+        }
+
         return ResponseEntity.status(status).build()
     }
-    
+
 }
 
 data class PlaylistGroupsResponse(val groups: List<PlaylistGroup>)

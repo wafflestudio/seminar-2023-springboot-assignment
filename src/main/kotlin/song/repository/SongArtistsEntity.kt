@@ -9,7 +9,7 @@ class SongArtistsEntity(
     val id: Long = 0L,
     @ManyToOne
     @JoinColumn(name = "song_id")
-    val song2: SongEntity,
+    val song: SongEntity,
     @ManyToOne
     @JoinColumn(name = "artist_id")
     val artist: ArtistEntity,

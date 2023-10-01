@@ -11,7 +11,7 @@ class PlaylistSongsEntity(
     @ManyToOne
     @JoinColumn(name = "playlist_id")
     val playlist: PlaylistEntity,
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "song_id")
     val song: SongEntity,
 )

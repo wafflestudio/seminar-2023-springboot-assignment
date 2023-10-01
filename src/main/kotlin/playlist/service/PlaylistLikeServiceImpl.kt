@@ -31,9 +31,12 @@ class PlaylistLikeServiceImpl(
 
     @Transactional
     override fun delete(playlistId: Long, userId: Long) {
+        playlistRepository.findByIdWithJoinFetch(playlistId) ?: throw PlaylistNotFoundException()
+
         if (!exists(playlistId, userId)) {
             throw PlaylistNeverLikedException()
         }
+
         playlistLikesRepository.deleteByPlaylistIdAndUserId(playlistId, userId)
     }
 
