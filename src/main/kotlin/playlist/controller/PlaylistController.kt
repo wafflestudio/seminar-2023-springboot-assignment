@@ -1,24 +1,21 @@
 package com.wafflestudio.seminar.spring2023.playlist.controller
 
-import com.wafflestudio.seminar.spring2023.playlist.service.Playlist
-import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistException
-import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistGroup
+import com.wafflestudio.seminar.spring2023.playlist.service.*
 import com.wafflestudio.seminar.spring2023.user.service.Authenticated
 import com.wafflestudio.seminar.spring2023.user.service.User
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
-class PlaylistController {
+class PlaylistController(
+    private val playlistService: PlaylistService,
+    private val playlistLikesService: PlaylistLikeService,
+) {
 
     @GetMapping("/api/v1/playlist-groups")
     fun getPlaylistGroup(): PlaylistGroupsResponse {
-        TODO()
+        val groups = playlistService.getGroups()
+        return PlaylistGroupsResponse(groups)
     }
 
     @GetMapping("/api/v1/playlists/{id}")
@@ -26,7 +23,12 @@ class PlaylistController {
         @PathVariable id: Long,
         user: User?,
     ): PlaylistResponse {
-        TODO()
+        val playlist = playlistService.get(id)
+        val isLiked = when (user) {
+            null -> false
+            else -> playlistLikesService.exists(id, user.id)
+        }
+        return PlaylistResponse(playlist, isLiked)
     }
 
     @PostMapping("/api/v1/playlists/{id}/likes")
@@ -34,7 +36,7 @@ class PlaylistController {
         @PathVariable id: Long,
         @Authenticated user: User,
     ) {
-        TODO()
+        playlistLikesService.create(id, user.id)
     }
 
     @DeleteMapping("/api/v1/playlists/{id}/likes")
@@ -42,13 +44,19 @@ class PlaylistController {
         @PathVariable id: Long,
         @Authenticated user: User,
     ) {
-        TODO()
+        playlistLikesService.delete(id, user.id)
     }
 
     @ExceptionHandler
     fun handleException(e: PlaylistException): ResponseEntity<Unit> {
-        TODO()
+        val status = when (e) {
+            is PlaylistNotFoundException -> 404
+            is PlaylistAlreadyLikedException, is PlaylistNeverLikedException -> 409
+        }
+
+        return ResponseEntity.status(status).build()
     }
+
 }
 
 data class PlaylistGroupsResponse(val groups: List<PlaylistGroup>)

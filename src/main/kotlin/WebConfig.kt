@@ -1,12 +1,12 @@
 package com.wafflestudio.seminar.spring2023
 
-import com.wafflestudio.seminar.spring2023.user.service.AuthenticateException
-import com.wafflestudio.seminar.spring2023.user.service.Authenticated
-import com.wafflestudio.seminar.spring2023.user.service.User
-import com.wafflestudio.seminar.spring2023.user.service.UserService
+import com.wafflestudio.seminar.spring2023.user.service.*
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.MethodParameter
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
+import org.springframework.web.bind.annotation.ControllerAdvice
+import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.support.WebDataBinderFactory
 import org.springframework.web.context.request.NativeWebRequest
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
@@ -53,4 +53,26 @@ class UserArgumentResolver(
             }
         }
     }
+}
+
+@ControllerAdvice
+class GlobalExceptionHandler {
+
+    @ExceptionHandler(UserException::class)
+    fun handleUserException(e: UserException): ResponseEntity<Unit> {
+        val status = when (e) {
+            is SignUpBadUsernameException, is SignUpBadPasswordException -> 400
+            is SignUpUsernameConflictException -> 409
+            is SignInUserNotFoundException, is SignInInvalidPasswordException -> 404
+            is AuthenticateException -> 401
+        }
+
+        return ResponseEntity.status(status).build()
+    }
+
+    @ExceptionHandler(RuntimeException::class)
+    fun handleRuntimeException(e: RuntimeException): ResponseEntity<Unit> {
+        return ResponseEntity.status(500).build()
+    }
+
 }
