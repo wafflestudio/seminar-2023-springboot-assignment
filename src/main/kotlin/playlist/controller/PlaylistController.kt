@@ -1,8 +1,6 @@
 package com.wafflestudio.seminar.spring2023.playlist.controller
 
-import com.wafflestudio.seminar.spring2023.playlist.service.Playlist
-import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistException
-import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistGroup
+import com.wafflestudio.seminar.spring2023.playlist.service.*
 import com.wafflestudio.seminar.spring2023.user.service.Authenticated
 import com.wafflestudio.seminar.spring2023.user.service.User
 import org.springframework.http.ResponseEntity
@@ -14,11 +12,16 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class PlaylistController {
+class PlaylistController (
+    // Using Dependency Injection
+    private val playlistService: PlaylistService,
+    private val playlistLikeService: PlaylistLikeService
+){
 
     @GetMapping("/api/v1/playlist-groups")
     fun getPlaylistGroup(): PlaylistGroupsResponse {
-        TODO()
+        val groups = playlistService.getGroups()
+        return PlaylistGroupsResponse(groups)
     }
 
     @GetMapping("/api/v1/playlists/{id}")
