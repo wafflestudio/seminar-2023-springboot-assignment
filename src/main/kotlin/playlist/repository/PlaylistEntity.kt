@@ -12,12 +12,12 @@ class PlaylistEntity (
     val image: String,
 
     @OneToMany(mappedBy = "playlist")
-    val playlistLikes: MutableList<PlaylistLikesEntity> = mutableListOf(),
+    val playlistLikes: List<PlaylistLikesEntity>,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     val group: PlaylistGroupEntity,
 
     @OneToMany(mappedBy = "playlist")
-    val playlistSongs: MutableList<PlaylistSongEntity> = mutableListOf()
+    val playlistSongs: List<PlaylistSongEntity>
 )

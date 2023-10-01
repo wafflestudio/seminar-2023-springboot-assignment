@@ -2,6 +2,7 @@ package com.wafflestudio.seminar.spring2023.song.repository
 
 import jakarta.persistence.*
 
+@Entity(name = "song_artists")
 class SongArtistEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
