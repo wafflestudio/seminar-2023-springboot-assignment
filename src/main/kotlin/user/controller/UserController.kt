@@ -1,5 +1,8 @@
 package com.wafflestudio.seminar.spring2023.user.controller
 
+import com.wafflestudio.seminar.spring2023.user.service.*
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import com.wafflestudio.seminar.spring2023.user.service.AuthenticateException
 import com.wafflestudio.seminar.spring2023.user.service.Authenticated
 import com.wafflestudio.seminar.spring2023.user.service.SignInInvalidPasswordException
@@ -26,6 +29,7 @@ class UserController(
     fun signup(
         @RequestBody request: SignUpRequest,
     ) {
+        //TODO()
         userService.signUp(
             username = request.username,
             password = request.password,

@@ -8,32 +8,31 @@ import org.springframework.stereotype.Service
 class UserServiceImpl(
     private val userRepository: UserRepository,
 ) : UserService {
-
     override fun signUp(username: String, password: String, image: String): User {
+        //TODO("Not yet implemented")
         if (username.length < 4) {
             throw SignUpBadUsernameException()
         }
-
         if (password.length < 4) {
             throw SignUpBadPasswordException()
         }
-
         if (userRepository.findByUsername(username) != null) {
             throw SignUpUsernameConflictException()
         }
 
         val entity = userRepository.save(
-            UserEntity(
-                username = username,
-                password = password,
-                image = image
-            )
+                UserEntity(
+                        username = username,
+                        password = password,
+                        image = image
+                )
         )
 
         return User(entity)
     }
 
     override fun signIn(username: String, password: String): User {
+        //TODO("Not yet implemented")
         val entity = userRepository.findByUsername(username) ?: throw SignInUserNotFoundException()
 
         if (entity.password != password) {
@@ -44,6 +43,7 @@ class UserServiceImpl(
     }
 
     override fun authenticate(accessToken: String): User {
+        //TODO("Not yet implemented")
         val entity = userRepository.findByUsername(accessToken.reversed()) ?: throw AuthenticateException()
 
         return User(entity)
