@@ -1,8 +1,14 @@
 package com.wafflestudio.seminar.spring2023.playlist.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
-import java.util.Optional
+import org.springframework.data.jpa.repository.Query
 
 interface PlaylistRepository: JpaRepository<PlaylistEntity, Long> {
-    fun findPlaylistEntityById(id: Long): PlaylistEntity?
+    @Query("""
+select p from playlists p
+left join fetch p.songs ps
+join fetch ps.song s
+where p.id = :id
+    """)
+    fun findByIdWithJoinFetch(id: Long): PlaylistEntity?
 }

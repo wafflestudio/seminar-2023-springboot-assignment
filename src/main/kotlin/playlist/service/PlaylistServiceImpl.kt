@@ -4,10 +4,8 @@ import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistEntity
 import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistGroupEntity
 import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistGroupRepository
 import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistRepository
-import com.wafflestudio.seminar.spring2023.song.repository.SongEntity
 import com.wafflestudio.seminar.spring2023.song.service.Song
 import org.springframework.context.annotation.Primary
-import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
 
 @Primary
@@ -22,13 +20,13 @@ class PlaylistServiceImpl(
         .map { PlaylistGroup(it) }
 
     override fun get(id: Long): Playlist {
-        val playlist = playlistRepository.findPlaylistEntityById(id)?: throw PlaylistNotFoundException()
+        val playlist = playlistRepository.findByIdWithJoinFetch(id)?: throw PlaylistNotFoundException()
         return Playlist(
             id = playlist.id,
             title = playlist.title,
             subtitle = playlist.subtitle,
             image = playlist.image,
-            songs = playlist.songs.map { Song(it.song) }
+            songs = playlist.songs.map { Song(it.song) }.sortedBy { it.id }
         )
     }
 }
