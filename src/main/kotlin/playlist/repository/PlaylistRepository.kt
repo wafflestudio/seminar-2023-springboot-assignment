@@ -1,5 +1,6 @@
 package com.wafflestudio.seminar.spring2023.playlist.repository
 
+import com.wafflestudio.seminar.spring2023.user.repository.UserEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
@@ -15,4 +16,6 @@ interface PlaylistRepository : JpaRepository<PlaylistEntity, Long>{
             "LEFT JOIN FETCH a.artist " +
             "WHERE p.id = :id")
     fun findByIDJoinFetch(id: Long) : PlaylistEntity?
+
+    override fun findById(id: Long): Optional<PlaylistEntity>
 }
