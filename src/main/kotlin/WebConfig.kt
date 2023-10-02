@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 class WebConfig(
-    private val userArgumentResolver: UserArgumentResolver,
+        private val userArgumentResolver: UserArgumentResolver,
 ) : WebMvcConfigurer {
 
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
@@ -26,7 +26,7 @@ class WebConfig(
 
 @Component
 class UserArgumentResolver(
-    private val userService: UserService,
+        private val userService: UserService,
 ) : HandlerMethodArgumentResolver {
 
     override fun supportsParameter(parameter: MethodParameter): Boolean {
@@ -34,14 +34,14 @@ class UserArgumentResolver(
     }
 
     override fun resolveArgument(
-        parameter: MethodParameter,
-        mavContainer: ModelAndViewContainer?,
-        webRequest: NativeWebRequest,
-        binderFactory: WebDataBinderFactory?,
+            parameter: MethodParameter,
+            mavContainer: ModelAndViewContainer?,
+            webRequest: NativeWebRequest,
+            binderFactory: WebDataBinderFactory?,
     ): User? {
         return runCatching {
             val accessToken = requireNotNull(
-                webRequest.getHeader("Authorization")?.split(" ")?.get(1)
+                    webRequest.getHeader("Authorization")?.split(" ")?.get(1)
             )
 
             userService.authenticate(accessToken)
