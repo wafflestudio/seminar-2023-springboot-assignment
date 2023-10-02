@@ -13,5 +13,5 @@ class PlaylistSongEntity(
     val playlist: PlaylistEntity,
     @ManyToOne
     @JoinColumn(name = "song_id")
-    val song: SongEntity,
+    val song: SongEntity
 )

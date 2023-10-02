@@ -13,5 +13,5 @@ class PlaylistLikeEntity(
     val playlist: PlaylistEntity,
     @ManyToOne
     @JoinColumn(name = "user_id")
-    val user: UserEntity,
+    val user: UserEntity
 )

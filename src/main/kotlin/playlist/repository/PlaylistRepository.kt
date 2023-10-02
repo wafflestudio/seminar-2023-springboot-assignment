@@ -1,4 +1,6 @@
 package com.wafflestudio.seminar.spring2023.playlist.repository
 
-class PlaylistRepository {
+import org.springframework.data.jpa.repository.JpaRepository
+
+interface PlaylistRepository : JpaRepository<PlaylistEntity, Long> {
 }

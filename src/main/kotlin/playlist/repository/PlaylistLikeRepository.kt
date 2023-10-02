@@ -1,4 +1,9 @@
 package com.wafflestudio.seminar.spring2023.playlist.repository
 
-class PlaylistLikeRepository {
+import org.springframework.data.jpa.repository.JpaRepository
+
+interface PlaylistLikeRepository : JpaRepository<PlaylistLikeEntity, Long> {
+
+    fun findByPlaylistIdAndUserId(playlistId: Long, userId: Long): PlaylistLikeEntity?
+
 }

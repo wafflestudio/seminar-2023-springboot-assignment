@@ -16,5 +16,5 @@ class PlaylistEntity(
     @OneToMany(mappedBy = "playlist")
     val playlist_songs: List<PlaylistSongEntity>,
     @OneToMany(mappedBy = "playlist")
-    val playlist_likes: List<PlaylistLikeEntity>,
+    val playlist_likes: List<PlaylistLikeEntity>
 )
