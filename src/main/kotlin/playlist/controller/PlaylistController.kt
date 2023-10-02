@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class PlaylistController(
     private val playlistService: PlaylistService,
-    private val playlistLikesService: PlaylistLikeService,) {
+    private val playlistLikesService: PlaylistLikeService,
+) {
 
     @GetMapping("/api/v1/playlist-groups")
     fun getPlaylistGroup(): PlaylistGroupsResponse {
@@ -28,7 +30,10 @@ class PlaylistController(
         user: User?,
     ): PlaylistResponse {
         val playlist = playlistService.get(id)
-        val isLiked = user?.id?.let { playlistLikesService.exists(id, user.id) } ?: false
+        val isLiked = when (user) {
+            null -> false
+            else -> playlistLikesService.exists(id, user.id)
+        }
         return PlaylistResponse(playlist, isLiked)
     }
 
@@ -50,8 +55,14 @@ class PlaylistController(
 
     @ExceptionHandler
     fun handleException(e: PlaylistException): ResponseEntity<Unit> {
-        TODO()
+        val status = when (e) {
+            is PlaylistNotFoundException -> 404
+            is PlaylistAlreadyLikedException, is PlaylistNeverLikedException -> 409
+        }
+
+        return ResponseEntity.status(status).build()
     }
+
 }
 
 data class PlaylistGroupsResponse(val groups: List<PlaylistGroup>)

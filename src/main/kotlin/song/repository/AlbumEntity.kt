@@ -18,7 +18,7 @@ class AlbumEntity(
     @ManyToOne // default FetchType.EAGER
     @JoinColumn(name = "artist_id")     //여러앨범1아티스트
     val artist: ArtistEntity,
-    @OneToMany(mappedBy = "album")      //1앨범여러아티스트
+    @OneToMany(mappedBy = "album")
     val songs: List<SongEntity>,
 
     )

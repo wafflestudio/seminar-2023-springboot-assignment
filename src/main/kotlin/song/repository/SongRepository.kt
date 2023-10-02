@@ -5,21 +5,11 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
 interface SongRepository : JpaRepository<SongEntity, Long> {
-    @Query(
-        "SELECT s FROM songs s " +
-                "LEFT JOIN FETCH s.album a" +
-                "LEFT JOIN FETCH s.songArtists ar " +
-                "LEFT JOIN FETCH ar.artist WHERE s.title LIKE '%:keyword%'"
-    )
-    fun searchSongTWithFetchJoin(@Param("keyword") keyword: String): List<SongEntity>
 
-    ////check
-    @Query(
-        "SELECT DISTINCT s FROM songs s " +
-                "LEFT JOIN FETCH s.album a " +
-                "LEFT JOIN FETCH s.songArtists ar " +
-                "LEFT JOIN FETCH ar.artist" +
-                "WHERE s.id IN: ids"
-    )
-    fun searchSongIWithFetchJoin(@Param("keyword") keyword: String): List<SongEntity>
+    @Query("SELECT s FROM songs s LEFT JOIN FETCH s.album al LEFT JOIN FETCH s.artists sa LEFT JOIN FETCH sa.artist a WHERE s.id IN :songs")
+    fun searchSongIWithFetchJoin(songs: List<Long>): List<SongEntity>
+
+    @Query("SELECT s FROM songs s LEFT JOIN FETCH s.album al LEFT JOIN FETCH s.artists sa LEFT JOIN FETCH sa.artist a WHERE s.title LIKE :keyword ORDER BY LENGTH(s.title)")
+    fun searchSongTWithFetchJoin(keyword: String): List<SongEntity>
+
 }

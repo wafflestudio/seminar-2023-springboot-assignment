@@ -1,3 +1,5 @@
+//망한mapper
+/*
 package com.wafflestudio.seminar.spring2023.song.service
 
 import com.wafflestudio.seminar.spring2023.song.repository.AlbumEntity
@@ -18,3 +20,4 @@ object AlbumEntityMapper {
         }
     }
 }
+*/

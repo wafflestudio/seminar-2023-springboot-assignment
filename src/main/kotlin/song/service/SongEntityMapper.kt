@@ -1,3 +1,5 @@
+//망한mapper
+/*
 package com.wafflestudio.seminar.spring2023.song.service
 
 import com.wafflestudio.seminar.spring2023.song.repository.SongEntity
@@ -9,7 +11,7 @@ object SongEntityMapper {
             Song(
                 id = songEntity.id,
                 title = songEntity.title,
-                artists = songEntity.songArtists.map { songArtistEntity ->
+                artists = songEntity.artists.map { songArtistEntity ->
                     Artist(
                         id = songArtistEntity.id,
                         name = songArtistEntity.artist.name
@@ -22,3 +24,4 @@ object SongEntityMapper {
         }
     }
 }
+*/

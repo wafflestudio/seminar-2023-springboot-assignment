@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
 
-interface PlaylistRepository : JpaRepository<Playlist?, Long?> {
-    @Query("SELECT p FROM playlists p LEFT JOIN FETCH p.songs WHERE p.id = :playlistId")
-    fun findByIdWithSongs(@Param("playlistId") playlistId: Long?): PlaylistEntity?
+interface PlaylistRepository : JpaRepository<PlaylistEntity, Long> {
+    @Query("SELECT p FROM playlists p LEFT JOIN FETCH p.playlistSongs WHERE p.id = :id")
+    fun findByIdWithSongs(id: Long): PlaylistEntity?
 }

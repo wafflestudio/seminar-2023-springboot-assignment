@@ -6,7 +6,6 @@ import org.springframework.data.repository.query.Param
 
 
 interface PlaylistGroupRepository : JpaRepository<PlaylistGroupEntity, Long> {
-    @Query("SELECT pg FROM playlist_groups pg LEFT JOIN FETCH pg.playlists WHERE pg.id = :groupId")
-    fun findAll(@Param("groupId") groupId: Long?) : List<PlaylistGroupEntity>
-
+    @Query("SELECT pg FROM playlist_groups pg LEFT JOIN FETCH pg.playlists p WHERE pg.open = TRUE AND SIZE(p) > 0")
+    fun findAllWithFetchJoin(): List<PlaylistGroupEntity>
 }

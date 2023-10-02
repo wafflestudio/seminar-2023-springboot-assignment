@@ -1,20 +1,21 @@
 package com.wafflestudio.seminar.spring2023.song.repository
 
+import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistSongsEntity
 import com.wafflestudio.seminar.spring2023.song.service.Artist
 import jakarta.persistence.*
 
-@Entity(name= "songs")
-class SongEntity (
+@Entity(name = "songs")
+class SongEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0L,
+    val id: Long = 0L,
     val title: String,
-    val image: String,
     val duration: Int,
-    @ManyToOne //
-    @JoinColumn(name = "album_id") //sma1   여러노래1앨범
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "album_id")
     val album: AlbumEntity,
     @OneToMany(mappedBy = "song")
-    val songArtists: List<SongArtistsEntity>,
-    //val playlists: List<PlaylistSongsEntity>
+    val artists: List<SongArtistsEntity>,
+    @OneToMany(mappedBy = "song")
+    val playlists: List<PlaylistSongsEntity>
 )

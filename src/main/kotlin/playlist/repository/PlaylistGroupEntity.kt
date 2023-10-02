@@ -4,12 +4,12 @@ import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistBrief
 import jakarta.persistence.*
 
 @Entity(name = "playlist_groups")
-class PlaylistGroupEntity (
+class PlaylistGroupEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
     val title: String,
-    //open
+    val open: Boolean,
     @OneToMany(mappedBy = "playlistGroup")
-    val playlists: List<PlaylistEntity>,
+    val playlists: List<PlaylistEntity>
 )
