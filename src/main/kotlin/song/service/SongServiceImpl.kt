@@ -11,7 +11,7 @@ class SongServiceImpl(
 ) : SongService {
 
     override fun search(keyword: String): List<Song> {
-        val songEntities = songRepository.findByTitleContaining(keyword)
+        val songEntities = songRepository.findByTitleContainingWithJoinFetch(keyword)
         val songs = songEntities.map {
             Song(
                 id = it.id,
@@ -31,7 +31,7 @@ class SongServiceImpl(
     }
 
     override fun searchAlbum(keyword: String): List<Album> {
-        val albumEntities = albumRepository.findByTitleContaining(keyword)
+        val albumEntities = albumRepository.findByTitleContainingWithJoinFetch(keyword)
         val albums = albumEntities.map {
             Album(
                 id = it.id,

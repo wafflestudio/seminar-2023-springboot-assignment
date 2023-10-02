@@ -12,24 +12,33 @@ import org.springframework.stereotype.Service
 @Service
 class PlaylistServiceImpl(
     private val playlistGroupRepository: PlaylistGroupRepository,
-    private val playlistRepository: PlaylistRepository
+    private val playlistRepository: PlaylistRepository,
+    private val songRepository: SongRepository
 ) : PlaylistService {
 
     override fun getGroups(): List<PlaylistGroup> {
-        val playlistGroupEntities = playlistGroupRepository.findAll()
+        val playlistGroupEntities = playlistGroupRepository.findAllOpenWithJoinFetch()
 
-        return playlistGroupEntities
-            .map { PlaylistGroup(
-                id = it.id, title = it.title, playlists = it.playlists.map { it2 -> PlaylistBrief(
-                    id = it2.id, title = it2.title, subtitle = it2.subtitle, image = it2.image
-                ) }) }
-            .filter { it.playlists.isNotEmpty() }
+        return playlistGroupEntities.map { PlaylistGroup(
+                id = it.id,
+                title = it.title,
+                playlists = it.playlists.map {
+                    it2 -> PlaylistBrief(
+                        id = it2.id,
+                        title = it2.title,
+                        subtitle = it2.subtitle,
+                        image = it2.image
+                    )
+                }
+            )
+        }.filter { it.playlists.isNotEmpty() }
     }
 
     override fun get(id: Long): Playlist {
-        val playlistEntity = playlistRepository.findById(id).orElseThrow { PlaylistNotFoundException() }
-        val playlistSongsEntities = playlistEntity.playlist_songs
-        val songEntities = playlistSongsEntities.map { it.song }
+        val playlistEntity = playlistRepository.findByIdWithJoinFetch(id) ?: throw PlaylistNotFoundException()
+        val songEntities = songRepository.findByIdWithJoinFetch(
+            playlistEntity.playlistSongs.map { it.song.id }
+        )
 
         val songs = songEntities.map {
             Song(
@@ -37,7 +46,7 @@ class PlaylistServiceImpl(
                 title = it.title,
                 album = it.album.title,
                 image = it.album.image,
-                duration = it.duration.toString(),
+                duration = it.duration,
                 artists = it.songArtists.map {
                     it2 -> Artist(
                         id = it2.artist.id,

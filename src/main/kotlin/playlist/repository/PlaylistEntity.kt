@@ -14,7 +14,7 @@ class PlaylistEntity(
     @JoinColumn(name = "group_id")
     val group: PlaylistGroupEntity,
     @OneToMany(mappedBy = "playlist")
-    val playlist_songs: List<PlaylistSongEntity>,
+    val playlistSongs: List<PlaylistSongEntity>,
     @OneToMany(mappedBy = "playlist")
-    val playlist_likes: List<PlaylistLikeEntity>
+    val playlistLikes: List<PlaylistLikeEntity>
 )
