@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.Query
 
 interface AlbumRepository : JpaRepository<AlbumEntity, Long>{
     @Query(
-            "SELECT a FROM albums a LEFT JOIN FETCH a.artist WHERE a.title LIKE %:keyword% ORDER BY LENGTH(a.title) ")
+        "SELECT a FROM albums a LEFT JOIN FETCH a.artist WHERE a.title LIKE %:keyword% ORDER BY LENGTH(a.title) ")
 
-    fun searchSongsWithFetchJoin(keyword: String): List<AlbumEntity>
+    fun searchSongsTWithFetchJoin(keyword: String): List<AlbumEntity>
 
 }

@@ -14,7 +14,7 @@ class SongEntity (
     @ManyToOne //
     @JoinColumn(name = "album_id") //sma1   여러노래1앨범
     val album: AlbumEntity,
-    @OneToMany(mappedBy = "song") // s1am   1노래여러아티스트
-    val artists: List<ArtistEntity>,
-    // var playlist
+    @OneToMany(mappedBy = "song")
+    val songArtists: List<SongArtistsEntity>,
+    //val playlists: List<PlaylistSongsEntity>
 )

@@ -21,4 +21,4 @@ class AlbumEntity(
     @OneToMany(mappedBy = "album")      //1앨범여러아티스트
     val songs: List<SongEntity>,
 
-)
+    )
