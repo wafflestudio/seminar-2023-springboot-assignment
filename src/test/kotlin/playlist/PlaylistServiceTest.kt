@@ -75,7 +75,6 @@ class PlaylistServiceTest @Autowired constructor(
             assertThat(title).isEqualTo("Today's Top Hits")
             assertThat(songs.map { it.id })
                 .isEqualTo(listOf(2L, 8, 13, 14, 16, 34, 36, 37, 38, 39, 41, 43, 44, 45, 56, 62, 68, 79, 122))
-
             val songByJungkook = songs.find { it.title == "Seven (feat. Latto) (Explicit Ver.)" }
 
             assertThat(songByJungkook).isNotNull

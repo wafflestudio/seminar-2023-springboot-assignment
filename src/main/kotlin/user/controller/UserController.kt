@@ -62,6 +62,7 @@ class UserController(
             is SignUpUsernameConflictException -> 409
             is SignInUserNotFoundException, is SignInInvalidPasswordException -> 404
             is AuthenticateException -> 401
+            else -> 404
         }
 
         return ResponseEntity.status(status).build()
