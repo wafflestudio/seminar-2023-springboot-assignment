@@ -21,5 +21,6 @@ class SongEntity(
     @OneToMany(mappedBy = "song")
     val artists: List<SongArtistEntity>,
     @OneToMany(mappedBy = "song")
-    val playlists: List<PlaylistSongEntity>
+    val playlists: List<PlaylistSongEntity>,
+    val duration: Int
 )
