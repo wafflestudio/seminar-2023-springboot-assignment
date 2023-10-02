@@ -7,7 +7,9 @@ import com.wafflestudio.seminar.spring2023.user.repository.UserEntity
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Transactional
 
+@Transactional
 @SpringBootTest
 class PlaylistLikeRepositoryTest @Autowired constructor(
     private val playlistLikeRepository: PlaylistLikeRepository
