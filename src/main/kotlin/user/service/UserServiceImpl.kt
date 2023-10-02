@@ -11,33 +11,7 @@ class UserServiceImpl(
 ) : UserService {
 
     override fun signUp(username: String, password: String, image: String): User {
-<<<<<<< HEAD
-        //TODO("Not yet implemented")
-        if(username.length < 4) throw SignUpBadUsernameException()
-        if(password.length < 4) throw SignUpBadPasswordException()
-        if(userRepository.findByUsername(username) != null) throw SignUpUsernameConflictException()
 
-        userRepository.save(UserEntity(id++, username, password, image))
-        return User(username,image)
-
-    }
-
-    override fun signIn(username: String, password: String): User {
-        //TODO("Not yet implemented")
-        var userEntity:UserEntity? = userRepository.findByUsername(username)
-        if(userEntity == null) throw SignInUserNotFoundException()
-        if(userEntity.password.equals(password))
-            return User(userEntity.username,userEntity.image)
-        else
-            throw SignInInvalidPasswordException()
-
-    }
-
-    override fun authenticate(accessToken: String): User {
-        //TODO("Not yet implemented")
-        val userEntity: UserEntity = userRepository.findByUsername(accessToken.reversed()) ?: throw AuthenticateException()
-        return User(userEntity.username,userEntity.image)
-=======
         if (username.length < 4) {
             throw SignUpBadUsernameException()
         }
@@ -75,7 +49,6 @@ class UserServiceImpl(
         val entity = userRepository.findByUsername(accessToken.reversed()) ?: throw AuthenticateException()
 
         return User(entity)
->>>>>>> 6f4df81c3a062e525f0ffbd2e4c8d81cb3ec020e
     }
 }
 
