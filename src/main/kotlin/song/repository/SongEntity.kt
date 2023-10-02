@@ -20,13 +20,10 @@ class SongEntity(
     val id: Long = 0L,
     val title: String,
     val duration: Long,
-    @ManyToOne //(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "album_id")
     val album: AlbumEntity,
     @OneToMany
     @JoinColumn(name = "song_id")
     val songArtists: List<SongArtistsEntity>,
-    @OneToMany
-    @JoinColumn(name = "song_id")
-    val playlistSongs: List<PlaylistSongsEntity>,
 )

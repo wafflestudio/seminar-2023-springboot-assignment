@@ -4,22 +4,11 @@ import com.wafflestudio.seminar.spring2023.song.repository.*
 import com.wafflestudio.seminar.spring2023.user.repository.UserRepository
 import org.springframework.stereotype.Service
 @Service
-class SongServiceImpl(private val songArtistsRepository: SongArtistsRepository, private val songRepository: SongRepository, private val albumRepository: AlbumRepository, private val artistRepository: ArtistRepository) : SongService {
+class SongServiceImpl(private val songRepository: SongRepository, private val albumRepository: AlbumRepository) : SongService {
 
     override fun search(keyword: String): List<Song> {
-        //val searchRes = songRepository.findByTitleContaining(keyword = keyword)
-        val saEntity = songArtistsRepository.findBySongTitleContaining(keyword = keyword)
-        val saMap = saEntity.groupBy({it.song},{it.artist})
-        return saMap.map {
-            Song(
-                    id = it.key.id,
-                    title = it.key.title,
-                    duration = it.key.duration,
-                    album = toAlbum(it.key.album),
-                    image = it.key.album.image,
-                    artists = it.value.map { aEntity -> toArtist(aEntity) }
-            )
-        }.sortedBy { it.title.length }
+        val searchRes = songRepository.findByTitleContaining(keyword = keyword)
+        return searchRes.map { toSong(it) }.sortedBy { it.title.length }
     }
 
     override fun searchAlbum(keyword: String): List<Album> {
@@ -48,6 +37,4 @@ class SongServiceImpl(private val songArtistsRepository: SongArtistsRepository, 
                     album = toAlbum(songEntity.album),
                     artists = songEntity.songArtists.map{ toArtist(it.artist) }
             )
-
-
 }

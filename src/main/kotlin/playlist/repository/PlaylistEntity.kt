@@ -19,12 +19,7 @@ class PlaylistEntity (
     val title: String,
     val subtitle: String,
     val image: String,
-
-    @OneToMany  //(mappedBy = "playlist")
-    @JoinColumn(name = "playlist_id")
-    val playlistSongs: List<PlaylistSongsEntity>,
-
     @OneToMany
     @JoinColumn(name = "playlist_id")
-    val playlistLikes: List<PlaylistLikeEntity>,
+    val playlistSongs: Set<PlaylistSongsEntity>,
 )
