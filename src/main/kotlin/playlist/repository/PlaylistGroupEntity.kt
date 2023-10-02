@@ -13,6 +13,6 @@ class PlaylistGroupEntity(
     val id: Long = 0L,
     val title: String,
     val open: Boolean,
-    @OneToMany(mappedBy = "playlist_group")
+    @OneToMany(mappedBy = "group")
     val playlists: List<PlaylistEntity>
 )

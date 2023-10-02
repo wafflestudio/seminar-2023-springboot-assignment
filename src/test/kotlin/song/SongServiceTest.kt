@@ -14,7 +14,6 @@ class SongServiceTest @Autowired constructor(
     private val songService: SongService,
     private val queryCounter: QueryCounter,
 ) {
-
     @Test
     fun `제목에 키워드를 포함한 곡 검색, 제목 길이가 짧은 순으로 정렬`() {
         val songs = songService.search("Don't")

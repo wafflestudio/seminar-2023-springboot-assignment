@@ -17,8 +17,8 @@ class PlaylistEntity(
     val subtitle: String,
     val image: String,
     @ManyToOne
-    @JoinColumn(name = "playlist_group_id")
-    val playlistGroup: PlaylistGroupEntity,
+    @JoinColumn(name = "group_id")
+    val group: PlaylistGroupEntity,
     @OneToMany(mappedBy = "playlist")
     val songs: List<PlaylistSongEntity>,
     @OneToMany(mappedBy = "playlist")
