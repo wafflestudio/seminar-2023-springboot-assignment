@@ -10,7 +10,7 @@ class UserEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
-    val username: String,
-    val password: String,
-    val image: String,
+    val username: String = "",
+    val password: String = "",
+    val image: String = "",
 )

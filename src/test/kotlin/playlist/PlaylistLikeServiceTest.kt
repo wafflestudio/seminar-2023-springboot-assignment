@@ -1,9 +1,7 @@
 package com.wafflestudio.seminar.spring2023.playlist
 
-import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistAlreadyLikedException
-import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistLikeService
-import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistNeverLikedException
-import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistNotFoundException
+import com.wafflestudio.seminar.spring2023.playlist.service.*
+import com.wafflestudio.seminar.spring2023.user.service.UserService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -60,6 +58,6 @@ class PlaylistLikeServiceTest @Autowired constructor(
         )
 
         assertThat(playlistLikeService.exists(playlistId = 1L, userId = 1L)).isTrue
-        assertThat(playlistLikeService.exists(playlistId = 2L, userId = 1L)).isFalse()
+        assertThat(playlistLikeService.exists(playlistId = 2L, userId = 1L)).isFalse
     }
 }
