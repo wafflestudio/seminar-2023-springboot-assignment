@@ -16,12 +16,19 @@ class UserServiceImpl(
         if (password.length < 4) {
             throw SignUpBadPasswordException()
         }
-        if (userRepository.findAll().any { it.username == username }) {
+        if (userRepository.findByUsername(username) != null) {
             throw SignUpUsernameConflictException()
         }
 
-        userRepository.save(UserEntity(0L, username, password, image))
-        return User(username, image)
+        val entity = userRepository.save(
+                UserEntity(
+                        username = username,
+                        password = password,
+                        image = image
+                )
+        )
+
+        return User(entity)
     }
 
     override fun signIn(username: String, password: String): User {
