@@ -1,5 +1,6 @@
 package com.wafflestudio.seminar.spring2023.user.service
 
+import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistLikeEntity
 import com.wafflestudio.seminar.spring2023.user.repository.UserEntity
 import com.wafflestudio.seminar.spring2023.user.repository.UserRepository
 import org.springframework.stereotype.Service
@@ -21,12 +22,14 @@ class UserServiceImpl(
         if (userRepository.findByUsername(username) != null) {
             throw SignUpUsernameConflictException()
         }
+        val playlist_likes: List<PlaylistLikeEntity> = emptyList()
 
         val entity = userRepository.save(
             UserEntity(
                 username = username,
                 password = password,
-                image = image
+                image = image,
+                playlist_likes = playlist_likes,
             )
         )
 

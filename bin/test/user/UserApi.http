@@ -1,0 +1,22 @@
+### 회원가입
+POST http://localhost:8080/api/v1/signup
+Content-Type: application/json
+
+{
+  "username": "wafflestudioa",
+  "password": "spring",
+  "image": "https://wafflestudio.com/images/icon_intro.svg"
+}
+
+### 로그인
+POST http://localhost:8080/api/v1/signin
+Content-Type: application/json
+
+{
+  "username": "wafflestudio",
+  "password": "spring"
+}
+
+### 인증 토큰으로 유저 프로필 조회
+GET http://localhost:8080/api/v1/users/me
+Authorization: Bearer oidutselffaw
