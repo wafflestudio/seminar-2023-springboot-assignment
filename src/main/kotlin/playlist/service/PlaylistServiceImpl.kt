@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service
 
 @Primary
 @Service
-class PlaylistServiceImpl : PlaylistService {
-
+class PlaylistServiceImpl (
+): PlaylistService {
     override fun getGroups(): List<PlaylistGroup> {
         TODO()
     }
