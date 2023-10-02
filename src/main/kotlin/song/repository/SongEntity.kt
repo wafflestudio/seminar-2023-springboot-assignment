@@ -1,11 +1,13 @@
 package com.wafflestudio.seminar.spring2023.song.repository
 
+import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistSongEntity
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
 
 @Entity(name = "songs")
 class SongEntity(
@@ -15,5 +17,9 @@ class SongEntity(
     val title: String,
     @ManyToOne
     @JoinColumn(name = "album_id")
-    val album: AlbumEntity
+    val album: AlbumEntity,
+    @OneToMany(mappedBy = "song")
+    val artists: List<SongArtistEntity>,
+    @OneToMany(mappedBy = "song")
+    val playlists: List<PlaylistSongEntity>
 )
