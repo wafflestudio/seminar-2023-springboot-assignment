@@ -12,6 +12,6 @@ class ArtistEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
     val name: String,
-    @OneToMany(mappedBy = "artist")
+    @OneToMany(mappedBy = "artist") //a1am
     val albums: List<AlbumEntity>,
 )
