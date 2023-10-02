@@ -52,7 +52,7 @@ class PlaylistServiceImpl(
             title = playlistEntity.title,
             subtitle = playlistEntity.subtitle,
             image = playlistEntity.image,
-            songs = songs
+            songs = songs.sortedBy { it.id }
         )
     }
 }

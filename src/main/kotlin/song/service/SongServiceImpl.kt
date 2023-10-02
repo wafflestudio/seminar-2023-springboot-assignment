@@ -18,7 +18,7 @@ class SongServiceImpl(
                 title = it.title,
                 album = it.album.title,
                 image = it.album.image,
-                duration = it.duration.toString(),
+                duration = it.duration,
                 artists = it.songArtists.map {
                     it2 -> Artist(
                         id = it2.artist.id,
@@ -27,7 +27,7 @@ class SongServiceImpl(
                 }
             )
         }
-        return songs
+        return songs.sortedBy { it.title.length }
     }
 
     override fun searchAlbum(keyword: String): List<Album> {
