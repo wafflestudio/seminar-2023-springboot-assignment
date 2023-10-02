@@ -13,3 +13,5 @@ class SignInUserNotFoundException : UserException()
 class SignInInvalidPasswordException : UserException()
 
 class AuthenticateException : UserException()
+
+class UserNotFoundException : UserException()

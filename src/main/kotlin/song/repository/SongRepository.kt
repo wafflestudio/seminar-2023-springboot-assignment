@@ -11,4 +11,11 @@ interface SongRepository : JpaRepository<SongEntity, Long> {
             "WHERE s.title LIKE %:keyword% " +
             "ORDER BY LENGTH(s.title)")
     fun searchByTitleOrderByTitleLength(keyword: String): List<SongEntity>
+
+    @Query("SELECT s FROM songs s " +
+            "JOIN FETCH s.songArtists sa " +
+            "LEFT JOIN FETCH sa.artist " +
+            "WHERE s.id IN :songIds"
+    )
+    fun findByIdInWithJoinFetch(songIds: List<Long>): List<SongEntity>
 }

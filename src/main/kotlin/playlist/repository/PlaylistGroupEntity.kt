@@ -1,5 +1,6 @@
 package com.wafflestudio.seminar.spring2023.playlist.repository
 
+import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistGroup
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -15,4 +16,13 @@ class PlaylistGroupEntity (
     val open: Boolean,
     @OneToMany(mappedBy = "playlistGroup")
     val playlists: List<PlaylistEntity>,
-)
+) {
+    fun toPlaylistGroup() : PlaylistGroup {
+        return PlaylistGroup(
+                id = this.id,
+                title = this.title,
+                playlists = playlists.map{it.toPlaylistBrief()}
+        )
+    }
+
+}
