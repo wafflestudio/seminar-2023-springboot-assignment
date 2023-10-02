@@ -1,6 +1,7 @@
 package com.wafflestudio.seminar.spring2023.song
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.transaction.Transactional
 import org.hamcrest.Matchers.contains
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,6 +14,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 
 @AutoConfigureMockMvc
+@Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class SongIntegrationTest @Autowired constructor(
     private val mvc: MockMvc,
