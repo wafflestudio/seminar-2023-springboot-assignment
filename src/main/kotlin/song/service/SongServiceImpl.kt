@@ -11,13 +11,11 @@ class SongServiceImpl(
 
     override fun search(keyword: String): List<Song> {
         return songRepository.findAllByTitleContains(keyword)
-            .sortedBy { it.title.count() }
             .map { Song(it) }
     }
 
     override fun searchAlbum(keyword: String): List<Album> {
         return albumRepository.findAllByTitleContaining(keyword)
-            .sortedBy { it.title.count() }
             .map { Album(it) }
     }
 }
