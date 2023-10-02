@@ -12,12 +12,18 @@ import org.springframework.stereotype.Service
 @Service
 class PlaylistServiceImpl(
     private val playlistGroupRepository: PlaylistGroupRepository,
-    private val playlistRepository: PlaylistRepository,
-    private val songRepository: SongRepository
+    private val playlistRepository: PlaylistRepository
 ) : PlaylistService {
 
     override fun getGroups(): List<PlaylistGroup> {
-        TODO()
+        val playlistGroupEntities = playlistGroupRepository.findAll()
+
+        return playlistGroupEntities
+            .map { PlaylistGroup(
+                id = it.id, title = it.title, playlists = it.playlists.map { it2 -> PlaylistBrief(
+                    id = it2.id, title = it2.title, subtitle = it2.subtitle, image = it2.image
+                ) }) }
+            .filter { it.playlists.isNotEmpty() }
     }
 
     override fun get(id: Long): Playlist {
@@ -33,10 +39,10 @@ class PlaylistServiceImpl(
                 image = it.album.image,
                 duration = it.duration.toString(),
                 artists = it.songArtists.map {
-                        it2 -> Artist(
-                    id = it2.artist.id,
-                    name = it2.artist.name
-                )
+                    it2 -> Artist(
+                        id = it2.artist.id,
+                        name = it2.artist.name
+                    )
                 }
             )
         }

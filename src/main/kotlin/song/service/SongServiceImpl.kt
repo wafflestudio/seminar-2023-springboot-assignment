@@ -20,10 +20,10 @@ class SongServiceImpl(
                 image = it.album.image,
                 duration = it.duration.toString(),
                 artists = it.songArtists.map {
-                        it2 -> Artist(
-                    id = it2.artist.id,
-                    name = it2.artist.name
-                )
+                    it2 -> Artist(
+                        id = it2.artist.id,
+                        name = it2.artist.name
+                    )
                 }
             )
         }
