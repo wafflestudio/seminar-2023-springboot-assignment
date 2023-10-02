@@ -36,7 +36,8 @@ class PlaylistLikeServiceImpl(
             throw PlaylistNeverLikedException()
         }
 
-        val playlist = playlistLikeRepository.findById(playlistId).orElseThrow { PlaylistNotFoundException() }
+        val playlist = playlistLikeRepository.findByPlaylistIdAndUserId(playlistId, userId)
+            ?: throw PlaylistNotFoundException()
         playlistLikeRepository.delete(playlist)
     }
 }
