@@ -43,7 +43,6 @@ class UserArgumentResolver(
             val accessToken = requireNotNull(
                 webRequest.getHeader("Authorization")?.split(" ")?.get(1)
             )
-
             userService.authenticate(accessToken)
         }.getOrElse {
             if (parameter.hasParameterAnnotation(Authenticated::class.java)) {
