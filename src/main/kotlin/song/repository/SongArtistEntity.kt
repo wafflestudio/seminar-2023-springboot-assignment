@@ -1,18 +1,17 @@
 package com.wafflestudio.seminar.spring2023.song.repository
 
+import com.wafflestudio.seminar.spring2023.song.service.Song
 import jakarta.persistence.*
-import java.time.Duration
 
-@Entity(name = "albums")
-class AlbumEntity(
+@Entity(name = "song_artists")
+class SongArtistEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
-    val title: String,
-    val image: String,
     @ManyToOne // default FetchType.EAGER
     @JoinColumn(name = "artist_id")
     val artist: ArtistEntity,
-//    @OneToMany(mappedBy = "album")
-//    val songs: List<SongEntity>,
-)
+    @ManyToOne // default FetchType.EAGER
+    @JoinColumn(name = "song_id")
+    val song: SongEntity,
+    )
