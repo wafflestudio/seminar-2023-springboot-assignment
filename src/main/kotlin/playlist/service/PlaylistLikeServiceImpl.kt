@@ -25,18 +25,18 @@ class PlaylistLikeServiceImpl (
     }
 
     override fun create(playlistId: Long, userId: Long) {
-        if (this.exists(playlistId, userId)) {
+        if (exists(playlistId, userId)) {
             throw PlaylistAlreadyLikedException()
         }
-        val playlistLike = this.getPlaylistLike(playlistId, userId)
+        val playlistLike = getPlaylistLike(playlistId, userId)
         playlistLikeRepository.save(playlistLike)
     }
 
     override fun delete(playlistId: Long, userId: Long) {
-        if (!this.exists(playlistId, userId)) {
+        if (!exists(playlistId, userId)) {
             throw PlaylistNeverLikedException()
         }
-        val playlistLike = this.getPlaylistLike(playlistId, userId)
+        val playlistLike = getPlaylistLike(playlistId, userId)
         playlistLikeRepository.delete(playlistLike)
     }
 

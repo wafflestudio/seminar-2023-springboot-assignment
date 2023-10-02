@@ -17,7 +17,7 @@ class AlbumEntity(
     val title: String,
     val image: String,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "artist_id")
     val artist: ArtistEntity,
 )
