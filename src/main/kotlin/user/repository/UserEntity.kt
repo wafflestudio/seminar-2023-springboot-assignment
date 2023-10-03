@@ -1,9 +1,7 @@
 package com.wafflestudio.seminar.spring2023.user.repository
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistLikeEntity //playlistlikeentity 불러오기
+import jakarta.persistence.*
 
 @Entity(name = "users")
 class UserEntity(
@@ -13,4 +11,6 @@ class UserEntity(
     val username: String,
     val password: String,
     val image: String,
+    @OneToMany(mappedBy = "user") //연관관계 추가
+    val playlistLikes: MutableList<PlaylistLikeEntity> = mutableListOf() //뮤터블리스트로 정의
 )

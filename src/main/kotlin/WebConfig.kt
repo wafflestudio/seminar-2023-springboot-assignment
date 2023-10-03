@@ -13,7 +13,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
-
+//userargumentresolver가 이번엔 광역 설정 되어있는 것
 @Configuration
 class WebConfig(
     private val userArgumentResolver: UserArgumentResolver,

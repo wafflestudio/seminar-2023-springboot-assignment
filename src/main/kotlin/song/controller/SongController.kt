@@ -8,20 +8,22 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class SongController {
+class SongController(
+        private val songService: SongService, //써야할 서비스가 songservice 밖에 없으므로 이것만 주입 받아오면 된다
+) {
 
     @GetMapping("/api/v1/songs")
-    fun searchSong(
-        @RequestParam keyword: String,
+    fun searchSong( //노래 검색
+        @RequestParam keyword: String,//키워드가 포함된 애들을 검색해야하므로 요청해서 키워드를 받아와야 한다(annotation으로도 명시)
     ): SearchSongResponse {
-        TODO()
+        return SearchSongResponse(songService.search(keyword))
     }
 
     @GetMapping("/api/v1/albums")
-    fun searchAlbum(
+    fun searchAlbum( //앨범 검색
         @RequestParam keyword: String,
     ): SearchAlbumResponse {
-        TODO()
+        return SearchAlbumResponse(songService.searchAlbum(keyword))
     }
 }
 

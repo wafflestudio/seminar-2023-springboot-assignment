@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 
+//탐색시 쿼리 개수를 최소화 시켰는지 확인하는 테스트인 것 같다
 @Transactional
 @SpringBootTest
 class AlbumRepositoryTest @Autowired constructor(
