@@ -1,5 +1,10 @@
+//song service가 각각 구현해줘야 하는 기능들에 대한 명세서이다.
+//들어오는 요청 경로들이 포함되어 있으므로, 컨트롤러 작성할 때 보고 매핑하면 된다.
+
+//songservice의 search 함수로 구현
 ### 곡 조회
 GET http://localhost:8080/api/v1/songs?keyword=Seven
 
+//songservice의 searchalbum 함수로 구현
 ### 앨범 조회
 GET http://localhost:8080/api/v1/albums?keyword=Seven

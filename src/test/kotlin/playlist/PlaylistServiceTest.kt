@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 
+//playlistservice 구현시 지워야 할 오류에 대해서 명세
 @Transactional
 @SpringBootTest
 class PlaylistServiceTest @Autowired constructor(
