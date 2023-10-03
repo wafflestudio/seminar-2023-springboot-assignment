@@ -16,14 +16,14 @@ class SongController(
     fun searchSong( //노래 검색
         @RequestParam keyword: String,//키워드가 포함된 애들을 검색해야하므로 요청해서 키워드를 받아와야 한다(annotation으로도 명시)
     ): SearchSongResponse {
-        songService.search(keyword)
+        return SearchSongResponse(songService.search(keyword))
     }
 
     @GetMapping("/api/v1/albums")
     fun searchAlbum( //앨범 검색
         @RequestParam keyword: String,
     ): SearchAlbumResponse {
-        songService.searchAlbum(keyword)
+        return SearchAlbumResponse(songService.searchAlbum(keyword))
     }
 }
 
