@@ -2,22 +2,16 @@ package com.wafflestudio.seminar.spring2023.playlist.service
 
 import com.github.benmanes.caffeine.cache.Caffeine
 import org.springframework.stereotype.Service
-import java.time.Duration
 
 @Service
 class PlaylistServiceCacheImpl(
     private val impl: PlaylistServiceImpl,
+    cacheBuilder: Caffeine<Any, Any>,
 ) : PlaylistService {
 
-    private val playlistGroupsCache = Caffeine.newBuilder()
-        .maximumSize(1)
-        .expireAfterWrite(Duration.ofSeconds(10))
-        .build<Unit, List<PlaylistGroup>>()
+    private val playlistGroupsCache = cacheBuilder.build<Unit, List<PlaylistGroup>>()
 
-    private val playlistCache = Caffeine.newBuilder()
-        .maximumSize(1000)
-        .expireAfterWrite(Duration.ofSeconds(10))
-        .build<Long, Playlist>()
+    private val playlistCache = cacheBuilder.build<Long, Playlist>()
 
     override fun getGroups(): List<PlaylistGroup> {
         val cached = playlistGroupsCache.getIfPresent(Unit)

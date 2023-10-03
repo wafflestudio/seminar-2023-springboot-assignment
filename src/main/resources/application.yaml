@@ -14,3 +14,8 @@ spring:
   jpa:
     defer-datasource-initialization: true
     show-sql: true
+    open-in-view: false
+
+cache:
+  ttl: 10s
+  size: 100

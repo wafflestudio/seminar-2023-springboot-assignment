@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 class PlaylistLikeServiceImpl(
     private val playlistLikeRepository: PlaylistLikeRepository,
     private val playlistRepository: PlaylistRepository,
-)  : PlaylistLikeService {
+) : PlaylistLikeService {
 
     override fun exists(playlistId: Long, userId: Long): Boolean {
         return playlistLikeRepository.findByPlaylistIdAndUserId(playlistId = playlistId, userId = userId) != null
@@ -30,6 +30,11 @@ class PlaylistLikeServiceImpl(
                 userId = userId
             )
         )
+    }
+
+    @Synchronized
+    override fun createSynchronized(playlistId: Long, userId: Long) {
+        create(playlistId, userId)
     }
 
     override fun delete(playlistId: Long, userId: Long) {
