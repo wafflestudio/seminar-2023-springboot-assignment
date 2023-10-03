@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service
 import com.wafflestudio.seminar.spring2023.song.repository.AlbumRepository
 import com.wafflestudio.seminar.spring2023.song.repository.SongRepository
 
+//각 서비스의 반환 타입은 controller에서의 response들을 보면 알 수 있다.
+//각 서비스에 들어가야하는 변수가 어떤 것인지도 controller를 보면 알 수 있다.
 @Service
 class SongServiceImpl(
         private val songRepository: SongRepository,

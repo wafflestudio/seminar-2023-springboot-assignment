@@ -8,7 +8,8 @@ import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistRepositor
 import com.wafflestudio.seminar.spring2023.song.repository.SongRepository
 import com.wafflestudio.seminar.spring2023.song.service.Artist
 import com.wafflestudio.seminar.spring2023.song.service.Song
-
+//각 서비스의 반환 타입은 controller에서의 response들을 보면 알 수 있다.
+//각 서비스에 들어가야하는 변수가 어떤 것인지도 controller를 보면 알 수 있다.
 @Primary
 @Service
 class PlaylistServiceImpl(

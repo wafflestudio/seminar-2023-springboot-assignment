@@ -5,7 +5,8 @@ import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistLikeEntit
 import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistLikeRepository
 import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistRepository
 import com.wafflestudio.seminar.spring2023.user.repository.UserRepository
-
+//각 서비스의 반환 타입은 controller에서의 response들을 보면 알 수 있다.
+//각 서비스에 들어가야하는 변수가 어떤 것인지도 controller를 보면 알 수 있다.
 //사용가능한 에러의 종류는 playlistexception에 정의되어 있다. (나중에 컨트롤러에서 handlermethod로 각 에러에 대한 응답 코드를 정의해줘야 한다)
 @Service
 class PlaylistLikeServiceImpl(
