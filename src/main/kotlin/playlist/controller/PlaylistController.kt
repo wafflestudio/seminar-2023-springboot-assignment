@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RestController
 class PlaylistController {
 
     @GetMapping("/api/v1/playlist-groups")
-    fun getPlaylistGroup(): PlaylistGroupsResponse {
+    fun getPlaylistGroup(): PlaylistGroupsResponse { //플레이리스트 그룹 조회
         TODO()
     }
 
     @GetMapping("/api/v1/playlists/{id}")
-    fun getPlaylist(
+    fun getPlaylist( //플레이리스트 조회
         @PathVariable id: Long,
         user: User?,
     ): PlaylistResponse {
@@ -30,7 +30,7 @@ class PlaylistController {
     }
 
     @PostMapping("/api/v1/playlists/{id}/likes")
-    fun likePlaylist(
+    fun likePlaylist( //플레이 리스트 좋아요
         @PathVariable id: Long,
         @Authenticated user: User,
     ) {
@@ -38,7 +38,7 @@ class PlaylistController {
     }
 
     @DeleteMapping("/api/v1/playlists/{id}/likes")
-    fun undoLikePlaylist(
+    fun undoLikePlaylist( //플레이 리스트 좋아요 취소
         @PathVariable id: Long,
         @Authenticated user: User,
     ) {

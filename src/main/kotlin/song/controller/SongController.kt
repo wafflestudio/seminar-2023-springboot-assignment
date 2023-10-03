@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController
 class SongController {
 
     @GetMapping("/api/v1/songs")
-    fun searchSong(
+    fun searchSong( //노래 검색
         @RequestParam keyword: String,
     ): SearchSongResponse {
         TODO()
     }
 
     @GetMapping("/api/v1/albums")
-    fun searchAlbum(
+    fun searchAlbum( //앨범 검색
         @RequestParam keyword: String,
     ): SearchAlbumResponse {
         TODO()
