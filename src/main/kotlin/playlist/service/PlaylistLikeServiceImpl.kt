@@ -41,7 +41,7 @@ class PlaylistLikeServiceImpl(
         playlistRepository.findById(playlistId).orElseThrow { PlaylistNotFoundException() }
         //플레이 리스트 아이디로 플레이리스트 받아오기(기본 제공 함수 findById 사용), 없으면 에러 발생
 
-        if (!exists(playlistId, userId)) throw PlaylistNeverLikedException() //좋아요가 없는데 지우려고 하면 에러 발생
+        if (!exists(playlistId, userId)) {throw PlaylistNeverLikedException()} //좋아요가 없는데 지우려고 하면 에러 발생
 
         playlistLikeRepository.deleteByPlaylistIdAndUserId(playlistId, userId) //에러 없으면 playlistlikeentity 지워주기
     }
