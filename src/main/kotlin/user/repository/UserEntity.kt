@@ -1,9 +1,11 @@
 package com.wafflestudio.seminar.spring2023.user.repository
 
+import com.wafflestudio.seminar.spring2023.playlist.repository.PlaylistLikeEntity
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 
 @Entity(name = "users")
 class UserEntity(

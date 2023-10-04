@@ -1,5 +1,6 @@
-package com.wafflestudio.seminar.spring2023.song.repository
+package com.wafflestudio.seminar.spring2023.playlist.repository
 
+import com.wafflestudio.seminar.spring2023.user.repository.UserEntity
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
@@ -9,16 +10,15 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 
-@Entity(name = "albums")
-class AlbumEntity(
+@Entity(name = "playlist_likes")
+class PlaylistLikeEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
-    val title: String,
-    val image: String,
     @ManyToOne // default FetchType.EAGER
-    @JoinColumn(name = "artist_id")
-    val artist: ArtistEntity,
-    @OneToMany(mappedBy = "album")
-    val songs: List<SongEntity>,
+    @JoinColumn(name = "playlist_id")
+    val playlist: PlaylistEntity,
+    @ManyToOne // default FetchType.EAGER
+    @JoinColumn(name = "user_id")
+    val user: UserEntity,
 )
