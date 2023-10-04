@@ -7,15 +7,18 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
 
-@Entity(name = "albums")
-class AlbumEntity(
+@Entity(name = "songs")
+class SongEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
     val title: String,
-    val image: String,
+    val duration: Int,
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "artist_id")
-    val artist: ArtistEntity,
+    @JoinColumn(name = "album_id")
+    val album: AlbumEntity,
+    @OneToMany(mappedBy = "song")
+    val artists: List<SongArtistEntity>,
 )
