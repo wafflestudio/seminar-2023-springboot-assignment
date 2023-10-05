@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Transactional
 @SpringBootTest
-class PlaylistServiceTest @Autowired constructor(
+class  PlaylistServiceTest @Autowired constructor(
     private val playlistService: PlaylistService,
     private val queryCounter: QueryCounter,
 ) {
