@@ -1,6 +1,7 @@
 package com.wafflestudio.seminar.spring2023.playlist.repository
 
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -15,7 +16,7 @@ class PlaylistEntity(
     val title: String,
     val subtitle: String,
     val image: String,
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "playlist_group_id")
     val groupId: PlaylistGroupEntity,
 )
