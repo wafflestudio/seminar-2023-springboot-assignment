@@ -7,14 +7,16 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 
-@Entity(name = "songs")
-class SongEntity(
+
+@Entity(name = "song_artists")
+class SongArtistEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
-    val title: String,
-    val duration: Int = 0,
     @ManyToOne
-    @JoinColumn(name = "album_id")
-    val album: AlbumEntity,
+    @JoinColumn(name = "song_id")
+    val song: SongEntity,
+    @ManyToOne
+    @JoinColumn(name = "artist_id")
+    val artist: ArtistEntity,
 )
