@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.wafflestudio.seminar"
-version = "1.0.0"
+version = "1.1.0-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
