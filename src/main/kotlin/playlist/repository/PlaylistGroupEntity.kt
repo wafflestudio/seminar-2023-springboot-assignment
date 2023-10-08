@@ -1,9 +1,6 @@
 package com.wafflestudio.seminar.spring2023.playlist.repository
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 
 @Entity(name = "playlist_groups")
 class PlaylistGroupEntity(
@@ -12,4 +9,7 @@ class PlaylistGroupEntity(
     val id: Long = 0L,
     val open: Boolean,
     val title: String,
+
+    @OneToMany(mappedBy = "groupId")
+    val playlists: List<PlaylistEntity>,
 )
