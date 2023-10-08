@@ -11,24 +11,8 @@ class SongServiceImpl(
 ) : SongService {
 
     override fun search(keyword: String): List<Song> =
-        songRepository.findByTitleContainingOrderByTitleLengthAsc(keyword).map {
-            Song(
-                id = it.id,
-                title = it.title,
-                artists = it.artists.map { songArtist -> Artist(songArtist.artist.id, songArtist.artist.name) },
-                album = it.album.title,
-                image = it.album.image,
-                duration = it.duration.toString(),
-            )
-        }
+        songRepository.findByTitleContainingOrderByTitleLengthAsc(keyword).map { it.toSong() }
 
     override fun searchAlbum(keyword: String): List<Album> =
-        albumRepository.findByTitleContainingOrderByTitleLengthAsc(keyword).map {
-            Album(
-                id = it.id,
-                title = it.title,
-                image = it.image,
-                artist = Artist(it.artist.id, it.artist.name),
-            )
-        }
+        albumRepository.findByTitleContainingOrderByTitleLengthAsc(keyword).map { it.toAlbum() }
 }
