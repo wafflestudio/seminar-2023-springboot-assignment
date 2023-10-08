@@ -21,6 +21,6 @@ class PlaylistEntity(
     @JoinColumn(name = "group_id")
     val groupId: PlaylistGroupEntity,
 
-    @OneToMany(mappedBy = "playlist")
-    val playlistSongs: List<PlaylistSongEntity>,
+    @OneToMany(mappedBy = "playlist", fetch = FetchType.LAZY)
+    val playlistSongs: Set<PlaylistSongEntity>,
 )

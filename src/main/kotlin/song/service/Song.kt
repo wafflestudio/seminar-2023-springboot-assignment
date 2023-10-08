@@ -14,7 +14,7 @@ data class Song(
 fun SongEntity.toSong() = Song(
     id = id,
     title = title,
-    artists = artists.map { it.artist.toArtist() },
+    artists = songArtists.map { it.artist.toArtist() },
     album = album.title,
     image = album.image,
     duration = duration.toString(),

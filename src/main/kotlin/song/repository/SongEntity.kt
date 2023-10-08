@@ -20,5 +20,5 @@ class SongEntity(
     @JoinColumn(name = "album_id")
     val album: AlbumEntity,
     @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
-    val artists: List<SongArtistEntity>,
+    val songArtists: List<SongArtistEntity>,
 )

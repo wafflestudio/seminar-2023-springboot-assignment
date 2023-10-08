@@ -8,8 +8,8 @@ interface SongRepository : JpaRepository<SongEntity, Long> {
     @Query(
         """SELECT s FROM songs s 
             LEFT JOIN FETCH s.album 
-            LEFT JOIN FETCH s.artists ar
-            LEFT JOIN FETCH ar.artist
+            LEFT JOIN FETCH s.songArtists sa
+            LEFT JOIN FETCH sa.artist
             WHERE s.title LIKE %:title% 
             ORDER BY LENGTH(s.title) ASC"""
     )
