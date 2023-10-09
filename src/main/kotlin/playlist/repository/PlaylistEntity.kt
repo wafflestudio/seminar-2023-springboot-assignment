@@ -19,7 +19,7 @@ class PlaylistEntity(
     val image: String,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
-    val groupId: PlaylistGroupEntity,
+    val group: PlaylistGroupEntity,
 
     @OneToMany(mappedBy = "playlist", fetch = FetchType.LAZY)
     val playlistSongs: Set<PlaylistSongEntity>,
