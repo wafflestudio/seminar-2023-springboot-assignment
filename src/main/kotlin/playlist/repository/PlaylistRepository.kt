@@ -16,5 +16,5 @@ interface PlaylistRepository : JpaRepository<PlaylistEntity, Long> {
         WHERE p.id = :id
     """
     )
-    fun findPlaylistById(id: Long): PlaylistEntity?
+    fun findByIdOrNull(id: Long): PlaylistEntity?
 }

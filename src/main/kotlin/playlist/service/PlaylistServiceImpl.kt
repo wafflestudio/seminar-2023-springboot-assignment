@@ -18,6 +18,6 @@ class PlaylistServiceImpl(
             .map { it.toPlaylistGroup() }
 
     override fun get(id: Long): Playlist =
-        playlistRepository.findPlaylistById(id)?.toPlaylist()
+        playlistRepository.findByIdOrNull(id)?.toPlaylist()
             ?: throw PlaylistNotFoundException()
 }
