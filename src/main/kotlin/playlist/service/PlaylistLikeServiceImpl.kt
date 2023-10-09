@@ -17,7 +17,7 @@ class PlaylistLikeServiceImpl(
     override fun exists(playlistId: Long, userId: Long): Boolean =
         playlistLikeRepository.existsByPlaylistIdAndUserId(playlistId, userId)
 
-    @Transactional
+    @Transactional(rollbackOn = [PlaylistException::class])
     override fun create(playlistId: Long, userId: Long) {
         val playlist = playlistRepository.findByIdOrNull(playlistId) ?: throw PlaylistNotFoundException()
         val user = userRepository.findByIdOrNull(userId)!!
@@ -27,7 +27,7 @@ class PlaylistLikeServiceImpl(
         playlistLikeRepository.save(PlaylistLikeEntity(playlist = playlist, user = user))
     }
 
-    @Transactional
+    @Transactional(rollbackOn = [PlaylistException::class])
     override fun delete(playlistId: Long, userId: Long) {
         val playlistLike = playlistLikeRepository.findByPlaylistIdAndUserId(playlistId, userId)
             ?: throw PlaylistNeverLikedException()
