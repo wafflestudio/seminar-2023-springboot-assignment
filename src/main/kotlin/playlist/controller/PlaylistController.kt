@@ -8,6 +8,8 @@ import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistLikeService
 import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistNeverLikedException
 import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistNotFoundException
 import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistService
+import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistViewService
+import com.wafflestudio.seminar.spring2023.playlist.service.SortPlaylist.Type
 import com.wafflestudio.seminar.spring2023.user.service.Authenticated
 import com.wafflestudio.seminar.spring2023.user.service.User
 import org.springframework.http.ResponseEntity
@@ -16,17 +18,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class PlaylistController(
     private val playlistService: PlaylistService,
     private val playlistLikeService: PlaylistLikeService,
+    private val playlistViewService: PlaylistViewService,
 ) {
 
     @GetMapping("/api/v1/playlist-groups")
-    fun getPlaylistGroup(): PlaylistGroupsResponse {
-        return PlaylistGroupsResponse(playlistService.getGroups())
+    fun getPlaylistGroup(
+        @RequestParam(required = false, defaultValue = "DEFAULT") sort: Type,
+    ): PlaylistGroupsResponse {
+        return playlistService.getGroups(sort).let(::PlaylistGroupsResponse)
     }
 
     @GetMapping("/api/v1/playlists/{id}")
@@ -39,6 +45,7 @@ class PlaylistController(
         val liked = if (user == null) {
             false
         } else {
+            playlistViewService.create(playlistId = id, userId = user.id)
             playlistLikeService.exists(playlistId = id, userId = user.id)
         }
 
