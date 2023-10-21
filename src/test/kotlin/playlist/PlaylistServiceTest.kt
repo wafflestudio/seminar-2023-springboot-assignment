@@ -2,7 +2,6 @@ package com.wafflestudio.seminar.spring2023.playlist
 
 import com.wafflestudio.seminar.spring2023.QueryCounter
 import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistNotFoundException
-import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistService
 import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistServiceImpl
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -44,7 +43,7 @@ class PlaylistServiceTest @Autowired constructor(
             )
 
         assertThat(queryCount).isLessThanOrEqualTo(1)
-    }
+}
 
     @Test
     fun `플레이리스트 조회`() {

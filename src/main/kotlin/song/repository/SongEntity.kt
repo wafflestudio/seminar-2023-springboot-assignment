@@ -1,5 +1,6 @@
 package com.wafflestudio.seminar.spring2023.song.repository
 
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
@@ -19,6 +20,6 @@ class SongEntity(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id")
     val album: AlbumEntity,
-    @OneToMany(mappedBy = "song")
-    val artists: List<SongArtistEntity>,
+    @OneToMany(mappedBy = "song", cascade = [CascadeType.ALL])
+    val artists: MutableList<SongArtistEntity> = mutableListOf(),
 )
