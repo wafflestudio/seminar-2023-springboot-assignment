@@ -5,6 +5,7 @@ import com.wafflestudio.seminar.spring2023.customplaylist.service.CustomPlaylist
 import com.wafflestudio.seminar.spring2023.customplaylist.service.CustomPlaylistService
 import com.wafflestudio.seminar.spring2023.customplaylist.service.SongNotFoundException
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
@@ -117,5 +118,9 @@ class CustomPlaylistServiceTest @Autowired constructor(
         assertThrows<SongNotFoundException> {
             customPlaylistService.addSong(userId = 1L, customPlaylistId = created.id, songId = 404404L)
         }
+    }
+    @BeforeEach
+    fun before() {
+        customPlaylistRepository.deleteAll()
     }
 }

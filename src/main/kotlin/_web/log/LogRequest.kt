@@ -16,7 +16,9 @@ class LogRequestImpl : LogRequest {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override operator fun invoke(request: Request) {
-        TODO()
+        if (request.path.startsWith("/api") || request.path.startsWith("/admin")) {
+            logger.info("[API-REQUEST] ${request.method} ${request.path}")
+        }
     }
 }
 
