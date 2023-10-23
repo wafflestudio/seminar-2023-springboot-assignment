@@ -5,9 +5,8 @@ import org.springframework.data.jpa.repository.Query
 import java.util.*
 
 interface PlaylistRepository : JpaRepository<PlaylistEntity, Long> {
-    @Query("select p from playlists p left join fetch p.playlistSongs ps left join fetch ps.song s left join fetch s.album where p.id=:id")
+    @Query("select p from playlists p join fetch p.playlistSongs ps where p.id=:id")
     override fun findById(id: Long): Optional<PlaylistEntity>
-
 
     fun findByIdEquals(id:Long) : PlaylistEntity?
 }
