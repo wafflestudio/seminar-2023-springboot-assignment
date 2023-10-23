@@ -37,8 +37,37 @@ class PlaylistIntegrationTest @Autowired constructor(
             .andExpect(MockMvcResultMatchers.status().`is`(402))
 
         mvc.perform(
-            MockMvcRequestBuilders.post("/api/v1/playlists/{id}/likes",444000222L)
+            MockMvcRequestBuilders.post("/api/v1/signup")
+                .content(
+                    mapper.writeValueAsString(
+                        mapOf(
+                            "username" to "test-${javaClass.name}-3",
+                            "password" to "correct",
+                            "image" to "https://wafflestudio.com/images/icon_intro.svg"
+                        )
+                    )
+                )
                 .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(MockMvcResultMatchers.status().`is`(200))
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/signin")
+                .content(
+                    mapper.writeValueAsString(
+                        mapOf(
+                            "username" to "test-${javaClass.name}-3",
+                            "password" to "correct",
+                        )
+                    )
+                )
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(MockMvcResultMatchers.status().`is`(200))
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/playlists/{id}/likes",444000222L)
+                .header("Authorization", "Bearer ${"test-${javaClass.name}-3".reversed()}")
         )
             .andExpect(MockMvcResultMatchers.status().`is`(402))
     }
