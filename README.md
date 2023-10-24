@@ -5,7 +5,7 @@
 ## week3 사전과제
 
 - [week2](https://github.com/wafflestudio/seminar-2023/blob/main/spring/week2/week2.pdf) 복습 (멀티 스레딩, 스프링 MVC의 스레드 모델, 동기화)
-- [데이터베이스 락](https://unluckyjung.github.io/db/2022/03/07/Optimistic-vs-Pessimistic-Lock/) 예습
+- [week3](https://github.com/wafflestudio/seminar-2023/blob/main/spring/week3/week3.pdf) 예습
 
 ## week3 과제
 
