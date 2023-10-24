@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.util.concurrent.Executors
 
 @RestController
 class PlaylistController(
@@ -27,6 +28,7 @@ class PlaylistController(
     private val playlistLikeService: PlaylistLikeService,
     private val playlistViewService: PlaylistViewService,
 ) {
+    private val threads = Executors.newFixedThreadPool(4)
 
     @GetMapping("/api/v1/playlist-groups")
     fun getPlaylistGroup(
@@ -50,6 +52,25 @@ class PlaylistController(
         }
 
         return PlaylistResponse(playlist, liked)
+    }
+
+    @GetMapping("/api/v2/playlists/{id}")
+    fun getPlaylistV2(
+        @PathVariable id: Long,
+        user: User?,
+    ): PlaylistResponse {
+        val liked = threads.submit<Boolean> {
+            if (user == null) {
+                false
+            } else {
+                playlistViewService.create(playlistId = id, userId = user.id)
+                playlistLikeService.exists(playlistId = id, userId = user.id)
+            }
+        }
+
+        val playlist = playlistService.get(id)
+
+        return PlaylistResponse(playlist, liked.get())
     }
 
     @PostMapping("/api/v1/playlists/{id}/likes")
