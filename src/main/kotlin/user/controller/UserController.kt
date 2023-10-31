@@ -1,7 +1,10 @@
 package com.wafflestudio.seminar.spring2023.user.controller
 
+<<<<<<< HEAD
 import com.wafflestudio.seminar.spring2023.user.service.*
 import com.wafflestudio.seminar.spring2023.user.service.AuthenticateException
+=======
+>>>>>>> 12f7e172d693b44192e792143ceb21d43e0204a1
 import com.wafflestudio.seminar.spring2023.user.service.Authenticated
 import com.wafflestudio.seminar.spring2023.user.service.SignInInvalidPasswordException
 import com.wafflestudio.seminar.spring2023.user.service.SignInUserNotFoundException
@@ -63,7 +66,6 @@ class UserController(
             is SignUpBadUsernameException, is SignUpBadPasswordException -> 400
             is SignUpUsernameConflictException -> 409
             is SignInUserNotFoundException, is SignInInvalidPasswordException -> 404
-            is AuthenticateException -> 401
         }
 
         return ResponseEntity.status(status).build()

@@ -1,6 +1,6 @@
 package com.wafflestudio.seminar.spring2023.user
 
-import com.wafflestudio.seminar.spring2023.user.service.AuthenticateException
+import com.wafflestudio.seminar.spring2023._web.exception.AuthenticateException
 import com.wafflestudio.seminar.spring2023.user.service.SignInInvalidPasswordException
 import com.wafflestudio.seminar.spring2023.user.service.SignInUserNotFoundException
 import com.wafflestudio.seminar.spring2023.user.service.SignUpBadPasswordException
