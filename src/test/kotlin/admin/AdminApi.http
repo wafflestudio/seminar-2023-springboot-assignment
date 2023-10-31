@@ -1,0 +1,8 @@
+### 어드민 앨범 배치
+POST http://localhost:8080/admin/v1/batch/albums
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="albums.txt"; filename="albums.txt"
+
+< ../../resources/albums.txt
