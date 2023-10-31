@@ -13,7 +13,4 @@ spring:
     password: 1234
   jpa:
     defer-datasource-initialization: true
-
-cache:
-  ttl: 10s
-  size: 100
+    show-sql: true

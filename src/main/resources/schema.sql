@@ -7,9 +7,6 @@ drop table if exists song_artists cascade;
 drop table if exists songs cascade;
 drop table if exists users cascade;
 drop table if exists playlist_likes cascade;
-drop table if exists playlist_views cascade;
-drop table if exists custom_playlist_songs cascade;
-drop table if exists custom_playlists cascade;
 
 create table albums (
     id bigint auto_increment,
@@ -42,7 +39,6 @@ create table playlists (
     subtitle varchar(255),
     image varchar(200),
     group_id bigint,
-    view_cnt bigint default 0,
     primary key (id)
 );
 create table song_artists (
@@ -69,25 +65,5 @@ create table playlist_likes (
     id bigint auto_increment,
     playlist_id bigint not null,
     user_id bigint not null,
-    primary key (id)
-);
-create table playlist_views (
-    id bigint auto_increment,
-    playlist_id bigint not null,
-    user_id bigint not null,
-    created_at datetime not null,
-    primary key (id)
-);
-create table custom_playlists (
-    id bigint auto_increment,
-    user_id bigint not null,
-    title varchar(255),
-    song_cnt bigint default 0,
-    primary key (id)
-);
-create table custom_playlist_songs (
-    id bigint auto_increment,
-    custom_playlist_id bigint,
-    song_id bigint,
     primary key (id)
 );

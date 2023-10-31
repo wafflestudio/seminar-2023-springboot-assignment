@@ -16,26 +16,18 @@ class SongController(
     fun searchSong(
         @RequestParam keyword: String,
     ): SearchSongResponse {
-<<<<<<< HEAD
         //TODO()
         val songs = songService.search(keyword)
         return SearchSongResponse(songs)
-=======
-        return SearchSongResponse(songService.search(keyword))
->>>>>>> 12f7e172d693b44192e792143ceb21d43e0204a1
     }
 
     @GetMapping("/api/v1/albums")
     fun searchAlbum(
         @RequestParam keyword: String,
     ): SearchAlbumResponse {
-<<<<<<< HEAD
         //TODO()
         val albums = songService.searchAlbum(keyword)
         return SearchAlbumResponse(albums)
-=======
-        return SearchAlbumResponse(songService.searchAlbum(keyword))
->>>>>>> 12f7e172d693b44192e792143ceb21d43e0204a1
     }
 }
 

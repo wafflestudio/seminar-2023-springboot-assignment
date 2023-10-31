@@ -1,15 +1,28 @@
-package com.wafflestudio.seminar.spring2023._web.resolver
+package com.wafflestudio.seminar.spring2023
 
-import com.wafflestudio.seminar.spring2023._web.exception.AuthenticateException
+import com.wafflestudio.seminar.spring2023.user.service.AuthenticateException
 import com.wafflestudio.seminar.spring2023.user.service.Authenticated
 import com.wafflestudio.seminar.spring2023.user.service.User
 import com.wafflestudio.seminar.spring2023.user.service.UserService
+import org.springframework.context.annotation.Configuration
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.support.WebDataBinderFactory
 import org.springframework.web.context.request.NativeWebRequest
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+
+
+@Configuration
+class WebConfig(
+    private val userArgumentResolver: UserArgumentResolver,
+) : WebMvcConfigurer {
+
+    override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
+        resolvers.add(userArgumentResolver)
+    }
+}
 
 @Component
 class UserArgumentResolver(

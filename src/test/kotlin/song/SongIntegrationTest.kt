@@ -7,15 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-<<<<<<< HEAD
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-=======
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import org.springframework.transaction.annotation.Transactional
->>>>>>> 12f7e172d693b44192e792143ceb21d43e0204a1
 
-@Transactional
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class SongIntegrationTest @Autowired constructor(
@@ -23,7 +16,6 @@ class SongIntegrationTest @Autowired constructor(
 ) {
 
     @Test
-<<<<<<< HEAD
     fun `곡 조회`(){
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/songs?keyword=Seven")
@@ -56,22 +48,5 @@ class SongIntegrationTest @Autowired constructor(
                           {"id":5,"title":"Seven (feat. Latto)","image":"https://i.scdn.co/image/ab67616d00001e02bf5cce5a0e1ed03a626bdd74","artist":{"id":8,"name":"정국"}}
                 ]}
             """))
-=======
-    fun `곡 제목 검색`() {
-        mvc.perform(
-            MockMvcRequestBuilders.get("/api/v1/songs?keyword=Seven")
-        )
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("\$.songs[0].title").value("Seventeen"))
-    }
-
-    @Test
-    fun `앨범 제목 검색`() {
-        mvc.perform(
-            MockMvcRequestBuilders.get("/api/v1/albums?keyword=Seven")
-        )
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("\$.albums[0].title").value("Seventeen"))
->>>>>>> 12f7e172d693b44192e792143ceb21d43e0204a1
     }
 }

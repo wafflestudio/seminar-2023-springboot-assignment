@@ -1,4 +1,4 @@
-package com.wafflestudio.seminar.spring2023._front
+package com.wafflestudio.seminar.spring2023.front
 
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping

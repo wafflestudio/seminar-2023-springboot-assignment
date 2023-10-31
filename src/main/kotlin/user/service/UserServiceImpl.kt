@@ -1,6 +1,5 @@
 package com.wafflestudio.seminar.spring2023.user.service
 
-import com.wafflestudio.seminar.spring2023._web.exception.AuthenticateException
 import com.wafflestudio.seminar.spring2023.user.repository.UserEntity
 import com.wafflestudio.seminar.spring2023.user.repository.UserRepository
 import org.springframework.stereotype.Service
