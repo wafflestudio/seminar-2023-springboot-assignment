@@ -7,10 +7,6 @@ interface LogRequest {
     operator fun invoke(request: Request)
 }
 
-/**
- * 스펙:
- *  1. 들어오는 모든 요청을 "[API-REQUEST] GET /api/v1/playlist-groups" 꼴로 로깅
- */
 @Component
 class LogRequestImpl : LogRequest {
     private val logger = LoggerFactory.getLogger(javaClass)

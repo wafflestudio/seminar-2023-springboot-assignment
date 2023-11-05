@@ -5,10 +5,6 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 
-/**
- * 1. preHandle을 수정하여 logRequest
- * 2. preHandle, afterCompletion을 수정하여 logSlowResponse
- */
 @Component
 class LogInterceptor(
     private val logRequest: LogRequest,

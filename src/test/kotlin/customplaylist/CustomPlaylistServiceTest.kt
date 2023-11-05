@@ -12,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.util.concurrent.Executors
 
-/***
- * 주의: @Transactional 사용하지 않기. (데이터 롤백, 레이지 로드 등의 이슈를 피할 수 있도록 구현)
- */
 @SpringBootTest
 class CustomPlaylistServiceTest @Autowired constructor(
     private val customPlaylistService: CustomPlaylistService,
@@ -119,6 +116,7 @@ class CustomPlaylistServiceTest @Autowired constructor(
             customPlaylistService.addSong(userId = 1L, customPlaylistId = created.id, songId = 404404L)
         }
     }
+
     @BeforeEach
     fun before() {
         customPlaylistRepository.deleteAll()
