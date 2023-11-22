@@ -2,9 +2,11 @@ package com.wafflestudio.seminar.spring2023._web.log
 
 import org.slf4j.LoggerFactory
 import org.springframework.boot.web.client.RestTemplateBuilder
+import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.client.postForEntity
+import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
@@ -18,6 +20,7 @@ data class SlowResponse(
     val duration: Long,
 )
 
+@Profile("prod")
 @Component
 class AlertSlowResponseImpl(
     restTemplateBuilder: RestTemplateBuilder,
@@ -31,7 +34,8 @@ class AlertSlowResponseImpl(
 
     override operator fun invoke(slowResponse: SlowResponse): Future<Boolean> {
         return threads.submit<Boolean> {
-            val log = "[API-RESPONSE] ${slowResponse.method} ${slowResponse.path}, took ${slowResponse.duration}ms, PFCJeong"
+            val log =
+                "[API-RESPONSE] ${slowResponse.method} ${slowResponse.path}, took ${slowResponse.duration}ms, PFCJeong"
 
             logger.warn(log)
 
@@ -52,4 +56,13 @@ class AlertSlowResponseImpl(
     private data class SlackResponse(
         val ok: Boolean,
     )
+}
+
+@Profile("!prod")
+@Component
+class AlertSlowResponseNoOpImpl : AlertSlowResponse {
+
+    override fun invoke(slowResponse: SlowResponse): Future<Boolean> {
+        return CompletableFuture.completedFuture(true) // do nothing
+    }
 }
