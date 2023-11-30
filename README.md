@@ -2,114 +2,188 @@
 
 2023 스프링 세미나 과제 레포
 
-## week1 사전과제
+## week3 사전과제
 
-1. [MySQL 쿼리 기초 숙지](https://cocoon1787.tistory.com/762)
+- [week2](https://github.com/wafflestudio/seminar-2023/blob/main/spring/week2/week2.pdf) 복습 (멀티 스레딩, 스프링 MVC의 스레드 모델, 동기화)
+- [데이터베이스 락](https://unluckyjung.github.io/db/2022/03/07/Optimistic-vs-Pessimistic-Lock/) 예습
 
-2. ER 다이어그램 숙지
-![er](https://github.com/wafflestudio/seminar-2023-springboot-assignment/assets/76547957/974e090c-166c-407a-b82f-ba95e12e1030)
+## week3 과제
 
-3. H2 데이터베이스 콘솔 접속 (http://localhost:8080/h2-console)
-- Driver.class: org.h2.Driver
-- JDBC URL: jdbc:h2:mem:testdb
-- User Name: sa
-- Password: 1234
-<img width="539" alt="스크린샷 2023-09-17 오후 11 13 55" src="https://github.com/wafflestudio/seminar-2023-springboot-assignment/assets/76547957/02cfe627-1147-4c77-aeba-9c9ef4b3ac54">
+### 1. 배치 구현
+배치란 대량의 반복적인 데이터 작업을 완료하는 데 사용하는 방법입니다.
 
+운영팀은 플레이리스트를 구성하는데 필요한 대량의 앨범 정보를 주기적으로 업데이트하려 합니다. 
 
-4. 첫 쿼리 실행
-- `show tables;`
-<img width="363" alt="스크린샷 2023-09-17 오후 11 14 43" src="https://github.com/wafflestudio/seminar-2023-springboot-assignment/assets/76547957/d5933f6f-7731-46fa-917b-a488d6ca8a6d">
+운영자가 주기적으로 앨범 정보가 담긴 json 파일을 업로드 할 것이고, 우리는 이를 처리하기 위한 기능을 개발해야 합니다. 
 
+`AdminController`와 `AdminBatchServiceImpl`을 구현해주세요. 
 
-5. 데이터 쿼리 연습
-- (ex) 그룹 아이디가 1인 플레이리스트의 제목들 `select title from playlists where group_id = 1;`
-- 아이디가 1인 아티스트가 발매한 앨범의 제목들
-- 제목에 'Seven'이 포함된 노래의 제목들
-- 제목이 'GUTS'인 앨범에 수록된 노래의 제목들
-- 제목이 'Spotify 플레이리스트'인 플레이리스트 그룹에 속한 플레이리스트의 제목들
-- 아이디가 1인 아티스트가 부른 노래의 제목들
-
-## week1 과제
-
-![a](https://github.com/wafflestudio/seminar-2023-springboot-assignment/assets/76547957/f3985c4a-3d75-4fec-88a6-9e438cee8071)
-
-
-### 1. 구현해야하는 API
-
-총 6개의 API를 구현해야 합니다. 아래에서 확인할 수 있습니다.
-
-- */src/test/kotlin/playlist/PlaylistApi.http*
-- */src/test/kotlin/song/SongApi.http*
-
-### 2. Entity 설계
-ER 다이어그램을 바탕으로, JPA 엔티티 클래스, 레포지토리를 작성해야 합니다. (미리 구현되어 있는 AlbumEntity, ArtistEntity 클래스를 수정해야 할 수도 있습니다.) 
-
-### 3. 서비스 테스트
-week1에서는 응답의 정확성 뿐만 아니라 효율성도 채점 기준에 포함됩니다.
-
-JPA를 사용하면 쿼리를 직접 작성하지 않아도 되기 때문에 편리하지만, 개발자가 의도치 않은 쿼리가 발생하여 효율성을 크게 해칠 수 있습니다. (대표적으로 N+1 이슈, 일대다 페이징 이슈)
-
-week1 과제에서는 JPQL과 Fetch Join을 통해 서비스에서 사용되는 쿼리 개수를 최대한 줄여야 합니다.
-
-#### 3.1 JPQL, Fetch Join을 사용한 예제
-
-*-/src/main/kotlin/song/repository/ArtistRepository.kt*
-
+*-/src/main/kotlin/admin/controller/AdminController.kt*
 ```kotlin
-interface ArtistRepository : JpaRepository<ArtistEntity, Long> {
-    @Query("SELECT a FROM artists a LEFT JOIN FETCH a.albums WHERE a.id = :id")
-    fun findByIdWithJoinFetch(id: Long): ArtistEntity?
+@RestController
+class AdminController {
+
+    @PostMapping("/admin/v1/batch/albums")
+    fun insertAlbums(
+        @RequestPart("albums.txt") file: MultipartFile,
+    ) {
+        TODO()
+    }
 }
 ```
-
-#### 3.2 테스트 예제
-
-*-/src/test/kotlin/song/SongServiceTest.kt*
-
-
-```kotlin
-@Test
-fun `제목에 키워드를 포함한 곡 검색, 제목 길이가 짧은 순으로 정렬, 쿼리 횟수는 1개로 제한`() {
-    val (songs, queryCount) = queryCounter.count { songService.search("Don't") }
-
-    assertThat(songs.map { it.id }).isEqualTo(listOf(829L, 295, 494, 482, 523, 359, 1538, 487))
-
-    assertThat(queryCount).isLessThanOrEqualTo(1)
-}
-```
-
-### 3. 통합 테스트
-week1에서는 통합 테스트 코드를 직접 짜야합니다. 자유롭게 */src/test/kotlin/playlist/PlaylistIntegrationTest.kt*, */src/test/kotlin/song/SongIntegrationTest.kt*를 작성해주시면 됩니다.
-
-*-/src/test/kotlin/playlist/PlaylistIntegrationTest.kt*
-
-```kotlin
-@AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class PlaylistIntegrationTest @Autowired constructor(
-    private val mvc: MockMvc,
-) {
-}
-```
-
-### 4. 추가 과제
-플레이 리스트 그룹, 플레이 리스트는 자주 바뀌는 데이터가 아니기 때문에 캐시 레이어를 두기 좋은 도메인입니다. TTL이 10초인 캐시 구현체를 자유롭게 구현해주세요. 캐싱 관련 라이브러리는 사용할 수 없습니다.
-
-*-/src/main/kotlin/playlist/service/PlaylistServiceCacheImpl.kt*
-
+*-/src/main/kotlin/admin/service/AdminBatchServiceImpl.kt*
 ```kotlin
 @Service
-class PlaylistServiceCacheImpl(
-    private val impl: PlaylistServiceImpl,
-) : PlaylistService {
+class AdminBatchServiceImpl : AdminBatchService {
 
-    override fun getGroups(): List<PlaylistGroup> {
+  override fun insertAlbums(albumInfos: List<BatchAlbumInfo>) {
+    TODO("Not yet implemented")
+  }
+}
+```
+
+데이터가 많으면 배치 작업이 오래 걸려 운영 상의 불편함을 겪을 수 있습니다. 따라서 아래 제약 조건이 지켜져야 합니다.
+- 배치 작업은 최대 **500ms** 안에 완료되어야 합니다. (500ms는 꼭 지켜지지 않아도 됩니다. 다만 성능 향상을 위한 로직이 코드에 반영되어 있어야 합니다.)
+
+앨범 A와 이에 수록된 곡 B,C가 있다고 할 때, 곡 C에 대한 Insert 작업이 실패할 수 있습니다. 이 경우, 앨범-곡 정보가 부정확하게 업데이트 될 수 있습니다. 따라서 아래 조건이 지켜져야 합니다.
+- 한 앨범과 앨범의 아티스트, 그리고 앨범에 수록된 곡들에 대한 Insert 작업은 모두 **Atomic** 해야합니다. 
+
+### 2. 플레이리스트에 조회 수 기능 도입
+기획팀은 플레이리스트에 조회 수 기능을 도입하여, 유저들에게 인기가 많은 플레이리스트를 먼저 노출시키고 싶어 합니다.
+
+플레이리스트 정렬 기준은 기본 정렬, 전체 조회 수 정렬, 최근 1시간 조회 수 정렬이 있습니다. 
+
+조회 수 기능 도입을 위해 `PlaylistViewServiceImpl`을 구현해주세요.
+
+*-/src/main/kotlin/playlist/service/PlaylistViewServiceImpl.kt*
+```kotlin
+@Service
+class PlaylistViewServiceImpl : PlaylistViewService, SortPlaylist {
+    
+  override fun create(playlistId: Long, userId: Long, at: LocalDateTime): Future<Boolean> {
+    return CompletableFuture.completedFuture(false) // FIXME
+  }
+
+  override fun invoke(playlists: List<PlaylistBrief>, type: Type, at: LocalDateTime): List<PlaylistBrief> {
+    return when (type) {
+      Type.DEFAULT -> playlists
+      else -> TODO("Not yet implemented")
+    }
+  }
+```
+
+기획팀에서는 어뷰저들이 조회 수를 조작하여 인기 순위를 왜곡하는 것을 원하지 않습니다. 따라서 아래 제약 조건이 지켜져야 합니다.
+
+- 같은 유저-같은 플레이리스트의 조회 수는 **1분에 1개**까지만 허용한다.
+
+기획팀에서는 조회 수 기능 추가로 인해 플레이리스트 조회 응답이 느려지거나 실패하는 **사이드 이펙트**를 원하지 않습니다. 따라서 아래 조건이 지켜져야 합니다.
+
+- 조회 수 업데이트가 오래 걸리더라도, 플레이리스트 조회 API 응답은 이에 영향을 받지 않는다.
+- 조회 수 업데이트가 실패하더라도, 플레이리스트 조회 API 응답은 성공적으로 내려가야 한다.
+
+기획팀에서는 특정 플레이리스트에 대한 조회 수가 급증하여 동시 요청이 들어오더라도, 조회 수 **증가량이 모두 반영**되기를 원합니다. 따라서 아래 조건이 지켜져야 합니다.
+
+- 플레이리스트 조회 요청이 동시에 여러 번 들어오더라도, 조회 수 증가량은 실제 들어온 조회 수와 일치해야 한다. (조회 수 업데이트 작업이 실패하지 않는다는 전제 하에)
+
+### 3. 서버 모니터링
+개발팀 회의에서 서버 모니터링이 불가능한 점에 대한 문제 제기가 있었습니다. 이에, 서버 모니터링을 위한 로깅을 추가하기로 결정하였습니다.
+
+서버 모니터링을 위해 LogInterceptor, LogRequest, AlertSlowResponse를 구현해주세요.
+
+*-/src/main/kotlin/_web/log/LogInterceptor.kt*
+```kotlin
+@Component
+class LogInterceptor(
+    private val logRequest: LogRequest,
+    private val logSlowResponse: AlertSlowResponse,
+) : HandlerInterceptor {
+
+    override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
+        // FIXME
+        return super.preHandle(request, response, handler)
+    }
+
+    override fun afterCompletion(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        handler: Any,
+        ex: Exception?,
+    ) {
+        // FIXME
+        super.afterCompletion(request, response, handler, ex)
+    }
+}
+```
+
+*-/src/main/kotlin/_web/log/LogRequest.kt*
+```kotlin
+@Component
+class LogRequestImpl : LogRequest {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
+    override operator fun invoke(request: Request) {
+        TODO()
+    }
+}
+```
+
+*-/src/main/kotlin/_web/log/AlertSlowResponse.kt*
+```kotlin
+@Component
+class AlertSlowResponseImpl : AlertSlowResponse {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
+    override operator fun invoke(slowResponse: SlowResponse): Future<Boolean> {
+        TODO()
+    }
+}
+```
+
+개발팀에서는 유저로부터 들어오는 모든 요청을 로깅하려 합니다. 뿐만 아니라, 응답 속도가 임계치(**3초**)를 넘을 경우 이를 바로 인지하고 싶어합니다.
+
+- 들어오는 모든 요청을 "[API-REQUEST] GET /api/v1/playlist-groups" 꼴로 로깅
+- 3초 이상 걸린 응답을 "[API-RESPONSE] GET /api/v1/playlists/7, took 3132ms, PFCJeong" 꼴로 로깅 (각각 요청 method, path, 걸린 시간, 본인의 깃허브 아이디)
+- 3초 이상 걸린 응답을 "[API-RESPONSE] GET /api/v1/playlists/7, took 3132ms, PFCJeong" 꼴로 슬랙 채널에 전달
+
+
+### 4. 커스텀 플레이리스트 기능 내부 테스트
+기획팀은 유저가 자신만의 플레이리스트를 만들어 곡을 추가할 수 있는 새로운 기능을 도입하고 싶어 합니다. 아직 릴리즈 일정은 잡혀있지 않기 때문에 내부 테스트를 위한 개발만 진행하면 됩니다.
+
+CustomPlaylistServiceImpl를 구현해주세요.
+
+*-/src/main/kotlin/custom-playlist/service/CustomPlaylistServiceImpl.kt*
+```kotlin
+@Service
+class CustomPlaylistServiceImpl : CustomPlaylistService {
+
+    override fun get(userId: Long, customPlaylistId: Long): CustomPlaylist {
         TODO("Not yet implemented")
     }
 
-    override fun get(id: Long): Playlist {
+    override fun gets(userId: Long): List<CustomPlaylistBrief> {
+        TODO("Not yet implemented")
+    }
+
+    override fun create(userId: Long): CustomPlaylistBrief {
+        TODO("Not yet implemented")
+    }
+
+    override fun patch(userId: Long, customPlaylistId: Long, title: String): CustomPlaylistBrief {
+        TODO("Not yet implemented")
+    }
+
+    override fun addSong(userId: Long, customPlaylistId: Long, songId: Long): CustomPlaylistBrief {
         TODO("Not yet implemented")
     }
 }
 ```
+아직 최종 기획이 나와 있지 않기 때문에 개발적인 요구사항만 만족시키면 됩니다. 개발 요구사항은 CustomPlaylistServiceImpl에서 확인할 수 있습니다.
+
+## week3 과제 주의 사항
+
+- 기본적으로 모든 테스트가 성공해야 합니다. `./gradlew test`
+- 요구 사항을 테스트 코드로 모두 검증하기 어려운 측면이 있습니다. (테스트 코드를 보강해야 하는데, 시간이 될지 모르겠어요)
+- 따라서 테스트가 성공하더라도, 모든 요구 사항에 대한 로직이 코드에 반영되어 있지 않으면 과제는 실패 처리하려 합니다.
+- README.md와 각 클래스에 명시된 과제 스펙을 모두 꼼꼼히 체크해주세요.
+- 이번 과제는 private 레포지토리에서 진행합니다. [private_fork](https://gist.github.com/0xjac/85097472043b697ab57ba1b1c7530274)에 나온대로 private 레포지토리를 만든 후, Collaborator로 @PFCJeong, @davin111을 추가해주세요. 과제는 PR로 올려주시고 저희에게 노티 주시면 됩니다.
+- 이번 과제는 미리 시작하여 피드백을 받으면서 진행하는 편이 좋겠습니다.

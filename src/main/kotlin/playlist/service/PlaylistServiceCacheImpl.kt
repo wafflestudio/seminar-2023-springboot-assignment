@@ -1,18 +1,34 @@
 package com.wafflestudio.seminar.spring2023.playlist.service
 
+import com.github.benmanes.caffeine.cache.Caffeine
+import com.wafflestudio.seminar.spring2023.playlist.service.SortPlaylist.Type
 import org.springframework.stereotype.Service
 
-// TODO: 캐시 TTL이 10초가 되도록 캐시 구현체를 구현 (추가 과제)
 @Service
 class PlaylistServiceCacheImpl(
     private val impl: PlaylistServiceImpl,
+    cacheBuilder: Caffeine<Any, Any>,
 ) : PlaylistService {
+    private val playlistGroupsCache = cacheBuilder.build<Type, List<PlaylistGroup>>()
+    private val playlistCache = cacheBuilder.build<Long, Playlist>()
 
-    override fun getGroups(): List<PlaylistGroup> {
-        TODO("Not yet implemented")
+    override fun getGroups(sortType: Type): List<PlaylistGroup> {
+        val cached = playlistGroupsCache.getIfPresent(sortType)
+
+        if (cached != null) {
+            return cached
+        }
+
+        return impl.getGroups(sortType).also { playlistGroupsCache.put(sortType, it) }
     }
 
     override fun get(id: Long): Playlist {
-        TODO("Not yet implemented")
+        val cached = playlistCache.getIfPresent(id)
+
+        if (cached != null) {
+            return cached
+        }
+
+        return impl.get(id).also { playlistCache.put(id, it) }
     }
 }

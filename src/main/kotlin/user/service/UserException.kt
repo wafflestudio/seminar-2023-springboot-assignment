@@ -11,5 +11,3 @@ class SignUpBadPasswordException : UserException()
 class SignInUserNotFoundException : UserException()
 
 class SignInInvalidPasswordException : UserException()
-
-class AuthenticateException : UserException()
